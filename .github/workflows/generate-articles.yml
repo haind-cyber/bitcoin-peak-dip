@@ -1,0 +1,198 @@
+name: Generate Articles JSON
+
+on:
+  # Chạy khi có push lên branch main
+  push:
+    branches: [ main, master ]
+    paths:
+      - '_posts/**'           # Chỉ chạy khi có thay đổi trong _posts
+      - '.github/workflows/generate-articles.yml'  # Hoặc khi sửa file workflow
+      
+  # Cho phép chạy thủ công từ GitHub UI
+  workflow_dispatch:
+
+# Quyền cần thiết để commit
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Bước 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Lấy toàn bộ lịch sử để có thể commit
+      
+      # Bước 2: Setup Ruby
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+      
+      # Bước 3: Tạo script generate
+      - name: Create generator script
+        run: |
+          cat > generate_articles.rb << 'EOF'
+          require 'yaml'
+          require 'json'
+          require 'date'
+          require 'time'
+
+          def generate_articles_json
+            articles = []
+            posts_dir = '_posts'
+            
+            puts "🔍 Scanning _posts directory..."
+            
+            # Kiểm tra thư mục _posts có tồn tại không
+            unless Dir.exist?(posts_dir)
+              puts "❌ Directory #{posts_dir} not found!"
+              return false
+            end
+            
+            # Đọc tất cả file .md trong _posts
+            Dir.glob("#{posts_dir}/*.{md,markdown}").each do |file|
+              begin
+                content = File.read(file)
+                
+                # Trích xuất front matter
+                if content =~ /^---\s*\n(.*?)\n---\s*\n/m
+                  frontmatter = YAML.safe_load($1)
+                  
+                  # Lấy slug từ filename (bỏ phần ngày tháng)
+                  filename = File.basename(file, '.*')
+                  slug = filename
+                  # Xóa prefix ngày tháng (YYYY-MM-DD-)
+                  if slug =~ /^\d{4}-\d{2}-\d{2}-(.+)$/
+                    slug = $1
+                  end
+                  
+                  # Xử lý ngày tháng
+                  post_date = frontmatter['date']
+                  if post_date.is_a?(Date) || post_date.is_a?(Time)
+                    date_str = post_date.strftime('%Y-%m-%d')
+                  elsif post_date.is_a?(String)
+                    # Parse string date
+                    begin
+                      date_str = Date.parse(post_date).strftime('%Y-%m-%d')
+                    rescue
+                      date_str = Date.today.strftime('%Y-%m-%d')
+                    end
+                  else
+                    date_str = Date.today.strftime('%Y-%m-%d')
+                  end
+                  
+                  # Lấy description từ frontmatter hoặc content
+                  description = frontmatter['description'].to_s
+                  if description.empty? && content.length > 0
+                    # Lấy 150 ký tự đầu tiên của content (sau front matter)
+                    main_content = content.sub(/^---\s*\n.*?\n---\s*\n/m, '')
+                    description = main_content.strip[0..150] + '...' if main_content.length > 0
+                  end
+                  
+                  # Tạo article object
+                  article = {
+                    'id' => slug,
+                    'slug' => slug,
+                    'title' => frontmatter['title'].to_s,
+                    'description' => description,
+                    'date' => date_str,
+                    'author' => frontmatter['author'].to_s.empty? ? 'Bitcoin PeakDip Team' : frontmatter['author'].to_s,
+                    'category' => frontmatter['category'].to_s.empty? ? 'General' : frontmatter['category'].to_s,
+                    'reading_time' => frontmatter['reading_time'] || 5,
+                    'level' => frontmatter['level'].to_s.empty? ? 'Beginner' : frontmatter['level'].to_s,
+                    'icon' => frontmatter['icon'].to_s.empty? ? 'book' : frontmatter['icon'].to_s,
+                    'featured' => frontmatter['featured'] || false
+                  }
+                  
+                  articles << article
+                  puts "  ✅ #{filename}"
+                else
+                  puts "  ⚠️ No front matter in #{file}"
+                end
+              rescue => e
+                puts "  ❌ Error processing #{file}: #{e.message}"
+              end
+            end
+            
+            if articles.empty?
+              puts "❌ No articles found!"
+              return false
+            end
+            
+            # Sắp xếp theo ngày (mới nhất lên đầu)
+            articles.sort_by! { |a| a['date'] }.reverse!
+            
+            # Tạo output
+            output = {
+              'articles' => articles,
+              'last_updated' => Time.now.iso8601,
+              'total' => articles.length
+            }
+            
+            # Ghi file vào _data
+            Dir.mkdir('_data') unless Dir.exist?('_data')
+            File.write('_data/articles.json', JSON.pretty_generate(output))
+            puts "✅ Generated _data/articles.json with #{articles.length} articles"
+            
+            # Copy sang assets/data cho web access
+            unless Dir.exist?('assets/data')
+              FileUtils.mkdir_p('assets/data')
+            end
+            File.write('assets/data/articles.json', JSON.pretty_generate(output))
+            puts "✅ Copied to assets/data/articles.json"
+            
+            return true
+          end
+
+          # Chạy hàm chính
+          if generate_articles_json
+            puts "✅ Generation completed successfully!"
+          else
+            puts "❌ Generation failed!"
+            exit 1
+          end
+          EOF
+      
+      # Bước 4: Chạy script
+      - name: Run generator
+        run: ruby generate_articles.rb
+      
+      # Bước 5: Kiểm tra xem có thay đổi không
+      - name: Check for changes
+        id: git-check
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add _data/articles.json assets/data/articles.json
+          
+          # Kiểm tra xem có file nào thay đổi không
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      # Bước 6: Commit và push nếu có thay đổi
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git commit -m "🤖 Auto-update articles.json [skip ci]"
+          git push
+      
+      # Bước 7: Upload artifact để deploy (nếu cần)
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: articles-data
+          path: |
+            _data/articles.json
+            assets/data/articles.json

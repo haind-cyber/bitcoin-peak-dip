@@ -1,27 +1,29 @@
 ---
 layout: default
 ---
+
 <div class="learn-article">
     <div class="article-header">
         <h1 class="article-title">{{ page.title }}</h1>
         <div class="article-meta">
-            <span class="article-author"><i class="fas fa-user"></i> {{ page.author }}</span>
+            <span class="article-author"><i class="fas fa-user"></i> {{ page.author | default: 'Bitcoin PeakDip Team' }}</span>
             <span class="article-date"><i class="fas fa-calendar-alt"></i> {{ page.date | date: "%B %d, %Y" }}</span>
-            <span class="reading-time"><i class="fas fa-clock"></i> {{ page.reading_time }} min read</span>
-            <span class="difficulty {{ page.level | downcase }}">{{ page.level | default: 'Beginner' }}</span>
+            <span class="reading-time"><i class="fas fa-clock"></i> {{ page.reading_time | default: 5 }} min read</span>
+            <span class="difficulty {{ page.level | downcase | default: 'beginner' }}">{{ page.level | default: 'Beginner' }}</span>
         </div>
     </div>
     
     <!-- Article Layout with Outline Sidebar -->
     <div class="article-with-outline">
-        <!-- Outline Sidebar (hiện trên desktop) -->
+        <!-- Outline Sidebar (desktop) -->
         <aside class="article-outline" id="articleOutline">
             <div class="outline-header">
                 <i class="fas fa-list-ul"></i>
                 <h3>Contents</h3>
             </div>
             <ul class="outline-list" id="outlineList">
-                <li class="loading-outline">Loading...</li>
+                <!-- JS sẽ tự động điền -->
+                <li class="loading-outline">Loading outline...</li>
             </ul>
         </aside>
         
@@ -40,7 +42,7 @@ layout: default
         </button>
         <div class="mobile-outline-menu" id="mobileOutlineMenu">
             <ul class="outline-list" id="mobileOutlineList">
-                <li class="loading-outline">Loading...</li>
+                <li class="loading-outline">Loading outline...</li>
             </ul>
         </div>
     </div>
@@ -53,9 +55,6 @@ layout: default
         <button class="share-article" onclick="shareArticle()">
             <i class="fas fa-share-alt"></i> Share
         </button>
-        <button class="article-action-btn" onclick="window.articleManager?.addCurrentToReadingList()" title="Save to reading list">
-            <i class="fas fa-bookmark"></i>
-        </button>
     </div>
 </div>
 
@@ -64,13 +63,13 @@ layout: default
 document.addEventListener('DOMContentLoaded', function() {
     generateOutline();
     setupMobileOutline();
-    setupReadingProgress();
 });
 
 function generateOutline() {
     const content = document.getElementById('articleContent');
     if (!content) return;
     
+    // Tìm tất cả headings h2 và h3
     const headings = content.querySelectorAll('h2, h3');
     if (headings.length === 0) return;
     
@@ -83,6 +82,7 @@ function generateOutline() {
     let mobileOutlineHTML = '';
     
     headings.forEach((heading, index) => {
+        // Thêm id cho heading nếu chưa có
         if (!heading.id) {
             heading.id = `section-${index}`;
         }
@@ -94,7 +94,7 @@ function generateOutline() {
         outlineHTML += `
             <li class="outline-item outline-${level}" ${indent}>
                 <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}')">
-                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle-small"></i>'} 
+                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle"></i>'} 
                     ${text}
                 </a>
             </li>
@@ -103,7 +103,7 @@ function generateOutline() {
         mobileOutlineHTML += `
             <li class="outline-item outline-${level}" ${indent}>
                 <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}'); closeMobileOutline();">
-                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle-small"></i>'} 
+                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle"></i>'} 
                     ${text}
                 </a>
             </li>
@@ -113,6 +113,7 @@ function generateOutline() {
     if (outlineList) outlineList.innerHTML = outlineHTML;
     if (mobileOutlineList) mobileOutlineList.innerHTML = mobileOutlineHTML;
     
+    // Highlight active section khi scroll
     setupActiveSectionHighlight(headings);
 }
 
@@ -138,6 +139,7 @@ function setupMobileOutline() {
         }
     });
     
+    // Đóng menu khi click ra ngoài
     document.addEventListener('click', function(event) {
         if (!toggle.contains(event.target) && !menu.contains(event.target)) {
             menu.classList.remove('active');
@@ -176,30 +178,13 @@ function setupActiveSectionHighlight(headings) {
             }
         }
         
+        // Update active class in outline
         document.querySelectorAll('.outline-item a').forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href') === `#${current}`) {
                 link.classList.add('active');
             }
         });
-    });
-}
-
-function setupReadingProgress() {
-    const progressBar = document.createElement('div');
-    progressBar.className = 'reading-progress';
-    progressBar.innerHTML = '<div class="progress-bar" id="readingProgress"></div>';
-    document.body.appendChild(progressBar);
-    
-    window.addEventListener('scroll', function() {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        
-        const progress = document.getElementById('readingProgress');
-        if (progress) {
-            progress.style.width = scrolled + '%';
-        }
     });
 }
 
@@ -215,12 +200,320 @@ function shareArticle() {
         });
     } else {
         navigator.clipboard.writeText(url);
-        if (window.Shared) {
-            window.Shared.showToast('Link copied to clipboard!', 'success');
-        } else {
-            alert('Link copied to clipboard!');
-        }
+        alert('Link copied to clipboard!');
     }
 }
 </script>
-{% include reading-list-styles.html %}
+
+<!-- CSS cho Outline và Article -->
+<style>
+.article-with-outline {
+    display: flex;
+    gap: 30px;
+    position: relative;
+}
+
+/* Article Header */
+.article-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.article-title {
+    font-size: 2.5em;
+    background: linear-gradient(to right, var(--wave-trough), var(--wave-peak));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 15px;
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: var(--text-glow);
+    font-size: 0.95em;
+}
+
+.article-meta i {
+    color: var(--wave-trough);
+    margin-right: 5px;
+}
+
+/* Outline Sidebar */
+.article-outline {
+    flex: 0 0 280px;
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.outline-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.outline-header i {
+    color: var(--wave-trough);
+    font-size: 1.2em;
+}
+
+.outline-header h3 {
+    color: white;
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.outline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.outline-item {
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+.outline-item a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    line-height: 1.4;
+}
+
+.outline-item a i {
+    color: var(--wave-trough);
+    font-size: 0.6em;
+}
+
+.outline-item a:hover {
+    background: rgba(0,212,255,0.1);
+    color: white;
+    padding-left: 15px;
+}
+
+.outline-item a.active {
+    background: rgba(0,212,255,0.2);
+    color: white;
+    border-left: 3px solid var(--wave-trough);
+}
+
+.outline-h3 a {
+    font-size: 0.9em;
+    opacity: 0.9;
+    padding-left: 25px;
+}
+
+/* Article Content */
+.article-content {
+    flex: 1;
+    min-width: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.article-content h2 {
+    color: white;
+    font-size: 2em;
+    margin: 40px 0 20px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+.article-content h3 {
+    color: var(--wave-trough);
+    font-size: 1.5em;
+    margin: 30px 0 15px;
+}
+
+.article-content p {
+    color: var(--text-glow);
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.article-content ul, .article-content ol {
+    color: var(--text-glow);
+    line-height: 1.8;
+    margin: 20px 0;
+    padding-left: 30px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+}
+
+.article-content strong {
+    color: var(--wave-trough);
+}
+
+.article-content blockquote {
+    background: rgba(0, 212, 255, 0.1);
+    border-left: 4px solid var(--wave-trough);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+}
+
+/* Mobile Outline */
+.mobile-outline {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.mobile-outline-toggle {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--wave-trough);
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.mobile-outline-toggle i:last-child {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.mobile-outline-menu {
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 5px;
+}
+
+.mobile-outline-menu.active {
+    display: block;
+}
+
+/* Article Footer */
+.article-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.back-to-learn {
+    color: var(--wave-trough);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-to-learn:hover {
+    gap: 12px;
+    color: white;
+}
+
+.share-article {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.share-article:hover {
+    background: rgba(0,212,255,0.2);
+    border-color: var(--wave-trough);
+}
+
+.loading-outline {
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 10px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .article-outline {
+        flex-basis: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .article-with-outline {
+        flex-direction: column;
+    }
+    
+    .article-outline {
+        display: none;
+    }
+    
+    .mobile-outline {
+        display: block;
+    }
+    
+    .article-title {
+        font-size: 2em;
+    }
+    
+    .article-content {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .article-content {
+        padding: 20px;
+    }
+    
+    .article-content h2 {
+        font-size: 1.6em;
+    }
+    
+    .article-content h3 {
+        font-size: 1.3em;
+    }
+    
+    .article-footer-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+</style>

@@ -1,13 +1,13 @@
 # ============================================
 # Bitcoin PeakDip - Jekyll Configuration
-# Version: 1.12.2
+# Version: 1.12.2 - PRODUCTION (Custom Domain)
 # ============================================
 
 title: "Bitcoin PeakDip"
 tagline: "A Specialized Bitcoin Quantitative Research & Early Warning System Provider"
 description: "Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered"
-url: ""
-baseurl: ""  # Để trống cho local development
+url: "https://bitcoin-peak-dip.com"
+baseurl: ""  # Để trống vì dùng custom domain (không có sub-path)
 repository: "haind-cyber/bitcoin-peak-dip"
 
 # ===== BUILD SETTINGS =====
@@ -27,6 +27,12 @@ feed:
   path: feed.xml
   posts_limit: 20
 
+# ===== INCLUDES - QUAN TRỌNG: Copy data files =====
+include:
+  - _data
+  - assets/data
+  - .htaccess  # Nếu có
+
 # ===== DEFAULTS =====
 defaults:
   - scope:
@@ -38,30 +44,67 @@ defaults:
       reading_time: 5
       level: "Beginner"
       icon: "book"
+      image: "/assets/images/og-default.jpg"  # Thêm image mặc định cho social
+      
+  - scope:
+      path: "index.md"
+    values:
+      layout: "home"
+      title: "Bitcoin PeakDip: Early Warning System"
+      description: "Real-time Bitcoin peak and dip detection using Early Warning System with AI algorithms"
+      image: "/assets/images/og-home.jpg"
       
   - scope:
       path: "about.md"
     values:
       layout: "page"
-      title: "About Bitcoin PeakDip"
+      title: "About Bitcoin PeakDip - Early Warning System"
+      description: "Learn about Bitcoin PeakDip Early Warning System and our mission"
       
   - scope:
       path: "product.md"
     values:
       layout: "page"
       title: "Product Suite - Bitcoin PeakDip"
+      description: "8 Advanced Trading Strategies activated by EWS Signals"
       
   - scope:
       path: "signals.md"
     values:
       layout: "page"
       title: "EWS Signals - Bitcoin PeakDip"
+      description: "Real-time Bitcoin Peak and Dip Detection Records"
       
   - scope:
       path: "learn.md"
     values:
       layout: "page"
       title: "Knowledge Base - Bitcoin PeakDip"
+      description: "Master Bitcoin trading with Early Warning System strategies"
+      
+  - scope:
+      path: "privacy-policy.md"
+    values:
+      layout: "page"
+      title: "Privacy Policy - Bitcoin PeakDip"
+      
+  - scope:
+      path: "terms-of-service.md"
+    values:
+      layout: "page"
+      title: "Terms of Service - Bitcoin PeakDip"
+      
+  - scope:
+      path: "risk-disclosure.md"
+    values:
+      layout: "page"
+      title: "Risk Disclosure - Bitcoin PeakDip"
+      
+  - scope:
+      path: "reading-list.md"
+    values:
+      layout: "page"
+      title: "Reading List - Bitcoin PeakDip"
 
 # ===== EXCLUDE =====
 exclude:
@@ -71,11 +114,51 @@ exclude:
   - vendor
   - .sass-cache
   - .jekyll-cache
+  - gemfiles
   - README.md
+  - LICENSE
   - "*.gem"
   - "*.sh"
+  - "*.ps1"  # Thêm PowerShell scripts
+  - "*.bat"  # Thêm Batch files
+  - .gitignore
+  - .git/
 
 # ===== CUSTOM VARIABLES =====
 version: "1.12.2"
 build_date: "{{ site.time | date: '%Y-%m-%d' }}"
 google_analytics: "G-HR78BDQYJJ"
+
+# ===== SOCIAL MEDIA =====
+twitter:
+  username: bitcoinpeakdip
+  card: summary_large_image
+
+social:
+  name: Bitcoin PeakDip
+  links:
+    - https://twitter.com/bitcoinpeakdip
+    - https://t.me/bitcoinpeakdip
+    - https://www.linkedin.com/in/hai-nguyen-duc-1a6b5563
+    - https://x.com/bitcoinpeakdip
+
+# ===== COMPRESSION =====
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: []
+  blanklines: false
+  profile: false
+
+# ===== ANALYTICS =====
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "G-HR78BDQYJJ"
+    anonymize_ip: true
+
+# Include data files
+include:
+  - _data
+  - assets/data    

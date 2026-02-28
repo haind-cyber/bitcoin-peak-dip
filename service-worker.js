@@ -323,7 +323,7 @@ self.addEventListener('fetch', event => {
   }
 
   // Cache articles.json với network-first
-  if (url.pathname.includes('/learn/articles.json')) {
+  if (url.pathname.includes('/_data/articles.json')) {
     event.respondWith(networkFirst(event.request));
     return;
   }  

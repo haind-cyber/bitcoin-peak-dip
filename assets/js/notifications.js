@@ -4,7 +4,7 @@
 const NOTIFICATION_CONFIG = {
     version: '2.1.3',
     checkInterval: 60 * 60 * 1000, // 30 phút
-    articleMetadataPath: '/learn/articles.json',
+    articleMetadataPath: '/_data/articles.json',
     notifiedKey: 'peakdip_notified_articles_v2',
     enabledKey: 'peakdip_notifications_enabled',
     cacheKey: 'peakdip_articles_cache',
