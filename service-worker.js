@@ -29,7 +29,6 @@ const LOCAL_ASSETS = [
   '/assets/js/learn.js',
   '/assets/js/reading-list.js',
   '/assets/js/notifications.js',
-  '/assets/js/article.js',
   '/assets/js/update-notifier.js',
   '/assets/icons/icon-72x72.png',
   '/assets/icons/icon-96x96.png',

@@ -25,17 +25,12 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.version }}">
     
-    <!-- Page Specific CSS -->
-    {% if page.layout == 'about' %}
+    <!-- Page Specific CSS - LOAD TẤT CẢ CHO MỌI TRANG -->
     <link rel="stylesheet" href="{{ '/assets/css/about.css' | relative_url }}?v={{ site.version }}">
-    {% elsif page.layout == 'product' %}
     <link rel="stylesheet" href="{{ '/assets/css/product.css' | relative_url }}?v={{ site.version }}">
-    {% elsif page.layout == 'signals' %}
     <link rel="stylesheet" href="{{ '/assets/css/signals.css' | relative_url }}?v={{ site.version }}">
     <link rel="stylesheet" href="{{ '/assets/css/zoom.css' | relative_url }}?v={{ site.version }}">
-    {% elsif page.layout == 'learn' or page.layout == 'post' %}
     <link rel="stylesheet" href="{{ '/assets/css/learn.css' | relative_url }}?v={{ site.version }}">
-    {% endif %}
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#00d4ff">
@@ -87,7 +82,7 @@
 <body>
     {% include mobile-detection.html %}
     
-    <!-- Interactive Background -->
+    <!-- Interactive Background (commented out by default) -->
     <!-- <div class="interactive-background" id="interactiveBackground"></div> -->
     
     <!-- Sensor Alert Container -->
@@ -120,20 +115,25 @@
     <script src="{{ '/assets/js/notifications.js' | relative_url }}?v={{ site.version }}"></script>
     <script src="{{ '/assets/js/update-notifier.js' | relative_url }}?v={{ site.version }}"></script>
     
-<!-- Page Specific Scripts -->
+    <!-- Page Specific Scripts -->
     {% if page.layout == 'home' %}
     <script src="{{ '/assets/js/interactions.js' | relative_url }}?v={{ site.version }}"></script>
-    {% elsif page.layout == 'signals' %}
+    {% endif %}
+    
+    {% if page.layout == 'signals' or page.path contains 'signals' %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="{{ '/assets/js/signals.js' | relative_url }}?v={{ site.version }}"></script>
-    {% elsif page.layout == 'product' %}
-    <script src="{{ '/assets/js/product.js' | relative_url }}?v={{ site.version }}"></script>
-    {% elsif page.layout == 'learn' %}
-    <script src="{{ '/assets/js/learn.js' | relative_url }}?v={{ site.version }}"></script>
-    {% elsif page.layout == 'post' %}
-    <script src="{{ '/assets/js/article.js' | relative_url }}?v={{ site.version }}"></script>
     {% endif %}
+    
+    {% if page.layout == 'product' or page.path contains 'product' %}
+    <script src="{{ '/assets/js/product.js' | relative_url }}?v={{ site.version }}"></script>
+    {% endif %}
+    
+    {% if page.layout == 'learn' or page.path contains 'learn' %}
+    <script src="{{ '/assets/js/learn.js' | relative_url }}?v={{ site.version }}"></script>
+    {% endif %}
+
     
     <!-- Active Menu Fix -->
     <script>
@@ -151,8 +151,17 @@
             if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
             if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
             if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
+            if (currentPage.includes('reading-list') && href.includes('reading-list')) link.classList.add('active');
         });
     })();
     </script>
+    
+    <!-- Debug Info (có thể xóa sau khi fix) -->
+    <!-- <script>
+    console.log('=== LAYOUT DEBUG ===');
+    console.log('Page layout:', '{{ page.layout }}');
+    console.log('Page path:', '{{ page.path }}');
+    console.log('CSS loaded:', document.styleSheets.length);
+    </script> -->
 </body>
 </html>

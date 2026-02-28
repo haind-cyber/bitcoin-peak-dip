@@ -1,7 +1,6 @@
 ---
 layout: default
 ---
-
 <div class="learn-article">
     <div class="article-header">
         <h1 class="article-title">{{ page.title }}</h1>
@@ -22,7 +21,6 @@ layout: default
                 <h3>Contents</h3>
             </div>
             <ul class="outline-list" id="outlineList">
-                <!-- JS sẽ tự động điền -->
                 <li class="loading-outline">Loading...</li>
             </ul>
         </aside>
@@ -73,11 +71,9 @@ function generateOutline() {
     const content = document.getElementById('articleContent');
     if (!content) return;
     
-    // Tìm tất cả headings h2 và h3
     const headings = content.querySelectorAll('h2, h3');
     if (headings.length === 0) return;
     
-    // Tạo outline list
     const outlineList = document.getElementById('outlineList');
     const mobileOutlineList = document.getElementById('mobileOutlineList');
     
@@ -87,7 +83,6 @@ function generateOutline() {
     let mobileOutlineHTML = '';
     
     headings.forEach((heading, index) => {
-        // Thêm id cho heading nếu chưa có
         if (!heading.id) {
             heading.id = `section-${index}`;
         }
@@ -96,7 +91,6 @@ function generateOutline() {
         const text = heading.textContent;
         const indent = level === 'h3' ? 'style="margin-left: 20px;"' : '';
         
-        // Desktop outline
         outlineHTML += `
             <li class="outline-item outline-${level}" ${indent}>
                 <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}')">
@@ -106,7 +100,6 @@ function generateOutline() {
             </li>
         `;
         
-        // Mobile outline
         mobileOutlineHTML += `
             <li class="outline-item outline-${level}" ${indent}>
                 <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}'); closeMobileOutline();">
@@ -120,7 +113,6 @@ function generateOutline() {
     if (outlineList) outlineList.innerHTML = outlineHTML;
     if (mobileOutlineList) mobileOutlineList.innerHTML = mobileOutlineHTML;
     
-    // Highlight active section khi scroll
     setupActiveSectionHighlight(headings);
 }
 
@@ -146,7 +138,6 @@ function setupMobileOutline() {
         }
     });
     
-    // Đóng menu khi click ra ngoài
     document.addEventListener('click', function(event) {
         if (!toggle.contains(event.target) && !menu.contains(event.target)) {
             menu.classList.remove('active');
@@ -185,7 +176,6 @@ function setupActiveSectionHighlight(headings) {
             }
         }
         
-        // Update active class in outline
         document.querySelectorAll('.outline-item a').forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href') === `#${current}`) {
@@ -233,236 +223,4 @@ function shareArticle() {
     }
 }
 </script>
-
-<!-- CSS cho Outline -->
-<style>
-.article-with-outline {
-    display: flex;
-    gap: 30px;
-    position: relative;
-}
-
-/* Outline Sidebar */
-.article-outline {
-    flex: 0 0 280px;
-    position: sticky;
-    top: 100px;
-    height: fit-content;
-    max-height: calc(100vh - 150px);
-    overflow-y: auto;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-    padding: 20px;
-    border: 1px solid rgba(0, 212, 255, 0.2);
-    backdrop-filter: blur(10px);
-    scrollbar-width: thin;
-    scrollbar-color: #00d4ff rgba(0,0,0,0.3);
-}
-
-.article-outline::-webkit-scrollbar {
-    width: 5px;
-}
-
-.article-outline::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.3);
-    border-radius: 10px;
-}
-
-.article-outline::-webkit-scrollbar-thumb {
-    background: #00d4ff;
-    border-radius: 10px;
-}
-
-.outline-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.outline-header i {
-    color: #00d4ff;
-    font-size: 1.2em;
-}
-
-.outline-header h3 {
-    color: white;
-    font-size: 1.1em;
-    margin: 0;
-}
-
-.outline-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.outline-item {
-    margin-bottom: 8px;
-    font-size: 0.95em;
-}
-
-.outline-item a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: rgba(255,255,255,0.8);
-    text-decoration: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    line-height: 1.4;
-}
-
-.outline-item a i {
-    color: #00d4ff;
-    font-size: 0.6em;
-    flex-shrink: 0;
-}
-
-.outline-item a:hover {
-    background: rgba(0,212,255,0.1);
-    color: white;
-    padding-left: 15px;
-}
-
-.outline-item a.active {
-    background: rgba(0,212,255,0.2);
-    color: white;
-    border-left: 3px solid #00d4ff;
-}
-
-.outline-item a.active i {
-    color: white;
-}
-
-.outline-h3 a {
-    font-size: 0.9em;
-    opacity: 0.9;
-}
-
-/* Article Content */
-.article-content {
-    flex: 1;
-    min-width: 0;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-    padding: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Mobile Outline */
-.mobile-outline {
-    display: none;
-    margin-bottom: 20px;
-}
-
-.mobile-outline-toggle {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid #00d4ff;
-    border-radius: 10px;
-    padding: 15px 20px;
-    color: white;
-    font-size: 1.1em;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.mobile-outline-toggle:hover {
-    background: rgba(0,212,255,0.1);
-}
-
-.mobile-outline-toggle i:first-child {
-    color: #00d4ff;
-}
-
-.mobile-outline-toggle i:last-child {
-    margin-left: auto;
-    transition: transform 0.3s ease;
-}
-
-.mobile-outline-menu {
-    display: none;
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(0,212,255,0.3);
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 5px;
-    backdrop-filter: blur(10px);
-}
-
-.mobile-outline-menu.active {
-    display: block;
-}
-
-/* Reading Progress */
-.reading-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1001;
-}
-
-.progress-bar {
-    height: 100%;
-    background: linear-gradient(to right, #00d4ff, #f7931a, #ff2e63);
-    width: 0%;
-    transition: width 0.1s ease;
-}
-
-/* Loading State */
-.loading-outline {
-    color: rgba(255,255,255,0.5);
-    font-style: italic;
-    padding: 10px;
-    text-align: center;
-}
-
-/* Responsive */
-@media (max-width: 992px) {
-    .article-outline {
-        flex-basis: 240px;
-    }
-}
-
-@media (max-width: 768px) {
-    .article-with-outline {
-        flex-direction: column;
-    }
-    
-    .article-outline {
-        display: none;
-    }
-    
-    .mobile-outline {
-        display: block;
-    }
-    
-    .article-content {
-        padding: 25px;
-    }
-}
-
-@media (max-width: 480px) {
-    .article-content {
-        padding: 20px 15px;
-    }
-}
-
-/* Icons */
-.fa-circle-small:before {
-    content: "•";
-    font-size: 1.2em;
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-}
-</style>
+{% include reading-list-styles.html %}
