@@ -26,7 +26,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Lấy toàn bộ lịch sử để có thể commit
+          fetch-depth: 0
       
       # Bước 2: Setup Ruby
       - name: Setup Ruby
@@ -42,7 +42,6 @@ jobs:
           require 'yaml'
           require 'json'
           require 'date'
-          require 'time'
 
           def generate_articles_json
             articles = []
@@ -50,35 +49,28 @@ jobs:
             
             puts "🔍 Scanning _posts directory..."
             
-            # Kiểm tra thư mục _posts có tồn tại không
             unless Dir.exist?(posts_dir)
               puts "❌ Directory #{posts_dir} not found!"
               return false
             end
             
-            # Đọc tất cả file .md trong _posts
             Dir.glob("#{posts_dir}/*.{md,markdown}").each do |file|
               begin
                 content = File.read(file)
                 
-                # Trích xuất front matter
                 if content =~ /^---\s*\n(.*?)\n---\s*\n/m
                   frontmatter = YAML.safe_load($1)
                   
-                  # Lấy slug từ filename (bỏ phần ngày tháng)
                   filename = File.basename(file, '.*')
                   slug = filename
-                  # Xóa prefix ngày tháng (YYYY-MM-DD-)
                   if slug =~ /^\d{4}-\d{2}-\d{2}-(.+)$/
                     slug = $1
                   end
                   
-                  # Xử lý ngày tháng
                   post_date = frontmatter['date']
                   if post_date.is_a?(Date) || post_date.is_a?(Time)
                     date_str = post_date.strftime('%Y-%m-%d')
                   elsif post_date.is_a?(String)
-                    # Parse string date
                     begin
                       date_str = Date.parse(post_date).strftime('%Y-%m-%d')
                     rescue
@@ -88,15 +80,12 @@ jobs:
                     date_str = Date.today.strftime('%Y-%m-%d')
                   end
                   
-                  # Lấy description từ frontmatter hoặc content
                   description = frontmatter['description'].to_s
                   if description.empty? && content.length > 0
-                    # Lấy 150 ký tự đầu tiên của content (sau front matter)
                     main_content = content.sub(/^---\s*\n.*?\n---\s*\n/m, '')
                     description = main_content.strip[0..150] + '...' if main_content.length > 0
                   end
                   
-                  # Tạo article object
                   article = {
                     'id' => slug,
                     'slug' => slug,
@@ -113,11 +102,9 @@ jobs:
                   
                   articles << article
                   puts "  ✅ #{filename}"
-                else
-                  puts "  ⚠️ No front matter in #{file}"
                 end
               rescue => e
-                puts "  ❌ Error processing #{file}: #{e.message}"
+                puts "  ❌ Error: #{e.message}"
               end
             end
             
@@ -126,36 +113,31 @@ jobs:
               return false
             end
             
-            # Sắp xếp theo ngày (mới nhất lên đầu)
             articles.sort_by! { |a| a['date'] }.reverse!
             
-            # Tạo output
             output = {
               'articles' => articles,
               'last_updated' => Time.now.iso8601,
               'total' => articles.length
             }
             
-            # Ghi file vào _data
+            # Ghi vào _data
             Dir.mkdir('_data') unless Dir.exist?('_data')
             File.write('_data/articles.json', JSON.pretty_generate(output))
             puts "✅ Generated _data/articles.json with #{articles.length} articles"
             
-            # Copy sang assets/data cho web access
-            unless Dir.exist?('assets/data')
-              FileUtils.mkdir_p('assets/data')
-            end
+            # Ghi vào assets/data
+            Dir.mkdir('assets/data') unless Dir.exist?('assets/data')
             File.write('assets/data/articles.json', JSON.pretty_generate(output))
             puts "✅ Copied to assets/data/articles.json"
             
             return true
           end
 
-          # Chạy hàm chính
           if generate_articles_json
-            puts "✅ Generation completed successfully!"
+            puts "✅ Success!"
           else
-            puts "❌ Generation failed!"
+            puts "❌ Failed!"
             exit 1
           end
           EOF
@@ -164,7 +146,7 @@ jobs:
       - name: Run generator
         run: ruby generate_articles.rb
       
-      # Bước 5: Kiểm tra xem có thay đổi không
+      # Bước 5: Kiểm tra thay đổi
       - name: Check for changes
         id: git-check
         run: |
@@ -172,23 +154,22 @@ jobs:
           git config --global user.email 'action@github.com'
           git add _data/articles.json assets/data/articles.json
           
-          # Kiểm tra xem có file nào thay đổi không
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "No changes"
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
       
-      # Bước 6: Commit và push nếu có thay đổi
-      - name: Commit and push if changed
+      # Bước 6: Commit nếu có thay đổi
+      - name: Commit and push
         if: steps.git-check.outputs.changed == 'true'
         run: |
           git commit -m "🤖 Auto-update articles.json [skip ci]"
           git push
       
-      # Bước 7: Upload artifact để deploy (nếu cần)
+      # Bước 7: Upload artifact
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
