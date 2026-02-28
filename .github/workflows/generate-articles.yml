@@ -14,8 +14,6 @@ on:
 # Quyền cần thiết để commit
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   generate:
@@ -33,15 +31,19 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
+          bundler-cache: false # Không cần bundle
       
-      # Bước 3: Tạo script generate
+      # Bước 3: Tạo script generate (ĐÃ FIX LỖI DATE)
       - name: Create generator script
         run: |
           cat > generate_articles.rb << 'EOF'
           require 'yaml'
           require 'json'
           require 'date'
+          require 'time'
+
+          # Cấu hình YAML cho phép class Date và Time
+          YAML::DEFAULT_OPTION = { permitted_classes: [Date, Time, Symbol] }
 
           def generate_articles_json
             articles = []
@@ -59,7 +61,16 @@ jobs:
                 content = File.read(file)
                 
                 if content =~ /^---\s*\n(.*?)\n---\s*\n/m
-                  frontmatter = YAML.safe_load($1)
+                  frontmatter_str = $1
+                  
+                  # CÁCH 1: Dùng YAML.safe_load với permitted_classes (khuyên dùng)
+                  begin
+                    frontmatter = YAML.safe_load(frontmatter_str, permitted_classes: [Date, Time, Symbol])
+                  rescue => e
+                    puts "  ⚠️ YAML safe_load failed, trying regular load: #{e.message}"
+                    # CÁCH 2: Fallback dùng YAML.load nếu safe_load lỗi
+                    frontmatter = YAML.load(frontmatter_str)
+                  end
                   
                   filename = File.basename(file, '.*')
                   slug = filename
@@ -67,25 +78,33 @@ jobs:
                     slug = $1
                   end
                   
-                  post_date = frontmatter['date']
-                  if post_date.is_a?(Date) || post_date.is_a?(Time)
-                    date_str = post_date.strftime('%Y-%m-%d')
-                  elsif post_date.is_a?(String)
+                  # Xử lý ngày tháng an toàn
+                  date_str = case frontmatter['date']
+                  when Date, Time
+                    frontmatter['date'].strftime('%Y-%m-%d')
+                  when String
                     begin
-                      date_str = Date.parse(post_date).strftime('%Y-%m-%d')
+                      Date.parse(frontmatter['date']).strftime('%Y-%m-%d')
                     rescue
-                      date_str = Date.today.strftime('%Y-%m-%d')
+                      Date.today.strftime('%Y-%m-%d')
                     end
                   else
-                    date_str = Date.today.strftime('%Y-%m-%d')
+                    # Trích xuất ngày từ filename nếu không có trong frontmatter
+                    if filename =~ /^(\d{4})-(\d{2})-(\d{2})/
+                      "#{$1}-#{$2}-#{$3}"
+                    else
+                      Date.today.strftime('%Y-%m-%d')
+                    end
                   end
                   
+                  # Lấy description từ frontmatter hoặc content
                   description = frontmatter['description'].to_s
                   if description.empty? && content.length > 0
-                    main_content = content.sub(/^---\s*\n.*?\n---\s*\n/m, '')
-                    description = main_content.strip[0..150] + '...' if main_content.length > 0
+                    main_content = content.sub(/^---\s*\n.*?\n---\s*\n/m, '').strip
+                    description = main_content[0..150] + '...' if main_content.length > 0
                   end
                   
+                  # Tạo article object
                   article = {
                     'id' => slug,
                     'slug' => slug,
@@ -102,9 +121,11 @@ jobs:
                   
                   articles << article
                   puts "  ✅ #{filename}"
+                else
+                  puts "  ⚠️ No front matter in #{file}"
                 end
               rescue => e
-                puts "  ❌ Error: #{e.message}"
+                puts "  ❌ Error processing #{file}: #{e.message}"
               end
             end
             
@@ -113,6 +134,7 @@ jobs:
               return false
             end
             
+            # Sắp xếp theo ngày (mới nhất lên đầu)
             articles.sort_by! { |a| a['date'] }.reverse!
             
             output = {
@@ -126,7 +148,7 @@ jobs:
             File.write('_data/articles.json', JSON.pretty_generate(output))
             puts "✅ Generated _data/articles.json with #{articles.length} articles"
             
-            # Ghi vào assets/data
+            # Ghi vào assets/data cho web access
             Dir.mkdir('assets/data') unless Dir.exist?('assets/data')
             File.write('assets/data/articles.json', JSON.pretty_generate(output))
             puts "✅ Copied to assets/data/articles.json"
@@ -134,6 +156,7 @@ jobs:
             return true
           end
 
+          # Chạy hàm chính
           if generate_articles_json
             puts "✅ Success!"
           else
@@ -155,21 +178,21 @@ jobs:
           git add _data/articles.json assets/data/articles.json
           
           if git diff --staged --quiet; then
-            echo "No changes"
+            echo "No changes to commit"
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
       
-      # Bước 6: Commit nếu có thay đổi
+      # Bước 6: Commit và push nếu có thay đổi
       - name: Commit and push
         if: steps.git-check.outputs.changed == 'true'
         run: |
           git commit -m "🤖 Auto-update articles.json [skip ci]"
           git push
       
-      # Bước 7: Upload artifact
+      # Bước 7: Upload artifact (dùng v4)
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -177,3 +200,4 @@ jobs:
           path: |
             _data/articles.json
             assets/data/articles.json
+          retention-days: 7
