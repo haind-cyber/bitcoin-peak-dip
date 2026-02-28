@@ -6,10 +6,12 @@
 title: "Bitcoin PeakDip"
 tagline: "A Specialized Bitcoin Quantitative Research & Early Warning System Provider"
 description: "Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered"
-url: "https://bitcoin-peak-dip.com"
+url: "https://haind-cyber.github.io"
 baseurl: ""  # Để trống vì dùng custom domain (không có sub-path)
 repository: "haind-cyber/bitcoin-peak-dip"
-
+# Cho LOCAL (khi chạy local)
+# url: ""
+# baseurl: ""
 # ===== BUILD SETTINGS =====
 markdown: kramdown
 highlighter: rouge
