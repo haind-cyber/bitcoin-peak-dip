@@ -1,0 +1,663 @@
+---
+layout: page
+title: About Bitcoin PeakDip - Early Warning System
+description: "Bitcoin PeakDip: A Specialized Bitcoin Quantitative Research & Early Warning System Provider by Nguyen Duc Hai Technologies. High-confidence signals since 2021."
+status_text: ABOUT OUR SYSTEM
+---
+
+<!-- About Header -->
+<div class="about-header">
+    <h1 class="about-title">About Bitcoin PeakDip Early Warning System</h1>
+    <p class="about-subtitle">Advanced Market Regime Detection</p>
+    <div class="about-badge">
+        <i class="fas fa-satellite"></i> REAL-TIME SENSOR NETWORK
+    </div>
+</div>
+
+<!-- About Content -->
+<section id="about-content" class="about-content-section">
+    <div class="about-container">
+
+        <!-- OUR STORY Section -->
+        <div class="about-section story-section">
+            <h2><i class="fas fa-book-open"></i> OUR STORY: From Code to Quantitative Precision</h2>
+            
+            <div class="story-container">
+                <!-- Timeline Visual -->
+                <div class="story-timeline">
+                    <div class="timeline-track">
+                        <div class="timeline-dot" data-year="2015-2020">
+                            <span class="dot"></span>
+                            <span class="year">2015-2020</span>
+                            <span class="label">Software Engineering</span>
+                        </div>
+                        <div class="timeline-dot" data-year="2021">
+                            <span class="dot"></span>
+                            <span class="year">2021</span>
+                            <span class="label">Mission Begins</span>
+                        </div>
+                        <div class="timeline-dot" data-year="2021-2024">
+                            <span class="dot"></span>
+                            <span class="year">2021-2024</span>
+                            <span class="label">Denoising Engine</span>
+                        </div>
+                        <div class="timeline-dot" data-year="2024+">
+                            <span class="dot"></span>
+                            <span class="year">2024+</span>
+                            <span class="label">Quantum Precision</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Story Content -->
+                <div class="story-content">
+                    <!-- Paragraph 1: Origin -->
+                    <div class="story-paragraph fade-in">
+                        <div class="story-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="story-text">
+                            <p>The journey of <strong>Bitcoin PeakDip</strong> did not begin in a quiet lecture hall, but in the <span class="highlight">high-pressure environment of top-tier software engineering</span>.</p>
+                            <p>Our Founder, <strong>Nguyen Duc Hai</strong>, started his career as a practical software engineer, navigating the intense challenges of collaborating with the finest technical minds from Vietnam's elite institutions, such as the <strong>Hanoi University of Science and Technology (HUST)</strong> and <strong>Vietnam National University (VNU)</strong>.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Paragraph 2: Foundation -->
+                    <div class="story-paragraph fade-in">
+                        <div class="story-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="story-text">
+                            <p>Working alongside these top-tier experts instilled in him a <span class="highlight">rigorous, analytical mindset</span>—not just in coding, but in the fundamental logic of mathematical systems. This unique background provided the perfect foundation for a bold ambition: <strong>To decode the inherent chaos of the Bitcoin market</strong>.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Paragraph 3: Evolution -->
+                    <div class="story-paragraph fade-in">
+                        <div class="story-icon">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <div class="story-text">
+                            <p>In <strong>2021</strong>, the mission evolved. By bridging the gap between advanced <span class="highlight">Theoretical Physics and Mathematics</span> and <span class="highlight">Robust Software Engineering</span>, Hai began developing a proprietary <strong>Early Warning System (EWS)</strong>.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Paragraph 4: The Building Years -->
+                    <div class="story-paragraph fade-in">
+                        <div class="story-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="story-text">
+                            <p>For over four years <strong>(2021–2025)</strong>, while the world saw only market noise, we were building a <span class="highlight">"Denoising" engine</span>. Through countless backtests and relentless optimization, we achieved a <strong class="emphasis">98% noise reduction rate</strong>, transforming raw data into high-confidence signals.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Paragraph 5: Today -->
+                    <div class="story-paragraph fade-in">
+                        <div class="story-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="story-text">
+                            <p>Today, <strong>Nguyen Duc Hai Technologies</strong> stands as a testament to the power of persistence and interdisciplinary collaboration. We don't just write code; we <span class="highlight">engineer market intelligence</span> for the most significant asset of our time: <strong>Bitcoin</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Founder Quote -->
+                <div class="story-quote">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <blockquote>
+                        We don't just write code; we engineer market intelligence for the most significant asset of our time: Bitcoin.
+                    </blockquote>
+                    <div class="quote-author">
+                        <span class="author-name">Nguyen Duc Hai</span>
+                        <span class="author-title">Founder, Bitcoin PeakDip</span>
+                    </div>
+                </div>
+                
+                <!-- Stats Summary -->
+                <div class="story-stats">
+                    <div class="story-stat">
+                        <div class="stat-value">2015</div>
+                        <div class="stat-label">Software Engineering Begins</div>
+                    </div>
+                    <div class="story-stat">
+                        <div class="stat-value">2021</div>
+                        <div class="stat-label">EWS Development Started</div>
+                    </div>
+                    <div class="story-stat highlight-stat">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Noise Reduction</div>
+                    </div>
+                    <div class="story-stat">
+                        <div class="stat-value">4+</div>
+                        <div class="stat-label">Years of R&D</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPERT VALIDATION Section -->
+        <div class="about-section validation-section">
+            <h2><i class="fas fa-certificate"></i> EXPERT VALIDATION: ACADEMIC & INSTITUTIONAL RIGOR</h2>
+            
+            <div class="validation-content">
+                <p>At Nguyen Duc Hai Technologies, our credibility is not built on marketing, but on the rigorous technical validation by elite experts in the quantitative finance industry.</p>
+                
+                <div class="validation-highlight">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div>
+                        <strong>Top-Tier Academic Endorsement:</strong> Our 98% denoising model and technical PDF documentation underwent a thorough evaluation by a <span class="highlight">PhD in Quantitative Research</span>. This expert holds a stellar academic record from prestigious Australian institutions (La Trobe & Deakin Universities), graduating with <span class="emphasis">First Class Honours and High Distinction</span> in Data Processing and Computer Science.
+                    </div>
+                </div>
+                
+                <div class="validation-highlight">
+                    <i class="fas fa-building-columns"></i>
+                    <div>
+                        <strong>Institutional Authority:</strong> Beyond academic excellence, the reviewer is a seasoned Quantitative Researcher at a prominent Singapore-based Web3 fund. He currently leads shorting strategy research for a <span class="emphasis">$200 million (USD) portfolio</span> and guides large-scale institutional investment decisions.
+                    </div>
+                </div>
+                
+                <div class="validation-quote">
+                    <i class="fas fa-quote-left"></i>
+                    <blockquote>
+                        "I understand your system and algorithm; there is no need to share anything further."
+                    </blockquote>
+                    <div class="quote-author">
+                        — PhD in Quantitative Research, Quantitative Researcher at a Singapore-based Web3 Fund
+                    </div>
+                </div>
+                
+                <div class="validation-conclusion">
+                    <p><strong>Absolute Recognition:</strong> After meticulously reviewing our architecture and output developed since 2021, the expert delivered the definitive verdict above during a technical interview.</p>
+                    <p><strong>The Practical Edge:</strong> Having a mind—distinguished by the highest academic honors and the responsibility of coordinating hundreds of millions of dollars—recognize the sophistication of our models is the ultimate testament to our project's quality. It is a validation that far exceeds any conventional recruitment standard or CV keyword.</p>
+                </div>
+                
+                <div class="validation-buttons">
+                    <a href="https://drive.google.com/file/d/1PIMNYP49eKL8g3RyygHLta7wJ101Vsw6/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="validation-btn pdf-btn">
+                        <i class="fas fa-file-pdf"></i> 
+                        <span>View the Validated Technical Report (PDF)</span>
+                    </a>
+                    
+                    <a href="{{ '/signals' | relative_url }}" class="validation-btn signals-btn">
+                        <i class="fas fa-chart-line"></i> 
+                        <span>View EWS Signals</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTRODUCTION Section -->
+        <div class="about-section">
+            <h2><i class="fas fa-info-circle"></i> What is Bitcoin PeakDip?</h2>
+            <div class="about-text">
+                <p>Bitcoin PeakDip is an <strong>Early Warning System (EWS)</strong> designed specifically for cryptocurrency traders. Similar to earthquake warning systems that detect seismic activity before major tremors, our system monitors Bitcoin's price movements to identify potential local peaks and dips in real-time.</p>
+                
+                <p>Our platform combines advanced sensor networks with AI-powered signal processing to filter market noise and extract meaningful patterns that often precede significant price movements.</p>
+                
+                <div class="system-flow">
+                    <div class="flow-item">
+                        <i class="fas fa-bolt"></i>
+                        <h4>Signal Generation</h4>
+                        <p>EWS detects peaks and dips</p>
+                    </div>
+                    <div class="flow-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="flow-item">
+                        <i class="fas fa-cogs"></i>
+                        <h4>Strategy Activation</h4>
+                        <p>8 trading strategies activated</p>
+                    </div>
+                    <div class="flow-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="flow-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Trade Execution</h4>
+                        <p>Risk-managed trading</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOW IT WORKS Section -->
+        <div class="about-section">
+            <h2><i class="fas fa-cogs"></i> How Our System Works</h2>
+            
+            <div class="process-steps">
+                <!-- Step 1 -->
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Data Collection & Sensor Network</h3>
+                        <p>Our system employs a network of advanced algorithms that act as "sensors" constantly monitoring Bitcoin's market data from multiple exchanges. These sensors track:</p>
+                        <ul>
+                            <li>Real-time price movements</li>
+                            <li>Trading volume patterns</li>
+                            <li>Market sentiment indicators</li>
+                            <li>Order book dynamics</li>
+                            <li>Derivatives data (futures, funding rates)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Signal Processing & Intelligent AI Noise Filtering</h3>
+                        <p>Just as earthquake sensors filter out background noise to detect genuine tremors, our AI algorithms process raw market data to:</p>
+                        <ul>
+                            <li>Filter out random price fluctuations (market noise)</li>
+                            <li>Extract meaningful patterns and trends</li>
+                            <li>Identify statistical anomalies</li>
+                            <li>Separate signal from noise in real-time</li>
+                            <li>Calculate confidence scores for each signal</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Pattern Recognition & Feature Extraction</h3>
+                        <p>Machine learning models analyze the processed data to identify patterns that historically precede significant price movements:</p>
+                        <ul>
+                            <li>Local peak formations (overbought conditions)</li>
+                            <li>Local dip formations (oversold conditions)</li>
+                            <li>Support and resistance patterns</li>
+                            <li>Momentum shifts and trend reversals</li>
+                            <li>Multi-timeframe confluence patterns</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Trading Strategy Activation</h3>
+                        <p>Based on detected patterns, our system activates appropriate trading strategies from our suite of 8 advanced strategies:</p>
+                        <ul>
+                            <li><strong>4 Core Strategies:</strong> RECLAIM_FAILURE, DISTRIBUTION_FADE, HEDGE_FLIP, CONTINUATION</li>
+                            <li><strong>4 Advanced Strategies:</strong> MOMENTUM_BREAKDOWN, MULTI_TF_CONFLUENCE, VOLATILITY_EXPANSION, DERIVATIVES_DIVERGENCE</li>
+                            <li>Strategy selection based on market conditions and confluence scoring</li>
+                            <li>Dynamic position sizing and risk management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- METHODOLOGY Section - The Science Behind the Waves -->
+        <div class="about-section methodology-section">
+            <h2><i class="fas fa-flask"></i> Our Methodology: The Science Behind the Waves</h2>
+            
+            <div class="methodology-grid">
+                <!-- 1. Signal Denoising Technology -->
+                <div class="methodology-card">
+                    <div class="methodology-header">
+                        <div class="methodology-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <div class="methodology-title">
+                            <h3>Signal Denoising Technology</h3>
+                            <div class="efficiency-badge">98% Efficiency</div>
+                        </div>
+                    </div>
+                    <div class="methodology-content">
+                        <p>In the volatile world of Bitcoin, <strong>"noise"</strong> (random price fluctuations) often leads to false signals. Our proprietary algorithm, developed and refined since 2021, focuses on <span class="highlight">Signal Denoising</span>.</p>
+                        
+                        <div class="methodology-goal">
+                            <i class="fas fa-bullseye"></i>
+                            <span><strong>The Goal:</strong> To strip away market manipulation and short-term volatility.</span>
+                        </div>
+                        
+                        <div class="methodology-result">
+                            <i class="fas fa-chart-line"></i>
+                            <span><strong>The Result:</strong> A <span class="emphasis">98% noise reduction rate</span>, ensuring that only structural, high-confidence market movements are captured.</span>
+                        </div>
+                    </div>
+                    <div class="methodology-stats">
+                        <div class="stat">
+                            <span class="stat-value">98%</span>
+                            <span class="stat-label">Noise Reduction</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">2021</span>
+                            <span class="stat-label">Since</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. Early Warning System Architecture -->
+                <div class="methodology-card">
+                    <div class="methodology-header">
+                        <div class="methodology-icon">
+                            <i class="fas fa-satellite-dish"></i>
+                        </div>
+                        <div class="methodology-title">
+                            <h3>Early Warning System (EWS) Architecture</h3>
+                        </div>
+                    </div>
+                    <div class="methodology-content">
+                        <p>Bitcoin PeakDip operates as an <strong>Early Warning System</strong>, not a lagging indicator. Our architecture is built on three core pillars:</p>
+                        
+                        <div class="pillars-container">
+                            <div class="pillar">
+                                <div class="pillar-icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <div class="pillar-content">
+                                    <h4>Cyclical Analysis</h4>
+                                    <p>Identifying the recurring fractal patterns of Bitcoin's price action.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="pillar">
+                                <div class="pillar-icon">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+                                <div class="pillar-content">
+                                    <h4>Multi-Dimensional Filtering</h4>
+                                    <p>Cross-referencing price data with algorithmic models to validate the strength of a "Peak" or "Dip".</p>
+                                </div>
+                            </div>
+                            
+                            <div class="pillar">
+                                <div class="pillar-icon">
+                                    <i class="fas fa-microchip"></i>
+                                </div>
+                                <div class="pillar-content">
+                                    <h4>Structural Integrity</h4>
+                                    <p>Focusing exclusively on Bitcoin to ensure the highest level of model specialization.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3. Human-Verified Precision -->
+                <div class="methodology-card">
+                    <div class="methodology-header">
+                        <div class="methodology-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="methodology-title">
+                            <h3>Human-Verified Precision</h3>
+                        </div>
+                    </div>
+                    <div class="methodology-content">
+                        <p>While our backend is <strong>100% algorithmic</strong>, we believe in <span class="highlight">Total Accountability</span>.</p>
+                        
+                        <div class="process-flow">
+                            <div class="process-step">
+                                <div class="step-number">1</div>
+                                <div class="step-desc">Algorithm generates signal</div>
+                            </div>
+                            <div class="process-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">2</div>
+                                <div class="step-desc">Founder audit</div>
+                            </div>
+                            <div class="process-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">3</div>
+                                <div class="step-desc">Published to dashboard</div>
+                            </div>
+                        </div>
+                        
+                        <div class="methodology-purpose">
+                            <i class="fas fa-quote-left"></i>
+                            <p><strong>The Process:</strong> Every critical signal generated by the system undergoes a final audit by the <strong>Founder (Nguyen Duc Hai)</strong> before being published to the dashboard.</p>
+                        </div>
+                        
+                        <div class="methodology-purpose">
+                            <i class="fas fa-lightbulb"></i>
+                            <p><strong>The Purpose:</strong> This "Human-in-the-loop" approach ensures that machine precision meets expert intuition, maintaining the integrity of the <span class="emphasis">98% Confidence rating</span>.</p>
+                        </div>
+                    </div>
+                    <div class="methodology-footer">
+                        <i class="fas fa-check-circle"></i>
+                        <span>100% Algorithmic Backend + Human Verification</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TECHNOLOGY STACK Section -->
+        <div class="about-section">
+            <h2><i class="fas fa-microchip"></i> Technology Stack</h2>
+            
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI & Machine Learning</h3>
+                    <p>Neural networks for pattern recognition and anomaly detection</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Signal Processing</h3>
+                    <p>Advanced algorithms for filtering and analyzing market data</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Real-time Data</h3>
+                    <p>Live data feeds from multiple cryptocurrency exchanges</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-broadcast-tower"></i>
+                    </div>
+                    <h3>Distributed Sensors</h3>
+                    <p>Network of algorithms monitoring different market aspects</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SYSTEM TECHNICAL SPECIFICATIONS Section -->
+        <div class="about-section tech-specs-section">
+            <h2><i class="fas fa-microchip"></i> SYSTEM TECHNICAL SPECIFICATIONS</h2>
+            
+            <div class="tech-specs-badge">
+                <i class="fas fa-crown"></i>
+                <span>Core Architecture of Nguyen Duc Hai Technologies (Est. 2021)</span>
+            </div>
+            
+            <div class="specs-grid">
+                <!-- Core Engine -->
+                <div class="spec-card">
+                    <div class="spec-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h3>Core Engine</h3>
+                        <p class="spec-value">Proprietary Algorithmic</p>
+                        <p class="spec-desc">Early Warning System (EWS)</p>
+                        <div class="spec-tag">100% Proprietary</div>
+                    </div>
+                </div>
+                
+                <!-- R&D Years -->
+                <div class="spec-card">
+                    <div class="spec-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h3>Research & Development</h3>
+                        <p class="spec-value">4+ Years</p>
+                        <p class="spec-desc">Continuous Backtesting & Optimization</p>
+                        <div class="spec-tag">2021 – Present</div>
+                    </div>
+                </div>
+                
+                <!-- Denoising Efficiency -->
+                <div class="spec-card highlight-card">
+                    <div class="spec-icon">
+                        <i class="fas fa-filter"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h3>Denoising Efficiency</h3>
+                        <p class="spec-value highlight">98%</p>
+                        <p class="spec-desc">Noise Reduction Rate</p>
+                        <div class="spec-tag">Filtering market manipulation & short-term volatility</div>
+                    </div>
+                </div>
+                
+                <!-- Asset Focus -->
+                <div class="spec-card">
+                    <div class="spec-icon">
+                        <i class="fab fa-bitcoin"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h3>Asset Focus</h3>
+                        <p class="spec-value">Bitcoin (BTC) Only</p>
+                        <p class="spec-desc">Specialized deep-data analysis</p>
+                        <div class="spec-tag">Single Asset Specialization</div>
+                    </div>
+                </div>
+                
+                <!-- Analysis Logic -->
+                <div class="spec-card">
+                    <div class="spec-icon">
+                        <i class="fas fa-chart-pattern"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h3>Analysis Logic</h3>
+                        <p class="spec-value">Non-lagging fractal pattern recognition</p>
+                        <p class="spec-desc">Structural cycle tracking</p>
+                        <div class="spec-tag">Real-time Analysis</div>
+                    </div>
+                </div>
+                
+                <!-- Confidence Scoring -->
+                <div class="spec-card">
+                    <div class="spec-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h3>Confidence Scoring</h3>
+                        <p class="spec-value">Dynamic 0-100%</p>
+                        <p class="spec-desc">Signal Validation</p>
+                        <div class="spec-tag confidence-high">Current: High Confidence</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Operational Integrity -->
+            <div class="integrity-card">
+                <div class="integrity-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Operational Integrity</h3>
+                </div>
+                <div class="integrity-content">
+                    <div class="integrity-item">
+                        <i class="fas fa-cogs"></i>
+                        <span>Algorithm-driven output</span>
+                    </div>
+                    <div class="integrity-arrow">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="integrity-item">
+                        <i class="fas fa-user-check"></i>
+                        <span>Manually verified by the Founder</span>
+                    </div>
+                    <div class="integrity-arrow">
+                        <i class="fas fa-equals"></i>
+                    </div>
+                    <div class="integrity-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Final publication</span>
+                    </div>
+                </div>
+                <div class="integrity-footer">
+                    <i class="fas fa-certificate"></i>
+                    <span>Nguyen Duc Hai Technologies - Established 2021</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOUNDER Section -->
+        <div class="about-section founder-section">
+            <h2><i class="fas fa-user-tie"></i> Founder & Creator</h2>
+            
+            <div class="founder-card">
+                <div class="founder-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="founder-info">
+                    <h3>Nguyen Duc Hai</h3>
+                    <div class="founder-title">Engineer • Trader • System Builder</div>
+                    
+                    <div class="founder-bio">
+                        <p><strong>Nguyen Duc Hai</strong> – Founder & Architect of the Bitcoin PeakDip Early Warning System. Combining engineering precision with over 4 years of algorithmic research (since 2021), Hai developed this proprietary EWS to bridge the gap between complex quantitative analysis and actionable market intelligence. Every signal is the result of a specialized, emotionless system designed to decode the structural waves of the Bitcoin network.</p>
+                    </div>
+                    
+                    <div class="founder-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:contact@bitcoinpeakdip.com">contact@bitcoinpeakdip.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/nguyen-duc-hai" target="_blank" rel="noopener noreferrer">Nguyen Duc Hai</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/bitcoinpeakdip" target="_blank" rel="noopener noreferrer">@bitcoinpeakdip</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-x-twitter"></i>
+                            <a href="https://x.com/bitcoinpeakdip" target="_blank" rel="noopener noreferrer">@bitcoinpeakdip</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IMPORTANT NOTICE -->
+        <div class="about-notice">
+            <div class="notice-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="notice-content">
+                <h3>Important Distinction</h3>
+                <p><strong>Bitcoin PeakDip is NOT a financial advisor or trading signal service.</strong> Our Early Warning System is designed to detect <em>patterns</em> and provide <em>information</em> about potential market movements. Similar to how earthquake warnings inform you of seismic activity without telling you how to build your house, we provide market intelligence without giving financial advice.</p>
+                <p>All trading decisions remain the sole responsibility of the individual. Cryptocurrency markets are highly volatile and involve substantial risk of loss.</p>
+            </div>
+        </div>
+
+        <!-- MISSION STATEMENT -->
+        <div class="about-mission">
+            <h2><i class="fas fa-bullseye"></i> Our Mission</h2>
+            <p class="mission-statement">
+                To empower cryptocurrency traders with advanced, real-time market intelligence tools that provide early warnings about potential price movements, enabling more informed decision-making in the volatile crypto markets.
+            </p>
+        </div>
+
+        <!-- Back to Home & Product Links -->
+        <div class="page-links">
+            <a href="{{ '/' | relative_url }}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <a href="{{ '/product' | relative_url }}" class="product-btn">
+                <i class="fas fa-robot"></i> View Product Suite
+            </a>
+        </div>
+    </div>
+</section>

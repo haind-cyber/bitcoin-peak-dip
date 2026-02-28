@@ -1,0 +1,63 @@
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('{{ '/service-worker.js' | relative_url }}')
+            .then(function(registration) {
+                console.log('✅ Service Worker registered with scope:', registration.scope);
+                
+                registration.addEventListener('updatefound', function() {
+                    const newWorker = registration.installing;
+                    
+                    newWorker.addEventListener('statechange', function() {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            window.showUpdateNotification?.();
+                        }
+                    });
+                });
+            })
+            .catch(function(error) {
+                console.error('❌ Service Worker registration failed:', error);
+            });
+        
+        setInterval(() => {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.update();
+            });
+        }, 60 * 60 * 1000);
+    });
+}
+
+window.showUpdateNotification = function() {
+    const banner = document.createElement('div');
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+        <div class="update-content">
+            <i class="fas fa-sync-alt"></i>
+            <span>New version available!</span>
+            <button onclick="window.updateApp()" class="update-btn">Update</button>
+            <button onclick="this.closest('.update-banner').remove()" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+};
+
+window.updateApp = function() {
+    if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+            });
+        });
+    }
+    
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => {
+            registration.unregister();
+        });
+    }).then(() => {
+        window.location.reload(true);
+    });
+};
+</script>

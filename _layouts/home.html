@@ -1,0 +1,99 @@
+---
+layout: default
+status_text: ANALYSING BITCOIN WAVES
+---
+
+<!-- Logo Container -->
+<div class="logo-container">
+    <div class="logo-wave-effect"></div>
+    <div class="logo-wave-sync" id="logoWaveSync"></div>
+    
+    <div class="logo-content">
+        <h1 class="logo">
+            <span class="logo-main">₿ Bitcoin PeakDip</span>
+            <span class="tagline-seo">
+                <span class="tagline-line1">Early Warning System for Bitcoin</span>
+                <span class="tagline-line2">Structural Market Regime & Peak/Dip Detection</span>
+            </span>
+        </h1>
+        <div class="ai-badge" id="aiBadge">ANALYSING BITCOIN WAVES</div>
+    </div>
+    
+    <div class="detection-messages">
+        <div class="detection-message peak-detection" id="peakMessage">
+            🚨 Local Peak Zone Detected
+        </div>
+        <div class="detection-message dip-detection" id="dipMessage">
+            📉 Local Dip Zone Detected
+        </div>
+    </div>
+</div>
+
+<!-- Problem + Reality Block -->
+<div class="problem-container">
+    {% include problem-block.html %}
+</div>
+
+<!-- Features -->
+<div class="features">
+    {% include feature-card.html icon="satellite-dish" title="Early Warning System" desc="Advanced sensor network analyzes Bitcoin patterns similar to earthquake detection systems." %}
+    {% include feature-card.html icon="brain" title="AI Signal Processing" desc="Neural networks filter noise and extract features to identify local peaks and dips." %}
+    {% include feature-card.html icon="bell" title="Precision Alerts" desc="Accurate notifications when Bitcoin reaches peak (red) or dip (blue) zones." %}
+</div>
+
+<!-- About Preview -->
+<div id="about-preview" class="about-preview">
+    {% include about-preview.html %}
+</div>
+
+<!-- Product Preview -->
+<div id="product-preview" class="product-preview">
+    {% include product-preview.html %}
+</div>
+
+<!-- Knowledge Base -->
+<div class="learn-header">
+    <h1 class="learn-title">
+        <i class="fas fa-graduation-cap"></i>
+        <span class="bitcoin-text">Bitcoin PeakDip</span>
+        <span class="highlight">Knowledge Base</span>
+    </h1>
+    <p class="learn-subtitle">Master the art of Early Warning System trading</p>
+</div>
+
+<div class="learn-grid">
+    {% for post in site.posts limit:4 %}
+    <a href="{{ post.url | relative_url }}" class="learn-card">
+        <div class="card-icon">
+            <i class="fas fa-{{ post.icon | default: 'book' }}"></i>
+        </div>
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
+        <div class="card-meta">
+            <span><i class="fas fa-clock"></i> {{ post.reading_time }} min read</span>
+            <span><i class="fas fa-signal"></i> {{ post.level | default: 'Beginner' }}</span>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Recent Posts -->
+<div class="recent-posts">
+    <h2><i class="fas fa-newspaper"></i> Latest Market Analysis</h2>
+    <div class="posts-list">
+        {% for post in site.posts limit:3 %}
+        <div class="post-item">
+            <h4><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h4>
+            <div class="post-meta">
+                <span><i class="fas fa-calendar"></i> {{ post.date | date: "%b %d, %Y" }}</span>
+                <span><i class="fas fa-clock"></i> {{ post.reading_time }} min</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Channels -->
+<div class="channels">
+    {% include channels.html %}
+</div>

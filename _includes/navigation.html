@@ -1,0 +1,47 @@
+<nav class="navigation" id="navigation">
+    <div class="nav-container">
+        <a href="{{ '/' | relative_url }}" class="nav-logo">
+            <i class="fas fa-wave-square"></i>
+            Bitcoin PeakDip
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item">
+                <a href="{{ '/' | relative_url }}" class="nav-link">
+                    <i class="fas fa-house"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ '/about' | relative_url }}" class="nav-link">
+                    <i class="fas fa-circle-info"></i> About
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ '/product' | relative_url }}" class="nav-link">
+                    <i class="fas fa-cube"></i> Product
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ '/signals' | relative_url }}" class="nav-link">
+                    <i class="fas fa-chart-line"></i> EWS Signals
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ '/learn' | relative_url }}" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i> Learn
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ '/reading-list' | relative_url }}" class="nav-link" id="readingListLink">
+                    <i class="fas fa-bookmark"></i>
+                    Reading List
+                    <span class="reading-list-badge" id="readingListBadge">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

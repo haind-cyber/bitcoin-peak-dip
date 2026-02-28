@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.google_analytics }}');
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.version }}">
+    
+    <!-- Page Specific CSS -->
+    {% if page.layout == 'about' %}
+    <link rel="stylesheet" href="{{ '/assets/css/about.css' | relative_url }}?v={{ site.version }}">
+    {% elsif page.layout == 'product' %}
+    <link rel="stylesheet" href="{{ '/assets/css/product.css' | relative_url }}?v={{ site.version }}">
+    {% elsif page.layout == 'signals' %}
+    <link rel="stylesheet" href="{{ '/assets/css/signals.css' | relative_url }}?v={{ site.version }}">
+    <link rel="stylesheet" href="{{ '/assets/css/zoom.css' | relative_url }}?v={{ site.version }}">
+    {% elsif page.layout == 'learn' or page.layout == 'post' %}
+    <link rel="stylesheet" href="{{ '/assets/css/learn.css' | relative_url }}?v={{ site.version }}">
+    {% endif %}
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00d4ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="{{ site.title }}">
+    <meta name="application-name" content="{{ site.title }}">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="{{ '/assets/icons/icon-152x152.png' | relative_url }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ '/assets/icons/icon-152x152.png' | relative_url }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/icons/icon-192x192.png' | relative_url }}">
+    <link rel="apple-touch-icon" sizes="167x167" href="{{ '/assets/icons/icon-192x192.png' | relative_url }}">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ '/manifest.json' | relative_url }}">
+    
+    <!-- Service Worker Registration -->
+    {% include service-worker-registration.html %}
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta property="og:image" content="{{ site.url }}/assets/icons/icon-512x512.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@bitcoinpeakdip">
+    <meta name="twitter:creator" content="@bitcoinpeakdip">
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "{{ site.title }}",
+        "url": "{{ site.url }}",
+        "description": "{{ site.description }}",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{{ site.url }}/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+</head>
+<body>
+    {% include mobile-detection.html %}
+    
+    <!-- Interactive Background -->
+    <!-- <div class="interactive-background" id="interactiveBackground"></div> -->
+    
+    <!-- Sensor Alert Container -->
+    <div class="sensor-alert" id="sensorAlert"></div>
+    
+    <!-- Navigation -->
+    {% include navigation.html %}
+    
+    <!-- Sensor Network Background -->
+    {% include sensor-background.html %}
+    
+    <!-- Status Indicator -->
+    <div class="status-indicator" id="statusIndicator">
+        <div class="status-light status-peak" id="statusLight"></div>
+        <div class="status-text" id="statusText">{{ page.status_text | default: 'ANALYSING BITCOIN WAVES' }}</div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content-container">
+        {{ content }}
+        
+        <!-- Footer -->
+        {% include footer.html %}
+    </div>
+    
+    <!-- Core Scripts -->
+    <script src="{{ '/assets/js/main.js' | relative_url }}?v={{ site.version }}"></script>
+    <script src="{{ '/assets/js/shared.js' | relative_url }}?v={{ site.version }}"></script>
+    <script src="{{ '/assets/js/reading-list.js' | relative_url }}?v={{ site.version }}"></script>
+    <script src="{{ '/assets/js/notifications.js' | relative_url }}?v={{ site.version }}"></script>
+    <script src="{{ '/assets/js/update-notifier.js' | relative_url }}?v={{ site.version }}"></script>
+    
+<!-- Page Specific Scripts -->
+    {% if page.layout == 'home' %}
+    <script src="{{ '/assets/js/interactions.js' | relative_url }}?v={{ site.version }}"></script>
+    {% elsif page.layout == 'signals' %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="{{ '/assets/js/signals.js' | relative_url }}?v={{ site.version }}"></script>
+    {% elsif page.layout == 'product' %}
+    <script src="{{ '/assets/js/product.js' | relative_url }}?v={{ site.version }}"></script>
+    {% elsif page.layout == 'learn' %}
+    <script src="{{ '/assets/js/learn.js' | relative_url }}?v={{ site.version }}"></script>
+    {% elsif page.layout == 'post' %}
+    <script src="{{ '/assets/js/article.js' | relative_url }}?v={{ site.version }}"></script>
+    {% endif %}
+    
+    <!-- Active Menu Fix -->
+    <script>
+    (function() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href');
+            
+            if (href === currentPage) link.classList.add('active');
+            if (currentPage === 'index.html' && href === 'index.html') link.classList.add('active');
+            if (currentPage.includes('learn') && href.includes('learn')) link.classList.add('active');
+            if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
+            if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
+            if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
+        });
+    })();
+    </script>
+</body>
+</html>

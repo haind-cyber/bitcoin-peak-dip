@@ -1,0 +1,25 @@
+<script>
+(function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    if (isMobile) {
+        window.IS_MOBILE = true;
+        document.body.classList.add('mobile-device');
+        
+        // Disable heavy animations
+        const style = document.createElement('style');
+        style.textContent = `
+            .sensor-ring, .bitcoin-wave, .energy-particles .particle {
+                animation: none !important;
+                opacity: 0.1 !important;
+            }
+            .logo-wave-effect {
+                animation: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    } else {
+        window.IS_MOBILE = false;
+    }
+})();
+</script>
