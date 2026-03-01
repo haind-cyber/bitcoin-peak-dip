@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="canonical" href="http://localhost:4000/learn/2026/02/28/BTC_Market_Cycles.html">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HR78BDQYJJ"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HR78BDQYJJ');
+    </script>
+    
+    <meta name="app-version" content="1.12.13">
+    <script>window.APP_VERSION = '1.12.13';</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Font Awesome - CHỈ 1 LẦN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    
+    <!-- SEO -->
+    <title>Bitcoin Market Cycles Through ATH History - Bitcoin PeakDip</title>
+    <meta name="description" content="Comprehensive analysis of Bitcoin's ATH milestones across different market cycles from 2013 to 2025, with insights on halving events and institutional adoption">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json?v=1.12.13">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.13">
+    
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.13">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00d4ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bitcoin PeakDip">
+    <meta name="application-name" content="Bitcoin PeakDip">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/icon-192x192.png">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Bitcoin Market Cycles Through ATH History">
+    <meta property="og:description" content="Comprehensive analysis of Bitcoin's ATH milestones across different market cycles from 2013 to 2025, with insights on halving events and institutional adoption">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/learn/2026/02/28/BTC_Market_Cycles.html">
+    <meta property="og:image" content="http://localhost:4000/assets/icons/icon-512x512.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@bitcoinpeakdip">
+    <meta name="twitter:creator" content="@bitcoinpeakdip">
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Bitcoin PeakDip",
+        "url": "http://localhost:4000",
+        "description": "Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "http://localhost:4000/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <!-- PWA Version Check -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            const pwaVersion = localStorage.getItem('pwa_version');
+            const currentVersion = '1.12.13';
+            
+            if (pwaVersion && pwaVersion !== currentVersion) {
+                console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
+                localStorage.removeItem('pwa_version');
+            }
+        });
+    }
+    </script>
+</head>
+
+<body>
+    <script>
+(function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    if (isMobile) {
+        window.IS_MOBILE = true;
+        document.body.classList.add('mobile-device');
+        
+        // Disable heavy animations
+        const style = document.createElement('style');
+        style.textContent = `
+            .sensor-ring, .bitcoin-wave, .energy-particles .particle {
+                animation: none !important;
+                opacity: 0.1 !important;
+            }
+            .logo-wave-effect {
+                animation: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    } else {
+        window.IS_MOBILE = false;
+    }
+})();
+</script>
+    
+    <!-- Sensor Alert Container -->
+    <div class="sensor-alert" id="sensorAlert"></div>
+    
+    <!-- Navigation -->
+    <nav class="navigation" id="navigation">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <i class="fas fa-wave-square"></i>
+            Bitcoin PeakDip
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-house"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/about" class="nav-link">
+                    <i class="fas fa-circle-info"></i> About
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/product" class="nav-link">
+                    <i class="fas fa-cube"></i> Product
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/signals" class="nav-link">
+                    <i class="fas fa-chart-line"></i> EWS Signals
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/learn" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i> Learn
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/reading-list" class="nav-link" id="readingListLink">
+                    <i class="fas fa-bookmark"></i>
+                    Reading List
+                    <span class="reading-list-badge" id="readingListBadge">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+    
+    <!-- Sensor Network Background -->
+    <div class="sensor-network">
+    <div class="sensor-ring ring-1"></div>
+    <div class="sensor-ring ring-2"></div>
+    <div class="sensor-ring ring-3"></div>
+    <div class="sensor-ring ring-4"></div>
+    
+    <div class="bitcoin-waves">
+        <div class="bitcoin-wave wave-1"></div>
+        <div class="bitcoin-wave wave-2"></div>
+        <div class="bitcoin-wave wave-3"></div>
+    </div>
+    
+    <div class="energy-particles" id="energyParticles"></div>
+    
+    <div class="bitcoin-visualization">
+        <div class="bitcoin-wave"></div>
+    </div>
+</div>
+    
+    <!-- Status Indicator -->
+    <div class="status-indicator" id="statusIndicator">
+        <div class="status-light status-peak" id="statusLight"></div>
+        <div class="status-text" id="statusText">ANALYSING BITCOIN WAVES</div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content-container">
+        <div class="learn-article">
+    <div class="article-header">
+        <h1 class="article-title">Bitcoin Market Cycles Through ATH History</h1>
+        <div class="article-meta">
+            <span class="article-author"><i class="fas fa-user"></i> Bitcoin PeakDip Team</span>
+            <span class="article-date"><i class="fas fa-calendar-alt"></i> February 28, 2026</span>
+            <span class="reading-time"><i class="fas fa-clock"></i> 8 min read</span>
+            <span class="difficulty intermediate">Intermediate</span>
+        </div>
+    </div>
+    
+    <!-- Article Layout with Outline Sidebar -->
+    <div class="article-with-outline">
+        <!-- Outline Sidebar (desktop) -->
+        <aside class="article-outline" id="articleOutline">
+            <div class="outline-header">
+                <i class="fas fa-list-ul"></i>
+                <h3>Contents</h3>
+            </div>
+            <ul class="outline-list" id="outlineList">
+                <!-- JS sẽ tự động điền -->
+                <li class="loading-outline">Loading outline...</li>
+            </ul>
+        </aside>
+        
+        <!-- Nội dung chính -->
+        <div class="article-content" id="articleContent">
+            <h1 id="tóm-tắt-hành-trình-các-ath-của-bitcoin-qua-các-chu-kỳ">Tóm Tắt: Hành Trình Các ATH Của Bitcoin Qua Các Chu Kỳ</h1>
+
+<h2 id="tổng-quan">Tổng Quan</h2>
+
+<p>Bitcoin đã trải qua 4 chu kỳ tăng giá chính, mỗi chu kỳ đều thiết lập những mốc ATH (All-Time High) mới, phản ánh sự trưởng thành và thay đổi cấu trúc của thị trường tiền điện tử.</p>
+
+<div class="info-box">
+    <i class="fas fa-chart-line"></i>
+    <p><strong>Key Insight:</strong> Mỗi chu kỳ halving đều tạo ra những đỉnh cao mới với quy mô và đặc điểm khác nhau, phản ánh sự phát triển của thị trường crypto.</p>
+</div>
+
+<hr />
+
+<h2 id="các-mốc-ath-quan-trọng">Các Mốc ATH Quan Trọng</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Chu Kỳ</th>
+      <th style="text-align: left">Ngày</th>
+      <th style="text-align: left">Giá ATH</th>
+      <th style="text-align: left">Thời Gian Sau Halving</th>
+      <th style="text-align: left">Đặc Điểm Nổi Bật</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>2013</strong></td>
+      <td style="text-align: left">30/11/2013</td>
+      <td style="text-align: left"><strong>$1,127</strong></td>
+      <td style="text-align: left">368 ngày</td>
+      <td style="text-align: left">Chu kỳ đầu tiên, thu hút giới truyền thông và nhà đầu tư mạo hiểm</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>2017</strong></td>
+      <td style="text-align: left">16/12/2017</td>
+      <td style="text-align: left"><strong>$19,665</strong></td>
+      <td style="text-align: left">525 ngày</td>
+      <td style="text-align: left">Cơn sốt ICO, nhà đầu tư bán lẻ tham gia ồ ạt</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>2021</strong></td>
+      <td style="text-align: left">10/11/2021</td>
+      <td style="text-align: left"><strong>$69,000</strong></td>
+      <td style="text-align: left">549 ngày</td>
+      <td style="text-align: left">Sự tham gia của các định chế tài chính (Tesla, MicroStrategy)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>2024</strong></td>
+      <td style="text-align: left">14/03/2024</td>
+      <td style="text-align: left"><strong>$73,581</strong></td>
+      <td style="text-align: left"><em>Trước halving</em></td>
+      <td style="text-align: left"><strong>ATH đầu tiên trước halving</strong> nhờ làn sóng ETF</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>2025</strong></td>
+      <td style="text-align: left">14/08/2025</td>
+      <td style="text-align: left"><strong>$124,128</strong></td>
+      <td style="text-align: left">481 ngày</td>
+      <td style="text-align: left">Kỷ nguyên ETF, dòng vốn tổ chức, mốc 6 con số</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="phân-tích-chi-tiết-từng-chu-kỳ">Phân Tích Chi Tiết Từng Chu Kỳ</h2>
+
+<h3 id="-chu-kỳ-2013-thời-kỳ-sơ-khai">📅 Chu Kỳ 2013: Thời Kỳ Sơ Khai</h3>
+
+<div style="border-left: 4px solid #f7931a; padding-left: 20px; margin: 20px 0;">
+    <h4 style="color: #f7931a; margin-top: 0;">2013: The Genesis</h4>
+    
+    **Đặc điểm:** Thị trường còn rất nhỏ, thanh khoản thấp, chủ yếu là cộng đồng công nghệ
+    
+    **Động lực chính:**
+    - Sự quan tâm từ giới công nghệ và truyền thông
+    - Khủng hoảng Cyprus kích thích nhu cầu tài sản trú ẩn
+    - First mover advantage
+    
+    **Bài học:** Bitcoin bắt đầu được công nhận như một tài sản kỹ thuật số có giá trị
+    
+    **Sự kiện quan trọng:**
+    - Tháng 4/2013: Giá tăng từ $13 lên $220
+    - Tháng 11/2013: Đạt đỉnh $1,127
+    - Mt. Gox chiếm 70% giao dịch toàn cầu
+</div>
+
+<h3 id="-chu-kỳ-2017-cơn-sốt-ico">📅 Chu Kỳ 2017: Cơn Sốt ICO</h3>
+
+<div style="border-left: 4px solid #9c27b0; padding-left: 20px; margin: 20px 0;">
+    <h4 style="color: #9c27b0; margin-top: 0;">2017: The ICO Boom</h4>
+    
+    **Đặc điểm:** Hàng loạt ICO ra đời, nhà đầu tư bán lẻ FOMO, truyền thông đại chúng
+    
+    **Động lực chính:**
+    - Ethereum và smart contract tạo ra làn sóng ICO
+    - Tâm lý sợ bỏ lỡ (FOMO) lan rộng
+    - Các sàn giao dịch mới mọc lên như nấm
+    
+    **Bài học:** Thị trường có thể tăng trưởng nóng nhưng cũng điều chỉnh mạnh (giảm 84% từ đỉnh)
+    
+    **Sự kiện quan trọng:**
+    - Tháng 12/2017: CME Bitcoin futures ra mắt
+    - Giá tăng từ $1,000 lên $19,665
+    - Hàng trăm ICO huy động được hàng tỷ USD
+</div>
+
+<h3 id="-chu-kỳ-2021-dòng-vốn-định-chế">📅 Chu Kỳ 2021: Dòng Vốn Định Chế</h3>
+
+<div style="border-left: 4px solid #2196f3; padding-left: 20px; margin: 20px 0;">
+    <h4 style="color: #2196f3; margin-top: 0;">2021: Institutional Adoption</h4>
+    
+    **Đặc điểm:** Các công ty đại chúng bắt đầu mua Bitcoin làm tài sản dự trữ
+    
+    **Động lực chính:**
+    - Tesla mua $1.5 tỷ BTC (tháng 2/2021)
+    - MicroStrategy tích lũy hơn 100,000 BTC
+    - Square, MassMutual, và các quỹ đầu tư tham gia
+    
+    **Bài học:** Bitcoin được công nhận như "vàng kỹ thuật số" trong danh mục đầu tư định chế
+    
+    **Sự kiện quan trọng:**
+    - Tháng 4/2021: Coinbase IPO trên Nasdaq
+    - Tháng 9/2021: El Salvador chấp nhận Bitcoin làm tiền tệ hợp pháp
+    - Tháng 11/2021: Đạt đỉnh $69,000
+</div>
+
+<h3 id="-chu-kỳ-2024-2025-kỷ-nguyên-etf">📅 Chu Kỳ 2024-2025: Kỷ Nguyên ETF</h3>
+
+<div style="border-left: 4px solid #00d4ff; padding-left: 20px; margin: 20px 0;">
+    <h4 style="color: #00d4ff; margin-top: 0;">2024-2025: The ETF Era</h4>
+    
+    **Đặc điểm:** 
+    - ATH đầu tiên trong lịch sử xảy ra **TRƯỚC halving** (tháng 3/2024)
+    - Spot Bitcoin ETF được phê duyệt tại Mỹ
+    - Dòng vốn tổ chức đổ vào qua kênh ETF
+    
+    **Động lực chính:**
+    - Tháng 1/2024: SEC phê duyệt 11 Spot Bitcoin ETF
+    - BlackRock, Fidelity, Grayscale dẫn đầu dòng vốn
+    - Tổng tài sản ETF đạt $50 tỷ trong 3 tháng đầu
+    
+    **Đột phá:**
+    - Lần đầu tiên Bitcoin đạt mốc 6 con số ($124,128)
+    - Thanh khoản thị trường sâu hơn, biến động giảm
+    - Tham gia của các quỹ hưu trí và endowment
+    
+    **Sự kiện quan trọng:**
+    - 14/03/2024: ATH $73,581 (trước halving)
+    - 20/04/2024: Halving lần thứ 4
+    - 14/08/2025: ATH $124,128
+</div>
+
+<hr />
+
+<h2 id="-phân-tích-dữ-liệu-qua-các-chu-kỳ">📊 Phân Tích Dữ Liệu Qua Các Chu Kỳ</h2>
+
+<h3 id="tốc-độ-tăng-trưởng">Tốc Độ Tăng Trưởng</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Chu Kỳ</th>
+      <th style="text-align: left">Giá Trước Halving</th>
+      <th style="text-align: left">Giá ATH</th>
+      <th style="text-align: left">Tăng Trưởng</th>
+      <th style="text-align: left">Thời Gian Đạt Đỉnh</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">2013</td>
+      <td style="text-align: left">~$12</td>
+      <td style="text-align: left"><strong>$1,127</strong></td>
+      <td style="text-align: left">~9,300%</td>
+      <td style="text-align: left">368 ngày</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2017</td>
+      <td style="text-align: left">~$650</td>
+      <td style="text-align: left"><strong>$19,665</strong></td>
+      <td style="text-align: left">~2,925%</td>
+      <td style="text-align: left">525 ngày</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2021</td>
+      <td style="text-align: left">~$8,600</td>
+      <td style="text-align: left"><strong>$69,000</strong></td>
+      <td style="text-align: left">~702%</td>
+      <td style="text-align: left">549 ngày</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2025</td>
+      <td style="text-align: left">~$65,000</td>
+      <td style="text-align: left"><strong>$124,128</strong></td>
+      <td style="text-align: left">~91%</td>
+      <td style="text-align: left">481 ngày</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="tip-box">
+    <i class="fas fa-lightbulb"></i>
+    <p><strong>Quan sát quan trọng:</strong> Tốc độ tăng trưởng giảm dần qua các chu kỳ (từ 9,300% xuống 91%) nhưng giá trị tuyệt đối tăng - dấu hiệu của thị trường trưởng thành và quy mô lớn hơn.</p>
+</div>
+
+<h3 id="thời-gian-từ-halving-đến-ath">Thời Gian Từ Halving Đến ATH</h3>
+
+<h3 id="full-section-hoàn-chỉnh">Full section hoàn chỉnh:</h3>
+
+<!-- Chart được comment để tránh lỗi YAML -->
+<!-- 
+```mermaid
+xychart-beta
+    title "Xu Hướng Thời Gian Lập Đỉnh Sau Halving (ngày)"
+    x-axis ["2013", "2017", "2021", "2025"]
+    y-axis "Số ngày" 300 -->
+<p class="chart-container">600
+    bar [368, 525, 549, 481]</p>
+
+<h2 id="-so-sánh-quy-mô-thị-trường-qua-các-chu-kỳ">📊 So Sánh Quy Mô Thị Trường Qua Các Chu Kỳ</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Chu Kỳ</th>
+      <th style="text-align: left">Vốn Hóa Đỉnh</th>
+      <th style="text-align: left">Khối Lượng Giao Dịch 24h</th>
+      <th style="text-align: left">Số Lượng Ví</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">2013</td>
+      <td style="text-align: left">$14 tỷ</td>
+      <td style="text-align: left">$0.5 tỷ</td>
+      <td style="text-align: left">~1 triệu</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2017</td>
+      <td style="text-align: left">$330 tỷ</td>
+      <td style="text-align: left">$25 tỷ</td>
+      <td style="text-align: left">~25 triệu</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2021</td>
+      <td style="text-align: left">$1,300 tỷ</td>
+      <td style="text-align: left">$80 tỷ</td>
+      <td style="text-align: left">~100 triệu</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2025</td>
+      <td style="text-align: left">$2,500 tỷ</td>
+      <td style="text-align: left">$150 tỷ</td>
+      <td style="text-align: left">~300 triệu</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-bài-học-từ-các-chu-kỳ">📈 Bài Học Từ Các Chu Kỳ</h2>
+
+<h3 id="1-diminishing-returns-lợi-nhuận-giảm-dần">1. <strong>Diminishing Returns (Lợi Nhuận Giảm Dần)</strong></h3>
+
+<p>Mỗi chu kỳ sau có mức tăng trưởng thấp hơn chu kỳ trước nhưng vẫn tạo đỉnh cao mới. Đây là đặc điểm tự nhiên khi thị trường trưởng thành.</p>
+
+<h3 id="2-thời-gian-đỉnh-điểm-thay-đổi">2. <strong>Thời Gian Đỉnh Điểm Thay Đổi</strong></h3>
+
+<ul>
+  <li>Trung bình 480-550 ngày sau halving cho các chu kỳ 2013-2021</li>
+  <li>Chu kỳ 2024 có đỉnh <strong>TRƯỚC halving</strong> do ETF - một hiện tượng chưa từng có</li>
+  <li>Chu kỳ 2025: 481 ngày sau halving</li>
+</ul>
+
+<h3 id="3-yếu-tố-kích-hoạt-mới-qua-mỗi-chu-kỳ">3. <strong>Yếu Tố Kích Hoạt Mới Qua Mỗi Chu Kỳ</strong></h3>
+
+<div class="timeline" style="margin: 30px 0;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+        <div style="text-align: center; flex:1;"><strong>2013</strong><br />📱 First Wave</div>
+        <div style="text-align: center; flex:1;"><strong>2017</strong><br />💰 ICO Boom</div>
+        <div style="text-align: center; flex:1;"><strong>2021</strong><br />🏢 Institutional</div>
+        <div style="text-align: center; flex:1;"><strong>2024-25</strong><br />📊 ETF Era</div>
+    </div>
+    <div style="height: 4px; background: linear-gradient(90deg, #f7931a, #9c27b0, #2196f3, #00d4ff); border-radius: 2px;"></div>
+</div>
+
+<p>Mỗi chu kỳ có một “câu chuyện” riêng:</p>
+
+<ul>
+  <li><strong>2013</strong>: Bitcoin như tiền tệ thay thế và phương tiện đầu tư mới</li>
+  <li><strong>2017</strong>: ICO và smart contract mở ra kỷ nguyên ứng dụng</li>
+  <li><strong>2021</strong>: Institutional adoption - các công ty đại chúng mua Bitcoin</li>
+  <li><strong>2024-2025</strong>: ETF và dòng vốn tổ chức - cánh cửa cho tài chính truyền thống</li>
+</ul>
+
+<h3 id="4-độ-sâu-điều-chỉnh-sau-đỉnh">4. <strong>Độ Sâu Điều Chỉnh Sau Đỉnh</strong></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Chu Kỳ</th>
+      <th style="text-align: left">Điều Chỉnh Từ Đỉnh</th>
+      <th style="text-align: left">Thời Gian Hồi Phục</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">2013-2015</td>
+      <td style="text-align: left">-87%</td>
+      <td style="text-align: left">~3 năm</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2017-2019</td>
+      <td style="text-align: left">-84%</td>
+      <td style="text-align: left">~2.5 năm</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2021-2023</td>
+      <td style="text-align: left">-77%</td>
+      <td style="text-align: left">~2 năm</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2025-?</td>
+      <td style="text-align: left">-?</td>
+      <td style="text-align: left">Dự báo ngắn hơn</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-dự-báo-cho-chu-kỳ-tiếp-theo-2028">🔮 Dự Báo Cho Chu Kỳ Tiếp Theo (2028+)</h2>
+
+<p>Dựa trên phân tích lịch sử và các yếu tố hiện tại, có thể kỳ vọng:</p>
+
+<h3 id="-mục-tiêu-giá">🎯 <strong>Mục tiêu giá:</strong></h3>
+
+<ul>
+  <li><strong>Kịch bản cơ sở:</strong> $200,000 - $250,000</li>
+  <li><strong>Kịch bản lạc quan:</strong> $300,000 - $400,000</li>
+  <li><strong>Kịch bản thận trọng:</strong> $150,000 - $180,000</li>
+</ul>
+
+<h3 id="-thời-gian">⏰ <strong>Thời gian:</strong></h3>
+
+<ul>
+  <li><strong>Halving tiếp theo:</strong> Tháng 4/2028</li>
+  <li><strong>Đỉnh dự kiến:</strong> 12-18 tháng sau halving (cuối 2029)</li>
+  <li>ATH có thể đến sớm hơn nếu dòng ETF tiếp tục mạnh</li>
+</ul>
+
+<h3 id="-động-lực-tăng-trưởng">🚀 <strong>Động lực tăng trưởng:</strong></h3>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+    <div style="background: rgba(0,212,255,0.1); padding: 20px; border-radius: 10px;">
+        <h4 style="color: #00d4ff; margin-top: 0;">Ngắn hạn (2026-2027)</h4>
+        <ul>
+            <li>FED cắt giảm lãi suất</li>
+            <li>ETF inflows tiếp tục</li>
+            <li>Corporate adoption mở rộng</li>
+        </ul>
+    </div>
+    <div style="background: rgba(247,147,26,0.1); padding: 20px; border-radius: 10px;">
+        <h4 style="color: #f7931a; margin-top: 0;">Dài hạn (2028+)</h4>
+        <ul>
+            <li>CBDC và chấp nhận của chính phủ</li>
+            <li>Bitcoin là tài sản dự trữ quốc gia</li>
+            <li>Layer 2 và scaling solutions</li>
+        </ul>
+    </div>
+</div>
+
+<h3 id="-các-yếu-tố-cần-theo-dõi">📊 <strong>Các yếu tố cần theo dõi:</strong></h3>
+
+<ul>
+  <li><strong>Dòng vốn ETF:</strong> Tiếp tục tăng hay chững lại?</li>
+  <li><strong>Chính sách tiền tệ:</strong> Lãi suất và thanh khoản toàn cầu</li>
+  <li><strong>Quy định pháp lý:</strong> Khung pháp lý rõ ràng hơn</li>
+  <li><strong>Adoption:</strong> Số lượng công ty và quốc gia nắm giữ BTC</li>
+</ul>
+
+<div class="warning-box">
+    <i class="fas fa-exclamation-triangle"></i>
+    <p><strong>Lưu ý quan trọng:</strong> Quá khứ không đảm bảo tương lai. Thị trường crypto luôn tiềm ẩn rủi ro và biến động mạnh. Các dự báo chỉ mang tính tham khảo, không phải lời khuyên đầu tư.</p>
+</div>
+
+<hr />
+
+<h2 id="-tài-liệu-tham-khảo">📚 Tài Liệu Tham Khảo</h2>
+
+<ul>
+  <li><a href="/learn/2026/02/15/ews-basics.html">EWS Fundamentals: Cách Hệ Thống Hoạt Động</a></li>
+  <li><a href="/learn/2026/02/16/strategy-guide.html">8 Chiến Lược Giao Dịch</a></li>
+  <li><a href="/learn/2026/02/16/btc-signal-trigger-dataset.html">BTC Signal Trigger Dataset</a></li>
+  <li><a href="/learn/2026/02/18/risk-management.html">Quản Lý Rủi Ro</a></li>
+</ul>
+
+<hr />
+
+<h2 id="-kết-luận">💡 Kết Luận</h2>
+
+<p>Bitcoin đã chứng minh khả năng phục hồi và tăng trưởng qua 4 chu kỳ lớn. Mỗi chu kỳ mang những đặc điểm riêng nhưng đều tuân theo quy luật: halving → tăng giá → điều chỉnh → tích lũy → chu kỳ mới.</p>
+
+<p>Sự xuất hiện của ETF trong chu kỳ 2024-2025 đã thay đổi cấu trúc thị trường, tạo ra đỉnh trước halving lần đầu tiên trong lịch sử - một tín hiệu cho thấy Bitcoin đang bước vào giai đoạn trưởng thành hơn, với sự tham gia của dòng vốn tổ chức và khung pháp lý rõ ràng hơn.</p>
+
+<div class="success-box" style="background: rgba(76,175,80,0.1); border-left: 4px solid #4CAF50; padding: 20px; margin: 30px 0; border-radius: 0 10px 10px 0;">
+    <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 1.5em; margin-right: 15px;"></i>
+    <strong>Key Takeaway:</strong> Hiểu về chu kỳ thị trường giúp nhà đầu tư có chiến lược phù hợp, tránh FOMO tại đỉnh và hoảng loạn tại đáy.
+</div>
+
+<hr />
+
+<h2 id="-kết-nối-với-chúng-tôi">📱 Kết Nối Với Chúng Tôi</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Platform</th>
+      <th style="text-align: left">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>Telegram</strong></td>
+      <td style="text-align: left"><a href="https://t.me/bitcoinpeakdip">@bitcoinpeakdip</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Discord</strong></td>
+      <td style="text-align: left"><a href="https://discord.gg/58akuxegwK">Bitcoin PeakDip Community</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>X (Twitter)</strong></td>
+      <td style="text-align: left"><a href="https://x.com/bitcoinpeakdip">@bitcoinpeakdip</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Email</strong></td>
+      <td style="text-align: left">contact@bitcoinpeakdip.com</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p><em>Bài viết thuộc series “Bitcoin Market Analysis” của Bitcoin PeakDip</em>
+<em>Cập nhật lần cuối: Tháng 3, 2026</em></p>
+
+<div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <p style="color: rgba(255,255,255,0.5); font-size: 0.9em;">
+        © 2021 - 2026 Nguyen Duc Hai Technologies<br />
+        A Specialized Bitcoin Quantitative Research &amp; Early Warning System Provider<br />
+        All rights reserved
+    </p>
+</div>
+
+        </div>
+    </div>
+    
+    <!-- Outline cho mobile (dropdown) -->
+    <div class="mobile-outline">
+        <button class="mobile-outline-toggle" id="mobileOutlineToggle">
+            <i class="fas fa-list-ul"></i>
+            <span>Table of Contents</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="mobile-outline-menu" id="mobileOutlineMenu">
+            <ul class="outline-list" id="mobileOutlineList">
+                <li class="loading-outline">Loading outline...</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Article Footer -->
+    <div class="article-footer-nav">
+        <a href="/learn" class="back-to-learn">
+            <i class="fas fa-arrow-left"></i> Back to Knowledge Base
+        </a>
+        <button class="share-article" onclick="shareArticle()">
+            <i class="fas fa-share-alt"></i> Share
+        </button>
+    </div>
+</div>
+
+<!-- JavaScript cho Outline -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    generateOutline();
+    setupMobileOutline();
+});
+
+function generateOutline() {
+    const content = document.getElementById('articleContent');
+    if (!content) return;
+    
+    // Tìm tất cả headings h2 và h3
+    const headings = content.querySelectorAll('h2, h3');
+    if (headings.length === 0) return;
+    
+    const outlineList = document.getElementById('outlineList');
+    const mobileOutlineList = document.getElementById('mobileOutlineList');
+    
+    if (!outlineList && !mobileOutlineList) return;
+    
+    let outlineHTML = '';
+    let mobileOutlineHTML = '';
+    
+    headings.forEach((heading, index) => {
+        // Thêm id cho heading nếu chưa có
+        if (!heading.id) {
+            heading.id = `section-${index}`;
+        }
+        
+        const level = heading.tagName === 'H2' ? 'h2' : 'h3';
+        const text = heading.textContent;
+        const indent = level === 'h3' ? 'style="margin-left: 20px;"' : '';
+        
+        outlineHTML += `
+            <li class="outline-item outline-${level}" ${indent}>
+                <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}')">
+                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle"></i>'} 
+                    ${text}
+                </a>
+            </li>
+        `;
+        
+        mobileOutlineHTML += `
+            <li class="outline-item outline-${level}" ${indent}>
+                <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}'); closeMobileOutline();">
+                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle"></i>'} 
+                    ${text}
+                </a>
+            </li>
+        `;
+    });
+    
+    if (outlineList) outlineList.innerHTML = outlineHTML;
+    if (mobileOutlineList) mobileOutlineList.innerHTML = mobileOutlineHTML;
+    
+    // Highlight active section khi scroll
+    setupActiveSectionHighlight(headings);
+}
+
+function smoothScroll(event, id) {
+    event.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function setupMobileOutline() {
+    const toggle = document.getElementById('mobileOutlineToggle');
+    const menu = document.getElementById('mobileOutlineMenu');
+    
+    if (!toggle || !menu) return;
+    
+    toggle.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        const icon = this.querySelector('.fa-chevron-down');
+        if (icon) {
+            icon.style.transform = menu.classList.contains('active') ? 'rotate(180deg)' : '';
+        }
+    });
+    
+    // Đóng menu khi click ra ngoài
+    document.addEventListener('click', function(event) {
+        if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+            menu.classList.remove('active');
+            const icon = toggle.querySelector('.fa-chevron-down');
+            if (icon) {
+                icon.style.transform = '';
+            }
+        }
+    });
+}
+
+function closeMobileOutline() {
+    const menu = document.getElementById('mobileOutlineMenu');
+    const toggle = document.getElementById('mobileOutlineToggle');
+    if (menu) menu.classList.remove('active');
+    if (toggle) {
+        const icon = toggle.querySelector('.fa-chevron-down');
+        if (icon) icon.style.transform = '';
+    }
+}
+
+function setupActiveSectionHighlight(headings) {
+    if (!headings || headings.length === 0) return;
+    
+    window.addEventListener('scroll', function() {
+        let current = '';
+        const scrollPosition = window.scrollY + 100;
+        
+        for (let i = headings.length - 1; i >= 0; i--) {
+            const heading = headings[i];
+            const headingTop = heading.offsetTop;
+            
+            if (scrollPosition >= headingTop) {
+                current = heading.id;
+                break;
+            }
+        }
+        
+        // Update active class in outline
+        document.querySelectorAll('.outline-item a').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+
+function shareArticle() {
+    const title = document.querySelector('.article-title')?.textContent || 'Bitcoin PeakDip Article';
+    const url = window.location.href;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: 'Check out this article from Bitcoin PeakDip',
+            url: url
+        });
+    } else {
+        navigator.clipboard.writeText(url);
+        alert('Link copied to clipboard!');
+    }
+}
+</script>
+
+<!-- CSS cho Outline và Article -->
+<style>
+.article-with-outline {
+    display: flex;
+    gap: 30px;
+    position: relative;
+}
+
+/* Article Header */
+.article-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.article-title {
+    font-size: 2.5em;
+    background: linear-gradient(to right, var(--wave-trough), var(--wave-peak));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 15px;
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: var(--text-glow);
+    font-size: 0.95em;
+}
+
+.article-meta i {
+    color: var(--wave-trough);
+    margin-right: 5px;
+}
+
+/* Outline Sidebar */
+.article-outline {
+    flex: 0 0 280px;
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.outline-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.outline-header i {
+    color: var(--wave-trough);
+    font-size: 1.2em;
+}
+
+.outline-header h3 {
+    color: white;
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.outline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.outline-item {
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+.outline-item a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    line-height: 1.4;
+}
+
+.outline-item a i {
+    color: var(--wave-trough);
+    font-size: 0.6em;
+}
+
+.outline-item a:hover {
+    background: rgba(0,212,255,0.1);
+    color: white;
+    padding-left: 15px;
+}
+
+.outline-item a.active {
+    background: rgba(0,212,255,0.2);
+    color: white;
+    border-left: 3px solid var(--wave-trough);
+}
+
+.outline-h3 a {
+    font-size: 0.9em;
+    opacity: 0.9;
+    padding-left: 25px;
+}
+
+/* Article Content */
+.article-content {
+    flex: 1;
+    min-width: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.article-content h2 {
+    color: white;
+    font-size: 2em;
+    margin: 40px 0 20px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+.article-content h3 {
+    color: var(--wave-trough);
+    font-size: 1.5em;
+    margin: 30px 0 15px;
+}
+
+.article-content p {
+    color: var(--text-glow);
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.article-content ul, .article-content ol {
+    color: var(--text-glow);
+    line-height: 1.8;
+    margin: 20px 0;
+    padding-left: 30px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+}
+
+.article-content strong {
+    color: var(--wave-trough);
+}
+
+.article-content blockquote {
+    background: rgba(0, 212, 255, 0.1);
+    border-left: 4px solid var(--wave-trough);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+}
+
+/* Mobile Outline */
+.mobile-outline {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.mobile-outline-toggle {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--wave-trough);
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.mobile-outline-toggle i:last-child {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.mobile-outline-menu {
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 5px;
+}
+
+.mobile-outline-menu.active {
+    display: block;
+}
+
+/* Article Footer */
+.article-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.back-to-learn {
+    color: var(--wave-trough);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-to-learn:hover {
+    gap: 12px;
+    color: white;
+}
+
+.share-article {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.share-article:hover {
+    background: rgba(0,212,255,0.2);
+    border-color: var(--wave-trough);
+}
+
+.loading-outline {
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 10px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .article-outline {
+        flex-basis: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .article-with-outline {
+        flex-direction: column;
+    }
+    
+    .article-outline {
+        display: none;
+    }
+    
+    .mobile-outline {
+        display: block;
+    }
+    
+    .article-title {
+        font-size: 2em;
+    }
+    
+    .article-content {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .article-content {
+        padding: 20px;
+    }
+    
+    .article-content h2 {
+        font-size: 1.6em;
+    }
+    
+    .article-content h3 {
+        font-size: 1.3em;
+    }
+    
+    .article-footer-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+</style>
+        
+        <!-- Footer -->
+        <footer id="pageFooter">
+    <div class="footer-brand">
+        <div class="brand-name">Bitcoin PeakDip</div>
+        <div class="brand-tagline">A Specialized Bitcoin Quantitative Research & Early Warning System Provider</div>
+    </div>            
+    <p>© 2021 - 2026 Nguyen Duc Hai Technologies. All rights reserved</p>
+    <!-- THÊM: Build Info -->
+    <!-- Footer Build Info -->
+<div class="footer-build-info">
+    <div class="build-version">
+        <i class="fas fa-code-branch"></i>
+        <span>v1.12.13</span>
+    </div>
+    <div class="build-date">
+        <i class="fas fa-calendar-alt"></i>
+        <span>2026-03-01</span>
+    </div>
+    
+    <div class="build-time">
+        <i class="fas fa-clock"></i>
+        <span>85377.0</span>
+    </div>
+    
+</div>    
+    <div class="footer-contact">
+        <div class="footer-contact-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:contact@bitcoinpeakdip.com">contact@bitcoinpeakdip.com</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-linkedin"></i>
+            <a href="https://www.linkedin.com/in/hai-nguyen-duc-1a6b5563" target="_blank">LinkedIn</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-telegram"></i>
+            <a href="https://t.me/bitcoinpeakdip" target="_blank">Telegram</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-x-twitter"></i>
+            <a href="https://x.com/bitcoinpeakdip" target="_blank">X.com</a>
+        </div>
+    </div>
+    
+    <div class="footer-links">
+        <a href="/" class="footer-link">Home</a>
+        <a href="/about" class="footer-link">About</a>
+        <a href="/product" class="footer-link">Product</a>
+        <a href="/signals" class="footer-link">EWS Signals</a>
+        <a href="/learn" class="footer-link">Learn</a>
+        <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+        <a href="/terms-of-service" class="footer-link">Terms of Service</a>
+        <a href="/risk-disclosure" class="footer-link">Risk Disclosure</a>
+    </div>
+</footer>
+    </div>
+    
+    <!-- ========== SCRIPTS LOADING - TỐI ƯU ========== -->
+    
+    <!-- 1. SHARED UTILITIES (không block, load sớm) -->
+    <script src="/assets/js/shared.js?v=1.12.13" defer></script>
+    <script src="/assets/js/reading-list.js?v=1.12.13" defer></script>
+
+    <!-- 2. NOTIFICATION SYSTEM (ưu tiên cao) -->
+    <script src="/assets/js/notifications.js?v=1.12.13" defer></script>
+
+    <!-- 3. MAIN APP LOGIC -->
+    <script src="/assets/js/main.js?v=1.12.13" defer></script>
+
+    <!-- 4. UPDATE NOTIFIER (chạy sau) -->
+    <script src="/assets/js/update-notifier.js?v=1.12.13" defer></script>
+
+    <!-- 5. PAGE SPECIFIC SCRIPTS (chạy cuối) -->
+    
+
+    
+
+    
+
+    
+
+    <!-- 6. SERVICE WORKER REGISTRATION (chạy cuối cùng) -->
+    <script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('✅ Service Worker registered with scope:', registration.scope);
+                
+                registration.addEventListener('updatefound', function() {
+                    const newWorker = registration.installing;
+                    
+                    newWorker.addEventListener('statechange', function() {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            window.showUpdateNotification?.();
+                        }
+                    });
+                });
+            })
+            .catch(function(error) {
+                console.error('❌ Service Worker registration failed:', error);
+            });
+        
+        setInterval(() => {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.update();
+            });
+        }, 60 * 60 * 1000);
+    });
+}
+
+window.showUpdateNotification = function() {
+    const banner = document.createElement('div');
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+        <div class="update-content">
+            <i class="fas fa-sync-alt"></i>
+            <span>New version available!</span>
+            <button onclick="window.updateApp()" class="update-btn">Update</button>
+            <button onclick="this.closest('.update-banner').remove()" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+};
+
+window.updateApp = function() {
+    if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+            });
+        });
+    }
+    
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => {
+            registration.unregister();
+        });
+    }).then(() => {
+        window.location.reload(true);
+    });
+};
+</script>
+
+    <!-- 7. ACTIVE MENU FIX (chạy sau cùng) -->
+    <script defer>
+    (function() {
+        // Đợi DOM load xong
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                
+                if (href === currentPage) link.classList.add('active');
+                if (currentPage === 'index.html' && href === 'index.html') link.classList.add('active');
+                if (currentPage.includes('learn') && href.includes('learn')) link.classList.add('active');
+                if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
+                if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
+                if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
+                if (currentPage.includes('reading-list') && href.includes('reading-list')) link.classList.add('active');
+            });
+            
+            console.log('✅ Menu active state updated for:', currentPage);
+        });
+    })();
+    </script>
+</body>
+</html>
