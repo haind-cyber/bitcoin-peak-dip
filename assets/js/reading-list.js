@@ -1,10 +1,20 @@
-// reading-list.js - Version 1.0.1
+// reading-list.js - Version 1.1.0
 // Quản lý reading list tập trung cho Bitcoin PeakDip
-// Đã đồng bộ toast với notifications.js
+// Tối ưu hóa chạy song song, đồng bộ với notification system
 
 const READING_LIST = {
     KEY: 'reading_list',
-    VERSION: '1.0.1',
+    VERSION: '1.1.0',
+    
+    // Cache DOM elements để tránh query nhiều lần
+    _elements: {
+        badge: null,
+        mobileBadge: null,
+        readingListLink: null
+    },
+    
+    // Debounce timers
+    _debounceTimers: {},
     
     /**
      * Lấy tất cả bài viết trong reading list
@@ -20,19 +30,27 @@ const READING_LIST = {
     },
     
     /**
-     * Lưu danh sách bài viết
+     * Lưu danh sách bài viết (không block)
      * @param {Array} list - Danh sách bài viết
      * @returns {Array} Danh sách đã lưu
      */
     save(list) {
         try {
             localStorage.setItem(this.KEY, JSON.stringify(list));
-            this.updateBadges();
-            // Dispatch event để các tab khác cập nhật
-            window.dispatchEvent(new StorageEvent('storage', {
-                key: this.KEY,
-                newValue: JSON.stringify(list)
-            }));
+            
+            // Debounce update badges để tránh gọi nhiều lần
+            this.debounce('updateBadges', () => {
+                this.updateBadges();
+            }, 100);
+            
+            // Dispatch event bất đồng bộ
+            setTimeout(() => {
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: this.KEY,
+                    newValue: JSON.stringify(list)
+                }));
+            }, 0);
+            
             return list;
         } catch (e) {
             console.error('Error saving reading list:', e);
@@ -41,13 +59,24 @@ const READING_LIST = {
     },
     
     /**
-     * Thêm bài viết vào reading list
+     * Debounce function
+     * @param {string} key - Key để identify timer
+     * @param {Function} fn - Hàm cần debounce
+     * @param {number} delay - Thời gian delay (ms)
+     */
+    debounce(key, fn, delay = 100) {
+        if (this._debounceTimers[key]) {
+            clearTimeout(this._debounceTimers[key]);
+        }
+        this._debounceTimers[key] = setTimeout(() => {
+            fn();
+            delete this._debounceTimers[key];
+        }, delay);
+    },
+    
+    /**
+     * Thêm bài viết vào reading list (không block)
      * @param {Object} article - Thông tin bài viết
-     * @param {string} article.id - ID bài viết
-     * @param {string} article.title - Tiêu đề
-     * @param {string} article.slug - Slug (tùy chọn)
-     * @param {string} article.url - URL đầy đủ (tùy chọn)
-     * @param {string} article.date - Ngày xuất bản (tùy chọn)
      * @returns {boolean} true nếu thêm thành công
      */
     add(article) {
@@ -57,30 +86,142 @@ const READING_LIST = {
             return false;
         }
         
-        const list = this.getAll();
-        const exists = list.some(item => item.id === article.id);
+        // Sử dụng requestIdleCallback nếu có
+        const scheduleTask = (task) => {
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(task, { timeout: 1000 });
+            } else {
+                setTimeout(task, 0);
+            }
+        };
         
-        if (!exists) {
-            const newItem = {
-                id: article.id,
-                title: article.title,
-                url: article.url || this.generateUrl(article),
-                savedAt: new Date().toISOString(),
-                publishedDate: article.date || this.extractDateFromUrl(article.url) || new Date().toISOString().split('T')[0]
-            };
+        scheduleTask(() => {
+            const list = this.getAll();
+            const exists = list.some(item => item.id === article.id);
             
-            list.push(newItem);
-            this.save(list);
-            this.showToast('✅ Added to reading list', 'success');
-            
-            // Gửi message đến service worker nếu có
-            this.notifyServiceWorker('ADDED', newItem);
-            
-            return true;
+            if (!exists) {
+                const newItem = {
+                    id: article.id,
+                    title: article.title,
+                    url: article.url || this.generateUrl(article),
+                    savedAt: new Date().toISOString(),
+                    publishedDate: article.date || this.extractDateFromUrl(article.url) || new Date().toISOString().split('T')[0]
+                };
+                
+                list.push(newItem);
+                this.save(list);
+                this.showToast('✅ Added to reading list', 'success');
+                
+                // Gửi message đến service worker (có retry)
+                this.notifyServiceWorkerWithRetry('ADDED', newItem);
+            } else {
+                this.showToast('📚 Already in reading list', 'info');
+            }
+        });
+        
+        return true;
+    },
+    
+    /**
+     * Gửi message đến service worker với retry
+     * @param {string} action - Hành động
+     * @param {Object} data - Dữ liệu
+     * @param {number} retryCount - Số lần retry
+     */
+    notifyServiceWorkerWithRetry(action, data, retryCount = 0) {
+        const maxRetries = 3;
+        
+        if (!('serviceWorker' in navigator)) return;
+        
+        const sendMessage = () => {
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'READING_LIST_UPDATE',
+                    action: action,
+                    data: data,
+                    timestamp: Date.now()
+                });
+            } else if (retryCount < maxRetries) {
+                // Retry sau 500ms * retryCount
+                setTimeout(() => {
+                    this.notifyServiceWorkerWithRetry(action, data, retryCount + 1);
+                }, 500 * (retryCount + 1));
+            }
+        };
+        
+        // Đợi service worker ready nếu cần
+        if (navigator.serviceWorker.ready) {
+            navigator.serviceWorker.ready.then(sendMessage);
         } else {
-            this.showToast('📚 Already in reading list', 'info');
-            return false;
+            sendMessage();
         }
+    },
+    
+    /**
+     * Xóa bài viết khỏi reading list
+     * @param {string} id - ID bài viết
+     * @returns {Array} Danh sách sau khi xóa
+     */
+    remove(id) {
+        if (!id) return this.getAll();
+        
+        // Sử dụng setTimeout để không block
+        setTimeout(() => {
+            let list = this.getAll();
+            const removedItem = list.find(item => item.id === id);
+            list = list.filter(item => item.id !== id);
+            
+            if (list.length !== this.getAll().length) {
+                this.save(list);
+                this.showToast('🗑️ Removed from reading list', 'info');
+                
+                if (removedItem) {
+                    this.notifyServiceWorkerWithRetry('REMOVED', removedItem);
+                }
+            }
+        }, 0);
+        
+        return this.getAll();
+    },
+    
+    /**
+     * Xóa nhiều bài viết cùng lúc
+     * @param {Array<string>} ids - Mảng ID cần xóa
+     * @returns {Array} Danh sách sau khi xóa
+     */
+    removeMultiple(ids) {
+        if (!ids || !ids.length) return this.getAll();
+        
+        setTimeout(() => {
+            let list = this.getAll();
+            const originalLength = list.length;
+            list = list.filter(item => !ids.includes(item.id));
+            
+            if (list.length !== originalLength) {
+                this.save(list);
+                this.showToast(`🗑️ Removed ${originalLength - list.length} items`, 'info');
+            }
+        }, 0);
+        
+        return this.getAll();
+    },
+    
+    /**
+     * Xóa tất cả bài viết
+     * @returns {Array} Danh sách rỗng
+     */
+    clearAll() {
+        if (this.getCount() === 0) return [];
+        
+        // Dùng setTimeout để không block confirm dialog
+        setTimeout(() => {
+            if (confirm('Are you sure you want to clear your entire reading list?')) {
+                this.save([]);
+                this.showToast('🗑️ Reading list cleared', 'info');
+            }
+        }, 0);
+        
+        return [];
     },
     
     /**
@@ -100,68 +241,9 @@ const READING_LIST = {
      * @returns {string|null} Ngày hoặc null
      */
     extractDateFromUrl(url) {
-        // Có thể implement nếu cần
-        return null;
-    },
-    
-    /**
-     * Xóa bài viết khỏi reading list
-     * @param {string} id - ID bài viết
-     * @returns {Array} Danh sách sau khi xóa
-     */
-    remove(id) {
-        if (!id) return this.getAll();
-        
-        let list = this.getAll();
-        const removedItem = list.find(item => item.id === id);
-        list = list.filter(item => item.id !== id);
-        
-        if (list.length !== this.getAll().length) {
-            this.save(list);
-            this.showToast('🗑️ Removed from reading list', 'info');
-            
-            // Gửi message đến service worker
-            if (removedItem) {
-                this.notifyServiceWorker('REMOVED', removedItem);
-            }
-        }
-        
-        return list;
-    },
-    
-    /**
-     * Xóa nhiều bài viết cùng lúc
-     * @param {Array<string>} ids - Mảng ID cần xóa
-     * @returns {Array} Danh sách sau khi xóa
-     */
-    removeMultiple(ids) {
-        if (!ids || !ids.length) return this.getAll();
-        
-        let list = this.getAll();
-        const originalLength = list.length;
-        list = list.filter(item => !ids.includes(item.id));
-        
-        if (list.length !== originalLength) {
-            this.save(list);
-            this.showToast(`🗑️ Removed ${originalLength - list.length} items`, 'info');
-        }
-        
-        return list;
-    },
-    
-    /**
-     * Xóa tất cả bài viết
-     * @returns {Array} Danh sách rỗng
-     */
-    clearAll() {
-        if (this.getCount() === 0) return [];
-        
-        if (confirm('Are you sure you want to clear your entire reading list?')) {
-            this.save([]);
-            this.showToast('🗑️ Reading list cleared', 'info');
-        }
-        
-        return [];
+        if (!url) return null;
+        const match = url.match(/\/(\d{4})\/(\d{2})\/(\d{2})\//);
+        return match ? `${match[1]}-${match[2]}-${match[3]}` : null;
     },
     
     /**
@@ -240,14 +322,15 @@ const READING_LIST = {
         try {
             const data = JSON.parse(jsonString);
             if (data.items && Array.isArray(data.items)) {
-                // Merge với danh sách hiện tại, tránh trùng lặp
-                const currentList = this.getAll();
-                const newIds = new Set(data.items.map(item => item.id));
-                const filteredCurrent = currentList.filter(item => !newIds.has(item.id));
-                const mergedList = [...filteredCurrent, ...data.items];
-                
-                this.save(mergedList);
-                this.showToast(`📥 Imported ${data.items.length} items`, 'success');
+                setTimeout(() => {
+                    const currentList = this.getAll();
+                    const newIds = new Set(data.items.map(item => item.id));
+                    const filteredCurrent = currentList.filter(item => !newIds.has(item.id));
+                    const mergedList = [...filteredCurrent, ...data.items];
+                    
+                    this.save(mergedList);
+                    this.showToast(`📥 Imported ${data.items.length} items`, 'success');
+                }, 0);
                 return true;
             }
         } catch (e) {
@@ -257,35 +340,58 @@ const READING_LIST = {
     },
     
     /**
-     * Cập nhật tất cả các badge
+     * Cập nhật tất cả các badge (tối ưu)
      */
     updateBadges() {
         const count = this.getCount();
         
-        // 1. Desktop menu badge
-        const badge = document.getElementById('readingListBadge');
-        if (badge) {
-            badge.textContent = count;
-            badge.style.display = count > 0 ? 'inline' : 'none';
+        // Sử dụng requestAnimationFrame để tránh layout thrashing
+        requestAnimationFrame(() => {
+            // Cache DOM elements
+            if (!this._elements.badge) {
+                this._elements.badge = document.getElementById('readingListBadge');
+            }
+            
+            // 1. Desktop menu badge
+            if (this._elements.badge) {
+                this._elements.badge.textContent = count;
+                this._elements.badge.style.display = count > 0 ? 'inline' : 'none';
+            }
+            
+            // 2. Mobile icon badge
+            this.updateMobileBadge(count);
+            
+            // 3. PWA app badge
+            this.updatePWABadge(count);
+            
+            // 4. Update document title
+            this.updateDocumentTitle(count);
+        });
+    },
+    
+    /**
+     * Cập nhật mobile badge
+     * @param {number} count - Số lượng
+     */
+    updateMobileBadge(count) {
+        if (!this._elements.readingListLink) {
+            this._elements.readingListLink = document.getElementById('readingListLink');
         }
         
-        // 2. Mobile icon badge (PWA)
-        let mobileBadge = document.getElementById('readingListBadgeMobile');
-        if (!mobileBadge) {
-            // Tạo mobile badge nếu chưa có
-            mobileBadge = this.createMobileBadge();
+        if (!this._elements.readingListLink) return;
+        
+        if (!this._elements.mobileBadge) {
+            this._elements.mobileBadge = document.getElementById('readingListBadgeMobile');
         }
         
-        if (mobileBadge) {
-            mobileBadge.textContent = count > 9 ? '9+' : count;
-            mobileBadge.style.display = count > 0 ? 'flex' : 'none';
+        if (!this._elements.mobileBadge) {
+            this._elements.mobileBadge = this.createMobileBadge();
         }
         
-        // 3. PWA app badge (nếu trình duyệt hỗ trợ)
-        this.updatePWABadge(count);
-        
-        // 4. Update document title nếu cần
-        this.updateDocumentTitle(count);
+        if (this._elements.mobileBadge) {
+            this._elements.mobileBadge.textContent = count > 9 ? '9+' : count;
+            this._elements.mobileBadge.style.display = count > 0 ? 'flex' : 'none';
+        }
     },
     
     /**
@@ -293,56 +399,54 @@ const READING_LIST = {
      * @returns {HTMLElement|null} Badge element
      */
     createMobileBadge() {
-        const readingListLink = document.getElementById('readingListLink');
+        const readingListLink = this._elements.readingListLink || document.getElementById('readingListLink');
         if (!readingListLink) return null;
         
-        // Kiểm tra đã có badge chưa
         let mobileBadge = document.getElementById('readingListBadgeMobile');
         if (mobileBadge) return mobileBadge;
         
-        // Tạo badge mới
         mobileBadge = document.createElement('span');
         mobileBadge.id = 'readingListBadgeMobile';
         mobileBadge.className = 'reading-list-badge-mobile';
         mobileBadge.style.display = 'none';
         
-        // Thêm style cho badge mobile
-        const style = document.createElement('style');
-        style.textContent = `
-            .reading-list-badge-mobile {
-                position: absolute;
-                top: -5px;
-                right: -5px;
-                background: linear-gradient(135deg, #ff6b00, #ff3d00);
-                color: white;
-                font-size: 0.6em;
-                font-weight: bold;
-                min-width: 18px;
-                height: 18px;
-                border-radius: 9px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0 4px;
-                border: 2px solid #050811;
-                box-shadow: 0 0 15px rgba(255, 107, 0, 0.7);
-                z-index: 1000;
-                animation: pulse 2s infinite;
-            }
-            
-            @keyframes pulse {
-                0%, 100% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-            }
-        `;
-        
+        // Thêm style một lần duy nhất
         if (!document.querySelector('style[data-reading-list]')) {
+            const style = document.createElement('style');
             style.setAttribute('data-reading-list', 'true');
+            style.textContent = `
+                .reading-list-badge-mobile {
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    background: linear-gradient(135deg, #ff6b00, #ff3d00);
+                    color: white;
+                    font-size: 0.6em;
+                    font-weight: bold;
+                    min-width: 18px;
+                    height: 18px;
+                    border-radius: 9px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 4px;
+                    border: 2px solid #050811;
+                    box-shadow: 0 0 15px rgba(255, 107, 0, 0.7);
+                    z-index: 1000;
+                    animation: pulse 2s infinite;
+                }
+                
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                }
+            `;
             document.head.appendChild(style);
         }
         
         readingListLink.style.position = 'relative';
         readingListLink.appendChild(mobileBadge);
+        this._elements.mobileBadge = mobileBadge;
         
         return mobileBadge;
     },
@@ -365,11 +469,7 @@ const READING_LIST = {
      */
     updateDocumentTitle(count) {
         const originalTitle = document.title.replace(/^\(\d+\)\s*/, '');
-        if (count > 0) {
-            document.title = `(${count}) ${originalTitle}`;
-        } else {
-            document.title = originalTitle;
-        }
+        document.title = count > 0 ? `(${count}) ${originalTitle}` : originalTitle;
     },
     
     /**
@@ -378,14 +478,7 @@ const READING_LIST = {
      * @param {Object} data - Dữ liệu
      */
     notifyServiceWorker(action, data) {
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage({
-                type: 'READING_LIST_UPDATE',
-                action: action,
-                data: data,
-                timestamp: Date.now()
-            });
-        }
+        this.notifyServiceWorkerWithRetry(action, data);
     },
     
     /**
@@ -400,109 +493,64 @@ const READING_LIST = {
             return;
         }
         
-        // Fallback nếu không có notifications.js
-        // Xóa toast cũ
-        const oldToast = document.querySelector('.notification-toast, .toast-notification');
-        if (oldToast) oldToast.remove();
-        
-        const toast = document.createElement('div');
-        // Dùng class .notification-toast để đồng bộ với notifications.js
-        toast.className = `notification-toast toast-${type}`;
-        
-        const icons = {
-            success: 'fa-check-circle',
-            info: 'fa-info-circle',
-            warning: 'fa-exclamation-triangle',
-            error: 'fa-times-circle'
-        };
-        
-        toast.innerHTML = `
-            <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
-            <span>${message}</span>
-        `;
-        
-        document.body.appendChild(toast);
-        
-        // Animation hiện
-        setTimeout(() => toast.classList.add('show'), 10);
-        
-        // Tự động ẩn sau 3 giây
+        // Fallback không block
         setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-        
-        // Thêm keyframes nếu chưa có
-        if (!document.querySelector('#toast-keyframes-fallback')) {
-            const keyframes = document.createElement('style');
-            keyframes.id = 'toast-keyframes-fallback';
-            keyframes.textContent = `
-                @keyframes slideUp {
-                    from {
-                        transform: translate(-50%, 100%);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translate(-50%, 0);
-                        opacity: 1;
-                    }
-                }
-                @keyframes fadeOut {
-                    to {
-                        opacity: 0;
-                        transform: translate(-50%, 20px);
-                    }
-                }
-                .notification-toast {
-                    position: fixed;
-                    bottom: 30px;
-                    left: 50%;
-                    transform: translateX(-50%) translateY(100%);
-                    background: linear-gradient(135deg, #00d4ff, #0088cc);
-                    color: white;
-                    padding: 12px 25px;
-                    border-radius: 50px;
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    z-index: 10000;
-                    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-                    border: 2px solid white;
-                    transition: transform 0.3s ease;
-                    max-width: 90%;
-                    font-weight: 500;
-                    pointer-events: none;
-                }
-                .notification-toast.show {
-                    transform: translateX(-50%) translateY(0);
-                }
-                .notification-toast.toast-success {
-                    background: linear-gradient(135deg, #4CAF50, #45a049);
-                }
-                .notification-toast.toast-warning {
-                    background: linear-gradient(135deg, #ff9800, #f57c00);
-                }
-                .notification-toast.toast-error {
-                    background: linear-gradient(135deg, #f44336, #d32f2f);
-                }
-                .notification-toast.fade-out {
-                    animation: fadeOut 0.3s ease forwards;
-                }
+            const oldToast = document.querySelector('.notification-toast, .toast-notification');
+            if (oldToast) oldToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = `notification-toast toast-${type}`;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle',
+                error: 'fa-times-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
+                <span>${message}</span>
             `;
-            document.head.appendChild(keyframes);
-        }
+            
+            document.body.appendChild(toast);
+            
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }, 0);
     }
 };
 
 // ========== AUTO INITIALIZATION ==========
-(function() {
-    // Khởi tạo khi DOM ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            READING_LIST.updateBadges();
-        });
-    } else {
+(function initializeReadingList() {
+    console.log('📚 Reading List Manager v' + READING_LIST.VERSION + ' initializing...');
+    
+    // Khởi tạo không block
+    const initTask = () => {
         READING_LIST.updateBadges();
+        
+        // Cache DOM elements
+        READING_LIST._elements.readingListLink = document.getElementById('readingListLink');
+        READING_LIST._elements.badge = document.getElementById('readingListBadge');
+        
+        console.log('📚 Reading List Manager initialized');
+    };
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTask);
+    } else {
+        // Sử dụng requestIdleCallback nếu có
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(initTask, { timeout: 1000 });
+        } else {
+            setTimeout(initTask, 0);
+        }
     }
     
     // Lắng nghe sự thay đổi từ tab khác
@@ -513,7 +561,7 @@ const READING_LIST = {
             // Reload trang reading list nếu đang mở
             if (window.location.pathname.includes('reading-list.html')) {
                 if (typeof window.loadReadingList === 'function') {
-                    window.loadReadingList();
+                    setTimeout(() => window.loadReadingList(), 0);
                 }
             }
         }
@@ -533,8 +581,6 @@ const READING_LIST = {
             }
         });
     }
-    
-    console.log('📚 Reading List Manager v' + READING_LIST.VERSION + ' initialized');
 })();
 
 // Export global

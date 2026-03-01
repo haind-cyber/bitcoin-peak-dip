@@ -1,7 +1,7 @@
 {
   "name": "Bitcoin PeakDip",
   "short_name": "Bitcoin PeakDip",
-  "description": "{{ site.description }}",
+  "description": "Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered",
   "start_url": "/?v={{ site.version }}&utm_source=pwa",
   "display": "standalone",
   "background_color": "#050811",
