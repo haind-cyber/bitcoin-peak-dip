@@ -1,18 +1,18 @@
-// version.js - Auto-generated build 1.12.11
+// version.js - Auto-generated build 1.12.12
 const VERSION = {
     major: 1,
     minor: 12,
-    patch: 11
+    patch: 12
 };
 
 window.APP_VERSION = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 // Build info
 window.BUILD_INFO = {
-    version: '1.12.11',
+    version: '1.12.12',
     date: '2026-03-01',
-    time: '14:24:44',
-    timestamp: 1772349884899
+    time: '16:30:43',
+    timestamp: 1772357443156
 };
 
 console.log('🏗️  Build:', window.BUILD_INFO);
@@ -43,7 +43,7 @@ function showInstallPrompt() {
     installPrompt.innerHTML = `
         <div class="install-content">
             <i class="fas fa-download"></i>
-            <span>Install Bitcoin PeakDip v${window.APP_VERSION} for offline access!</span>
+            <span>Install Bitcoin PeakDip for offline access!</span>
             <button onclick="installPWA()" class="install-btn">Install</button>
             <button onclick="dismissInstall(this)" class="dismiss-btn">
                 <i class="fas fa-times"></i>

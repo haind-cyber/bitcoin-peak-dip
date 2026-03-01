@@ -4,13 +4,13 @@
 
 const NOTIFICATION_CONFIG = {
     version: '2.5.0',
-    checkInterval: 60 * 60 * 1000, // 60 phút (đồng bộ với comment)
+    checkInterval: 3 * 60 * 1000, // 60 phút (đồng bộ với comment)
     articleMetadataPath: '/learn/articles.json',
     notifiedKey: 'peakdip_notified_articles_v2',
     enabledKey: 'peakdip_notifications_enabled',
     cacheKey: 'peakdip_articles_cache',
     cacheTimeKey: 'peakdip_articles_cache_time',
-    cacheDuration: 24 * 60 * 60 * 1000, // 24 giờ
+    cacheDuration: 1 * 60 * 60 * 1000, // 24 giờ
     newArticleDays: 7,
     permissionPromptedKey: 'peakdip_permission_prompted' // Theo dõi đã hỏi quyền chưa
 };

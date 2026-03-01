@@ -8,7 +8,8 @@
     "serve": "node build.js && bundle exec jekyll serve",
     "dev": "node build.js && bundle exec jekyll serve --livereload",
     "prebuild": "bundle install",
-    "postbuild": "echo '✅ Build successful!'"
+    "postbuild": "echo '✅ Build successful!'",
+    "generate-articles": "ruby generate_local.rb"
   },
   "keywords": ["bitcoin", "trading", "ews", "cryptocurrency"],
   "author": "Nguyen Duc Hai",

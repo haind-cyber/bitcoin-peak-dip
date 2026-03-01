@@ -1,6 +1,6 @@
 {
-  "name": "Bitcoin PeakDip v1.12.11",
-  "short_name": "PeakDip v1.12.11",
+  "name": "Bitcoin PeakDip",
+  "short_name": "Bitcoin PeakDip",
   "description": "{{ site.description }}",
   "start_url": "/?v={{ site.version }}&utm_source=pwa",
   "display": "standalone",

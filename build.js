@@ -72,20 +72,8 @@ swContent = swContent.replace(
     `CACHE_NAME = 'bitcoin-peakdip-v${newVersion}'`
 );
 
-// 7. Update manifest.json với version mới
-console.log('📝 Updating manifest.json...');
-const manifestPath = path.join(__dirname, 'manifest.json');
-if (fs.existsSync(manifestPath)) {
-    let manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-    
-    // Cập nhật name với version mới
-    manifest.name = `Bitcoin PeakDip v${newVersion}`;
-    manifest.short_name = `PeakDip v${newVersion}`;
-    
-    // Ghi lại file
-    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
-    console.log('✅ manifest.json updated');
-}
+// BỎ QUA CẬP NHẬT manifest.json - Không cần nữa
+console.log('📝 Skipping manifest.json update (keeping static name)');
 
 // Update DYNAMIC_CACHE
 swContent = swContent.replace(
@@ -151,7 +139,7 @@ function showInstallPrompt() {
     installPrompt.innerHTML = \`
         <div class="install-content">
             <i class="fas fa-download"></i>
-            <span>Install Bitcoin PeakDip v\${window.APP_VERSION} for offline access!</span>
+            <span>Install Bitcoin PeakDip for offline access!</span>
             <button onclick="installPWA()" class="install-btn">Install</button>
             <button onclick="dismissInstall(this)" class="dismiss-btn">
                 <i class="fas fa-times"></i>
