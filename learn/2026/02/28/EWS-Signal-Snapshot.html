@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="canonical" href="http://localhost:4000/learn/2026/02/15/ews-basics.html">
+    <link rel="canonical" href="http://localhost:4000/learn/2026/02/28/EWS-Signal-Snapshot.html">
     
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HR78BDQYJJ"></script>
@@ -11,31 +11,32 @@
     gtag('js', new Date());
     gtag('config', 'G-HR78BDQYJJ');
     </script>
-    <!-- Trong phần head của default.html, thêm dòng này -->
-    <meta name="app-version" content="1.12.12">
-    <script>
-    window.APP_VERSION = '1.12.12';
-    </script>    
+    
+    <meta name="app-version" content="1.12.13">
+    <script>window.APP_VERSION = '1.12.13';</script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO -->
-    <title>EWS Fundamentals: How Our Early Warning System Works - Bitcoin PeakDip</title>
-    <meta name="description" content="Learn how our Early Warning System detects Bitcoin peaks and dips using advanced AI algorithms.">
+    <!-- Font Awesome - CHỈ 1 LẦN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     
-    <link rel="manifest" href="/manifest.json?v=1.12.12">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SEO -->
+    <title>EWS Signal Snapshot - February 28, 2026 - Bitcoin PeakDip</title>
+    <meta name="description" content="Local Top Signal detection with whale advance analysis">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json?v=1.12.13">
     
     <!-- Main CSS -->
-    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.12">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.13">
     
-    <!-- Page Specific CSS - LOAD TẤT CẢ CHO MỌI TRANG -->
-    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.12">
-    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.12">
-    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.12">
-    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.12">
-    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.12">
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.13">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#00d4ff">
@@ -50,80 +51,12 @@
     <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-192x192.png">
     <link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/icon-192x192.png">
-
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    
-    <!-- Service Worker Registration -->
-    <script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(function(registration) {
-                console.log('✅ Service Worker registered with scope:', registration.scope);
-                
-                registration.addEventListener('updatefound', function() {
-                    const newWorker = registration.installing;
-                    
-                    newWorker.addEventListener('statechange', function() {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            window.showUpdateNotification?.();
-                        }
-                    });
-                });
-            })
-            .catch(function(error) {
-                console.error('❌ Service Worker registration failed:', error);
-            });
-        
-        setInterval(() => {
-            navigator.serviceWorker.ready.then(registration => {
-                registration.update();
-            });
-        }, 60 * 60 * 1000);
-    });
-}
-
-window.showUpdateNotification = function() {
-    const banner = document.createElement('div');
-    banner.className = 'update-banner';
-    banner.innerHTML = `
-        <div class="update-content">
-            <i class="fas fa-sync-alt"></i>
-            <span>New version available!</span>
-            <button onclick="window.updateApp()" class="update-btn">Update</button>
-            <button onclick="this.closest('.update-banner').remove()" class="close-btn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
-    document.body.appendChild(banner);
-};
-
-window.updateApp = function() {
-    if ('caches' in window) {
-        caches.keys().then(cacheNames => {
-            cacheNames.forEach(cacheName => {
-                caches.delete(cacheName);
-            });
-        });
-    }
-    
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        registrations.forEach(registration => {
-            registration.unregister();
-        });
-    }).then(() => {
-        window.location.reload(true);
-    });
-};
-</script>
     
     <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="EWS Fundamentals: How Our Early Warning System Works">
-    <meta property="og:description" content="Learn how our Early Warning System detects Bitcoin peaks and dips using advanced AI algorithms.">
+    <meta property="og:title" content="EWS Signal Snapshot - February 28, 2026">
+    <meta property="og:description" content="Local Top Signal detection with whale advance analysis">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://localhost:4000/learn/2026/02/15/ews-basics.html">
+    <meta property="og:url" content="http://localhost:4000/learn/2026/02/28/EWS-Signal-Snapshot.html">
     <meta property="og:image" content="http://localhost:4000/assets/icons/icon-512x512.png">
     
     <meta name="twitter:card" content="summary_large_image">
@@ -145,13 +78,13 @@ window.updateApp = function() {
         }
     }
     </script>
-    <!-- Thêm script kiểm tra PWA version -->
+    
+    <!-- PWA Version Check -->
     <script>
-    // Kiểm tra PWA version khi cài đặt
     if ('serviceWorker' in navigator) {
         window.addEventListener('beforeinstallprompt', (e) => {
             const pwaVersion = localStorage.getItem('pwa_version');
-            const currentVersion = '1.12.12';
+            const currentVersion = '1.12.13';
             
             if (pwaVersion && pwaVersion !== currentVersion) {
                 console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
@@ -159,8 +92,9 @@ window.updateApp = function() {
             }
         });
     }
-    </script>    
+    </script>
 </head>
+
 <body>
     <script>
 (function() {
@@ -187,9 +121,6 @@ window.updateApp = function() {
     }
 })();
 </script>
-    
-    <!-- Interactive Background (commented out by default) -->
-    <!-- <div class="interactive-background" id="interactiveBackground"></div> -->
     
     <!-- Sensor Alert Container -->
     <div class="sensor-alert" id="sensorAlert"></div>
@@ -273,12 +204,12 @@ window.updateApp = function() {
     <div class="content-container">
         <div class="learn-article">
     <div class="article-header">
-        <h1 class="article-title">EWS Fundamentals: How Our Early Warning System Works</h1>
+        <h1 class="article-title">EWS Signal Snapshot - February 28, 2026</h1>
         <div class="article-meta">
             <span class="article-author"><i class="fas fa-user"></i> Bitcoin PeakDip Team</span>
-            <span class="article-date"><i class="fas fa-calendar-alt"></i> February 15, 2026</span>
-            <span class="reading-time"><i class="fas fa-clock"></i> 10 min read</span>
-            <span class="difficulty beginner">Beginner</span>
+            <span class="article-date"><i class="fas fa-calendar-alt"></i> February 28, 2026</span>
+            <span class="reading-time"><i class="fas fa-clock"></i> 5 min read</span>
+            <span class="difficulty intermediate">Intermediate</span>
         </div>
     </div>
     
@@ -298,38 +229,345 @@ window.updateApp = function() {
         
         <!-- Nội dung chính -->
         <div class="article-content" id="articleContent">
-            <h2 id="what-is-an-early-warning-system">What is an Early Warning System?</h2>
+            <h1 id="ews-signal-snapshot---february-28-2026">EWS Signal Snapshot - February 28, 2026</h1>
+<h2 id="local-top-signal--whale-advance">Local Top Signal · Whale Advance</h2>
 
-<p>Similar to earthquake detection systems that sense seismic activity before major tremors, Bitcoin PeakDip’s Early Warning System (EWS) monitors market data to identify potential local peaks and dips before they occur.</p>
+<hr />
 
-<div class="info-box">
-    <i class="fas fa-lightbulb"></i>
-    <p><strong>Key Concept:</strong> The EWS doesn't predict the future - it detects patterns that historically precede significant price movements.</p>
-</div>
+<h2 id="-signal-information">📋 SIGNAL INFORMATION</h2>
 
-<h2 id="the-4-layer-architecture">The 4-Layer Architecture</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Signal Type</strong></td>
+      <td>Local Top Snapshot</td>
+    </tr>
+    <tr>
+      <td><strong>Source</strong></td>
+      <td>Whale Advance 🔔</td>
+    </tr>
+    <tr>
+      <td><strong>Snapshot Date</strong></td>
+      <td>28/02/2026 (VN time)</td>
+    </tr>
+    <tr>
+      <td><strong>Time</strong></td>
+      <td>01:18 UTC+7</td>
+    </tr>
+    <tr>
+      <td><strong>Valid Until</strong></td>
+      <td>2026-03-01 01:18 UTC+7</td>
+    </tr>
+  </tbody>
+</table>
 
-<h3 id="layer-1-sensor-network">Layer 1: Sensor Network</h3>
-<p>Multiple algorithms act as sensors monitoring:</p>
+<hr />
 
+<h2 id="-signal-alert">🔔 SIGNAL ALERT</h2>
+<p>@everyone • Whale Advance 🔔</p>
+
+<p>🔥 BTC price volatility signal activated [1️⃣] — valid for 7 days.
+Wait for confirmation signal [2️⃣].</p>
+
+<p>⚠️ Peak area is active — signal valid for 7 days.</p>
+
+<p>text</p>
+
+<hr />
+
+<h2 id="-stop-loss--take-profits">🎯 STOP LOSS &amp; TAKE PROFITS</h2>
+
+<h3 id="stop-loss">Stop Loss</h3>
+<p>$65,991.90</p>
+
+<p>text</p>
+
+<h3 id="take-profit-levels">Take Profit Levels</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Level</th>
+      <th>Price</th>
+      <th>Return</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>TP1</strong></td>
+      <td>$62,757.00</td>
+      <td>1.5%</td>
+    </tr>
+    <tr>
+      <td><strong>TP2</strong></td>
+      <td>$62,110.00</td>
+      <td>2.0%</td>
+    </tr>
+    <tr>
+      <td><strong>TP3</strong></td>
+      <td>$60,816.00</td>
+      <td>3.0%</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-trade-statistics">📊 TRADE STATISTICS</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Risk per Trade</strong></td>
+      <td>2.0%</td>
+    </tr>
+    <tr>
+      <td><strong>SL Distance</strong></td>
+      <td>2.000%</td>
+    </tr>
+    <tr>
+      <td><strong>TP Distance</strong></td>
+      <td>3.000%</td>
+    </tr>
+    <tr>
+      <td><strong>Risk/Reward Ratio</strong></td>
+      <td>1:1.50</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="️-all-strategy-analysis">⚙️ ALL STRATEGY ANALYSIS</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Strategy</th>
+      <th>Price</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Reclaim Failure</strong></td>
+      <td>$64,697.90</td>
+      <td>✅ ACTIVE</td>
+    </tr>
+    <tr>
+      <td><strong>Distribution Fade</strong></td>
+      <td>$64,697.90</td>
+      <td>✅ ACTIVE</td>
+    </tr>
+    <tr>
+      <td><strong>Hedge Flip</strong></td>
+      <td>N/A</td>
+      <td>❌ INACTIVE</td>
+    </tr>
+    <tr>
+      <td><strong>Continuation</strong></td>
+      <td>N/A</td>
+      <td>❌ INACTIVE</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-trading-recommendation">📈 TRADING RECOMMENDATION</h2>
+<p>╔══════════════════════════════════════╗
+║ IMMEDIATE ENTRY ║
+╚══════════════════════════════════════╝</p>
+
+<p>text</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Risk Level</strong></td>
+      <td>MEDIUM TO HIGH</td>
+    </tr>
+    <tr>
+      <td><strong>Confidence</strong></td>
+      <td>MEDIUM</td>
+    </tr>
+    <tr>
+      <td><strong>Position Size</strong></td>
+      <td>SMALL</td>
+    </tr>
+    <tr>
+      <td><strong>Urgency</strong></td>
+      <td>HIGH</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="️-trading-parameters">⚙️ TRADING PARAMETERS</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Order Type</strong></td>
+      <td>LIMIT</td>
+    </tr>
+    <tr>
+      <td><strong>Time in Force</strong></td>
+      <td>GTC</td>
+    </tr>
+    <tr>
+      <td><strong>Slippage Buffer</strong></td>
+      <td>0.05%</td>
+    </tr>
+    <tr>
+      <td><strong>Entry Price</strong></td>
+      <td>$64,697.90</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-execution-instructions">📋 EXECUTION INSTRUCTIONS</h2>
+<p>┌─────────────────────────────────────┐
+│ STEP-BY-STEP EXECUTION GUIDE │
+└─────────────────────────────────────┘</p>
+
+<p>text</p>
+
+<ol>
+  <li><strong>Place a LIMIT order</strong> at <strong>$64,697.90</strong></li>
+  <li><strong>Set Stop Loss</strong> at <strong>$65,991.90</strong></li>
+  <li><strong>Set Take Profit levels:</strong>
+    <ul>
+      <li>TP1: $62,757.00 (1.5%)</li>
+      <li>TP2: $62,110.00 (2.0%)</li>
+      <li>TP3: $60,816.00 (3.0%)</li>
+    </ul>
+  </li>
+  <li><strong>Maximum risk:</strong> 2.0% of account</li>
+  <li><strong>Monitor trade</strong> and adjust if needed</li>
+</ol>
+
+<hr />
+
+<h2 id="ℹ️-additional-information">ℹ️ ADDITIONAL INFORMATION</h2>
+
+<h3 id="active-strategies">Active Strategies</h3>
 <ul>
-  <li>Real-time price movements from multiple exchanges</li>
-  <li>Trading volume patterns and anomalies</li>
-  <li>Order book dynamics and liquidity</li>
-  <li>Derivatives data (futures, funding rates, open interest)</li>
+  <li>✅ Reclaim Failure</li>
+  <li>✅ Distribution Fade</li>
+  <li>❌ Hedge Flip</li>
+  <li>❌ Continuation</li>
 </ul>
 
-<h3 id="layer-2-ai-noise-filtering">Layer 2: AI Noise Filtering</h3>
-<p>Just as earthquake sensors filter out background noise, our AI algorithms:</p>
+<h3 id="system-status">System Status</h3>
+<p>Local peak monitor: ACTIVE
+Strategy: Limit entry @ $64,697.90
+Stop loss: $65,991.90
+Peak area: ACTIVATED</p>
 
+<p>text</p>
+
+<h3 id="important-notes">Important Notes</h3>
 <ul>
-  <li>Remove random price fluctuations (market noise)</li>
-  <li>Extract meaningful patterns</li>
-  <li>Identify statistical anomalies</li>
-  <li>Calculate confidence scores</li>
+  <li>Signal snapshot based on 28/02/2026 data</li>
+  <li>All levels referenced to VN time (UTC+7)</li>
+  <li>Wait for confirmation signal [2️⃣] but urgency is high</li>
+  <li>Peak area activated with 7-day validity</li>
 </ul>
 
-<p>[Continue with full content…]</p>
+<hr />
+
+<h2 id="️-disclaimer">⚠️ DISCLAIMER</h2>
+<p>EARLY WARNING SYSTEM ADVISORY
+─────────────────────────────
+Our system uses advanced sensors and AI algorithms to analyze
+Bitcoin patterns. This is not financial advice.</p>
+
+<p>Cryptocurrency trading involves substantial risk.
+Pattern detection is based on technical analysis and does
+not guarantee future results.</p>
+
+<p>text</p>
+
+<hr />
+
+<h2 id="-connect-with-us">📱 CONNECT WITH US</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Platform</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Telegram</strong></td>
+      <td><a href="https://t.me/bitcoinpeakdip">@bitcoinpeakdip</a></td>
+    </tr>
+    <tr>
+      <td><strong>Discord</strong></td>
+      <td><a href="https://discord.gg/58akuxegwK">Bitcoin PeakDip Community</a></td>
+    </tr>
+    <tr>
+      <td><strong>X (Twitter)</strong></td>
+      <td><a href="https://x.com/bitcoinpeakdip">@bitcoinpeakdip</a></td>
+    </tr>
+    <tr>
+      <td><strong>Email</strong></td>
+      <td>contact@bitcoinpeakdip.com</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+<p>© 2021 - 2026 Nguyen Duc Hai Technologies
+A Specialized Bitcoin Quantitative Research &amp; Early Warning System Provider
+All rights reserved</p>
+
+<p>text</p>
+
+<hr />
+
+<h2 id="-file-information">📌 FILE INFORMATION</h2>
+
+<ul>
+  <li><strong>Filename:</strong> <code class="language-plaintext highlighter-rouge">Feb-28-2026-ESW-signal-real-sample.md</code></li>
+  <li><strong>Created:</strong> February 28, 2026</li>
+  <li><strong>Format:</strong> Markdown</li>
+  <li><strong>Version:</strong> 1.0</li>
+</ul>
+
+<hr />
+
+<p><em>End of Signal Snapshot</em></p>
 
         </div>
     </div>
@@ -831,7 +1069,7 @@ function shareArticle() {
 <div class="footer-build-info">
     <div class="build-version">
         <i class="fas fa-code-branch"></i>
-        <span>v1.12.12</span>
+        <span>v1.12.13</span>
     </div>
     <div class="build-date">
         <i class="fas fa-calendar-alt"></i>
@@ -840,7 +1078,7 @@ function shareArticle() {
     
     <div class="build-time">
         <i class="fas fa-clock"></i>
-        <span>59443.0</span>
+        <span>85377.0</span>
     </div>
     
 </div>    
@@ -876,50 +1114,119 @@ function shareArticle() {
 </footer>
     </div>
     
-    <!-- Core Scripts -->
-    <script src="/assets/js/main.js?v=1.12.12"></script>
-    <script src="/assets/js/shared.js?v=1.12.12"></script>
-    <script src="/assets/js/reading-list.js?v=1.12.12"></script>
-    <script src="/assets/js/notifications.js?v=1.12.12"></script>
-    <script src="/assets/js/update-notifier.js?v=1.12.12"></script>
+    <!-- ========== SCRIPTS LOADING - TỐI ƯU ========== -->
     
-    <!-- Page Specific Scripts -->
-    
-    
-    
-    
-    
-    
+    <!-- 1. SHARED UTILITIES (không block, load sớm) -->
+    <script src="/assets/js/shared.js?v=1.12.13" defer></script>
+    <script src="/assets/js/reading-list.js?v=1.12.13" defer></script>
+
+    <!-- 2. NOTIFICATION SYSTEM (ưu tiên cao) -->
+    <script src="/assets/js/notifications.js?v=1.12.13" defer></script>
+
+    <!-- 3. MAIN APP LOGIC -->
+    <script src="/assets/js/main.js?v=1.12.13" defer></script>
+
+    <!-- 4. UPDATE NOTIFIER (chạy sau) -->
+    <script src="/assets/js/update-notifier.js?v=1.12.13" defer></script>
+
+    <!-- 5. PAGE SPECIFIC SCRIPTS (chạy cuối) -->
     
 
     
-    <!-- Active Menu Fix -->
+
+    
+
+    
+
+    <!-- 6. SERVICE WORKER REGISTRATION (chạy cuối cùng) -->
     <script>
-    (function() {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const navLinks = document.querySelectorAll('.nav-link');
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('✅ Service Worker registered with scope:', registration.scope);
+                
+                registration.addEventListener('updatefound', function() {
+                    const newWorker = registration.installing;
+                    
+                    newWorker.addEventListener('statechange', function() {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            window.showUpdateNotification?.();
+                        }
+                    });
+                });
+            })
+            .catch(function(error) {
+                console.error('❌ Service Worker registration failed:', error);
+            });
         
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            const href = link.getAttribute('href');
+        setInterval(() => {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.update();
+            });
+        }, 60 * 60 * 1000);
+    });
+}
+
+window.showUpdateNotification = function() {
+    const banner = document.createElement('div');
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+        <div class="update-content">
+            <i class="fas fa-sync-alt"></i>
+            <span>New version available!</span>
+            <button onclick="window.updateApp()" class="update-btn">Update</button>
+            <button onclick="this.closest('.update-banner').remove()" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+};
+
+window.updateApp = function() {
+    if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+            });
+        });
+    }
+    
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => {
+            registration.unregister();
+        });
+    }).then(() => {
+        window.location.reload(true);
+    });
+};
+</script>
+
+    <!-- 7. ACTIVE MENU FIX (chạy sau cùng) -->
+    <script defer>
+    (function() {
+        // Đợi DOM load xong
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
             
-            if (href === currentPage) link.classList.add('active');
-            if (currentPage === 'index.html' && href === 'index.html') link.classList.add('active');
-            if (currentPage.includes('learn') && href.includes('learn')) link.classList.add('active');
-            if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
-            if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
-            if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
-            if (currentPage.includes('reading-list') && href.includes('reading-list')) link.classList.add('active');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                
+                if (href === currentPage) link.classList.add('active');
+                if (currentPage === 'index.html' && href === 'index.html') link.classList.add('active');
+                if (currentPage.includes('learn') && href.includes('learn')) link.classList.add('active');
+                if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
+                if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
+                if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
+                if (currentPage.includes('reading-list') && href.includes('reading-list')) link.classList.add('active');
+            });
+            
+            console.log('✅ Menu active state updated for:', currentPage);
         });
     })();
     </script>
-    
-    <!-- Debug Info (có thể xóa sau khi fix) -->
-    <!-- <script>
-    console.log('=== LAYOUT DEBUG ===');
-    console.log('Page layout:', 'post');
-    console.log('Page path:', '_posts/2026-02-15-ews-basics.md');
-    console.log('CSS loaded:', document.styleSheets.length);
-    </script> -->
 </body>
 </html>

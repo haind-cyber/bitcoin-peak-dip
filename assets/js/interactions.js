@@ -662,8 +662,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 3000);
 });
 
-// Export global (giữ lại để tương thích)
-window.intensifyWaves = function() {
-    // Empty function - đã vô hiệu hóa
-    console.log('Wave intensification disabled');
-};

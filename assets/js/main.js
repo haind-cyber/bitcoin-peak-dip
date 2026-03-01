@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Thêm vào main.js (nếu file tồn tại)
 // Export global functions
 window.syncWavesWithDetection = syncWavesWithDetection;
-window.intensifyWaves = intensifyWaves;
+//window.intensifyWaves = intensifyWaves;
 // Global error handler for CSV loading
 window.addEventListener('error', function(e) {
     if (e.message.includes('CSV') || e.message.includes('signals')) {
@@ -614,3 +614,4 @@ document.head.appendChild(mainStyle);
         console.log('🔨 Build timestamp:', window.BUILD_INFO.timestamp);
     }
 })();
+
