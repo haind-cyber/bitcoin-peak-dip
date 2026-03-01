@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="canonical" href="http://localhost:4000/learn/2026/02/16/btc-signal-trigger-dataset.html">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HR78BDQYJJ"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HR78BDQYJJ');
+    </script>
+    <!-- Trong phần head của default.html, thêm dòng này -->
+    <meta name="app-version" content="1.12.12">
+    <script>
+    window.APP_VERSION = '1.12.12';
+    </script>    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>Btc Signal Trigger Dataset - Bitcoin PeakDip</title>
+    <meta name="description" content="Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered">
+    
+    <link rel="manifest" href="/manifest.json?v=1.12.12">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.12">
+    
+    <!-- Page Specific CSS - LOAD TẤT CẢ CHO MỌI TRANG -->
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.12">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.12">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.12">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.12">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.12">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00d4ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bitcoin PeakDip">
+    <meta name="application-name" content="Bitcoin PeakDip">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/icon-192x192.png">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Service Worker Registration -->
+    <script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('✅ Service Worker registered with scope:', registration.scope);
+                
+                registration.addEventListener('updatefound', function() {
+                    const newWorker = registration.installing;
+                    
+                    newWorker.addEventListener('statechange', function() {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            window.showUpdateNotification?.();
+                        }
+                    });
+                });
+            })
+            .catch(function(error) {
+                console.error('❌ Service Worker registration failed:', error);
+            });
+        
+        setInterval(() => {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.update();
+            });
+        }, 60 * 60 * 1000);
+    });
+}
+
+window.showUpdateNotification = function() {
+    const banner = document.createElement('div');
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+        <div class="update-content">
+            <i class="fas fa-sync-alt"></i>
+            <span>New version available!</span>
+            <button onclick="window.updateApp()" class="update-btn">Update</button>
+            <button onclick="this.closest('.update-banner').remove()" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+};
+
+window.updateApp = function() {
+    if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+            });
+        });
+    }
+    
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => {
+            registration.unregister();
+        });
+    }).then(() => {
+        window.location.reload(true);
+    });
+};
+</script>
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Btc Signal Trigger Dataset">
+    <meta property="og:description" content="Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/learn/2026/02/16/btc-signal-trigger-dataset.html">
+    <meta property="og:image" content="http://localhost:4000/assets/icons/icon-512x512.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@bitcoinpeakdip">
+    <meta name="twitter:creator" content="@bitcoinpeakdip">
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Bitcoin PeakDip",
+        "url": "http://localhost:4000",
+        "description": "Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "http://localhost:4000/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    <!-- Thêm script kiểm tra PWA version -->
+    <script>
+    // Kiểm tra PWA version khi cài đặt
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            const pwaVersion = localStorage.getItem('pwa_version');
+            const currentVersion = '1.12.12';
+            
+            if (pwaVersion && pwaVersion !== currentVersion) {
+                console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
+                localStorage.removeItem('pwa_version');
+            }
+        });
+    }
+    </script>    
+</head>
+<body>
+    <script>
+(function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    if (isMobile) {
+        window.IS_MOBILE = true;
+        document.body.classList.add('mobile-device');
+        
+        // Disable heavy animations
+        const style = document.createElement('style');
+        style.textContent = `
+            .sensor-ring, .bitcoin-wave, .energy-particles .particle {
+                animation: none !important;
+                opacity: 0.1 !important;
+            }
+            .logo-wave-effect {
+                animation: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    } else {
+        window.IS_MOBILE = false;
+    }
+})();
+</script>
+    
+    <!-- Interactive Background (commented out by default) -->
+    <!-- <div class="interactive-background" id="interactiveBackground"></div> -->
+    
+    <!-- Sensor Alert Container -->
+    <div class="sensor-alert" id="sensorAlert"></div>
+    
+    <!-- Navigation -->
+    <nav class="navigation" id="navigation">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <i class="fas fa-wave-square"></i>
+            Bitcoin PeakDip
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-house"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/about" class="nav-link">
+                    <i class="fas fa-circle-info"></i> About
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/product" class="nav-link">
+                    <i class="fas fa-cube"></i> Product
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/signals" class="nav-link">
+                    <i class="fas fa-chart-line"></i> EWS Signals
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/learn" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i> Learn
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/reading-list" class="nav-link" id="readingListLink">
+                    <i class="fas fa-bookmark"></i>
+                    Reading List
+                    <span class="reading-list-badge" id="readingListBadge">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+    
+    <!-- Sensor Network Background -->
+    <div class="sensor-network">
+    <div class="sensor-ring ring-1"></div>
+    <div class="sensor-ring ring-2"></div>
+    <div class="sensor-ring ring-3"></div>
+    <div class="sensor-ring ring-4"></div>
+    
+    <div class="bitcoin-waves">
+        <div class="bitcoin-wave wave-1"></div>
+        <div class="bitcoin-wave wave-2"></div>
+        <div class="bitcoin-wave wave-3"></div>
+    </div>
+    
+    <div class="energy-particles" id="energyParticles"></div>
+    
+    <div class="bitcoin-visualization">
+        <div class="bitcoin-wave"></div>
+    </div>
+</div>
+    
+    <!-- Status Indicator -->
+    <div class="status-indicator" id="statusIndicator">
+        <div class="status-light status-peak" id="statusLight"></div>
+        <div class="status-text" id="statusText">ANALYSING BITCOIN WAVES</div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content-container">
+        <div class="learn-article">
+    <div class="article-header">
+        <h1 class="article-title">Btc Signal Trigger Dataset</h1>
+        <div class="article-meta">
+            <span class="article-author"><i class="fas fa-user"></i> Bitcoin PeakDip Team</span>
+            <span class="article-date"><i class="fas fa-calendar-alt"></i> February 16, 2026</span>
+            <span class="reading-time"><i class="fas fa-clock"></i> 5 min read</span>
+            <span class="difficulty beginner">Beginner</span>
+        </div>
+    </div>
+    
+    <!-- Article Layout with Outline Sidebar -->
+    <div class="article-with-outline">
+        <!-- Outline Sidebar (desktop) -->
+        <aside class="article-outline" id="articleOutline">
+            <div class="outline-header">
+                <i class="fas fa-list-ul"></i>
+                <h3>Contents</h3>
+            </div>
+            <ul class="outline-list" id="outlineList">
+                <!-- JS sẽ tự động điền -->
+                <li class="loading-outline">Loading outline...</li>
+            </ul>
+        </aside>
+        
+        <!-- Nội dung chính -->
+        <div class="article-content" id="articleContent">
+            
+<h2 id="2-file-2026-02-16-btc-signal-trigger-datasetmd-đã-thêm-frontmatter-và-cấu-trúc-đúng">2. File <code class="language-plaintext highlighter-rouge">2026-02-16-btc-signal-trigger-dataset.md</code> (đã thêm frontmatter và cấu trúc đúng)</h2>
+
+<h2 id="markdown">```markdown</h2>
+<p>layout: post
+title: “BTC Signal Trigger Dataset (2022-2025)”
+date: 2026-02-16
+author: “Bitcoin PeakDip Team”
+reading_time: 12
+level: “Advanced”
+category: “Market Analysis”
+tags: [dataset, signals, analysis, on-chain]
+icon: database
+description: “Comprehensive dataset of Bitcoin peak and dip signals from 2022-2025 with market analysis and on-chain metrics”
+—</p>
+
+<h1 id="btc-signal-trigger-dataset">BTC Signal Trigger Dataset</h1>
+<h2 id="bitcoin-peak-and-dip-detection-signals">Bitcoin Peak and Dip Detection Signals</h2>
+
+<p><em>Dataset compiled from historical Bitcoin market events (2022-2025)</em></p>
+
+<div class="info-box">
+    <i class="fas fa-database"></i>
+    <p><strong>Dataset Overview:</strong> This comprehensive dataset includes signal triggers, market events, on-chain analysis, and sentiment data from 2022-2025.</p>
+</div>
+
+<hr />
+
+<h2 id="-signal-data-table">📊 Signal Data Table</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Signal Trigger Time</th>
+      <th style="text-align: left">Event (Before ⇄ After)</th>
+      <th style="text-align: center">Time Until BTC Correction</th>
+      <th style="text-align: center">On-chain Analysis</th>
+      <th style="text-align: center">Market Sentiment</th>
+      <th style="text-align: center">Funding-rate (8h)</th>
+      <th style="text-align: left">Flow Analysis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><strong>2022</strong></td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9/27/2022 7:15</td>
+      <td style="text-align: left">Before: Fed reaffirms tightening ⇄ After: BTC breaks below $20k</td>
+      <td style="text-align: center">&lt; 6 h (−6%)</td>
+      <td style="text-align: center">Reserve ↑ 10k BTC</td>
+      <td style="text-align: center">Extreme Fear 23</td>
+      <td style="text-align: center">−0.008%</td>
+      <td style="text-align: left">18k BTC inflow to CEX</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">11/1/2022 13:15</td>
+      <td style="text-align: left">Before: Rumors FTX insolvent ⇄ After: Panic</td>
+      <td style="text-align: center">≈ 36 h (−5%)</td>
+      <td style="text-align: center">Net-flow +40k BTC</td>
+      <td style="text-align: center">Fear 31→22</td>
+      <td style="text-align: center">−0.015%</td>
+      <td style="text-align: left">Strong inflow to Binance</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">11/5/2022 7:45</td>
+      <td style="text-align: left">Before: Binance sells FTT ⇄ After: FTX crisis</td>
+      <td style="text-align: center">&lt; 8 h (−9%)</td>
+      <td style="text-align: center">Net-flow +140k BTC</td>
+      <td style="text-align: center">Extreme Fear 20</td>
+      <td style="text-align: center">−0.020%</td>
+      <td style="text-align: left">Record inflow on Nov 9</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>2023</strong></td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1/20/2023 20:15</td>
+      <td style="text-align: left">Before: Lunar New Year rally to 23k ⇄ After: Profit-taking</td>
+      <td style="text-align: center">24 h (−4%)</td>
+      <td style="text-align: center">High whale outflow</td>
+      <td style="text-align: center">Greed 55</td>
+      <td style="text-align: center">0.01%</td>
+      <td style="text-align: left">High OTC outflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1/23/2023 11:00</td>
+      <td style="text-align: left">Before: NASDAQ drops ⇄ After: BTC follows</td>
+      <td style="text-align: center">6 h (−3%)</td>
+      <td style="text-align: center">Reserve slightly ↑</td>
+      <td style="text-align: center">Greed 53→48</td>
+      <td style="text-align: center">0.01%</td>
+      <td style="text-align: left">Small inflow to Coinbase</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2/2/2023 0:45</td>
+      <td style="text-align: left">Before: FOMC +25 bp ⇄ After: “Sell the news”</td>
+      <td style="text-align: center">12 h (−5%)</td>
+      <td style="text-align: center">Futures CVD negative</td>
+      <td style="text-align: center">Neutral 49</td>
+      <td style="text-align: center">+0.015%→0</td>
+      <td style="text-align: left">Small inflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>2024</strong></td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1/11/2024 13:00</td>
+      <td style="text-align: left">Before: SEC approves ETF ⇄ After: “Sell the news”</td>
+      <td style="text-align: center">6 h (−5%)</td>
+      <td style="text-align: center">Reserve outflow</td>
+      <td style="text-align: center">Greed 65</td>
+      <td style="text-align: center">+0.020%→-0.005%</td>
+      <td style="text-align: left">Inflow to CEX</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2/15/2024 15:00</td>
+      <td style="text-align: left">Before: US CPI hotter than forecast ⇄ After: Strong USD</td>
+      <td style="text-align: center">8 h (−4%)</td>
+      <td style="text-align: center">Net-flow +5k BTC</td>
+      <td style="text-align: center">Neutral 55→48</td>
+      <td style="text-align: center">0.01%</td>
+      <td style="text-align: left">Inflow to Binance</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2/16/2024 3:15</td>
+      <td style="text-align: left">Before: BTC hits 52k ⇄ After: Profit-taking</td>
+      <td style="text-align: center">4 h (−3%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Neutral 50</td>
+      <td style="text-align: center">0.00%</td>
+      <td style="text-align: left">Small inflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2/20/2024 23:15</td>
+      <td style="text-align: left">Before: Accelerating GBTC outflows ⇄ After: ETF supply pressure</td>
+      <td style="text-align: center">10 h (−4%)</td>
+      <td style="text-align: center">Net-flow +7k BTC</td>
+      <td style="text-align: center">Fear 45</td>
+      <td style="text-align: center">−0.003%</td>
+      <td style="text-align: left">Inflow to Coinbase</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2/26/2024 16:00</td>
+      <td style="text-align: left">Before: Weekend CME gap fill ⇄ After: Reversal</td>
+      <td style="text-align: center">6 h (−3%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Neutral 49</td>
+      <td style="text-align: center">0%</td>
+      <td style="text-align: left">Inflow to Bybit</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3/3/2024 12:30</td>
+      <td style="text-align: left">Before: MicroStrategy buys 3k BTC ⇄ After: Spike</td>
+      <td style="text-align: center">24 h (−4%)</td>
+      <td style="text-align: center">Large outflow</td>
+      <td style="text-align: center">Greed 62→55</td>
+      <td style="text-align: center">0.01%</td>
+      <td style="text-align: left">Outflow to cold wallets</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3/3/2024 17:00</td>
+      <td style="text-align: left">Before: Post-MSTR effect fades ⇄ After: Sideways → Drop</td>
+      <td style="text-align: center">6 h (−2%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Neutral 54</td>
+      <td style="text-align: center">0.00%</td>
+      <td style="text-align: left">Small inflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3/7/2024 8:15</td>
+      <td style="text-align: left">Before: Miner selling pre-halving ⇄ After: Supply pressure</td>
+      <td style="text-align: center">8 h (−3%)</td>
+      <td style="text-align: center">Net-flow +4k BTC</td>
+      <td style="text-align: center">Neutral 50</td>
+      <td style="text-align: center">−0.001%</td>
+      <td style="text-align: left">Miner inflow → CEX</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3/8/2024 17:30</td>
+      <td style="text-align: left">Before: High NFP (March) ⇄ After: Strong USD</td>
+      <td style="text-align: center">12 h (−4%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Fear 46</td>
+      <td style="text-align: center">−0.002%</td>
+      <td style="text-align: left">Inflow to Kraken</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3/24/2024 20:15</td>
+      <td style="text-align: left">Before: Coinbase outage spike ⇄ After: Momentum loss</td>
+      <td style="text-align: center">4 h (−4%)</td>
+      <td style="text-align: center">Net-flow +5k BTC</td>
+      <td style="text-align: center">Neutral 52</td>
+      <td style="text-align: center">−0.001%</td>
+      <td style="text-align: left">Inflow to Binance</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3/31/2024 13:15</td>
+      <td style="text-align: left">Before: Q1 close ⇄ After: Fund profit-taking</td>
+      <td style="text-align: center">10 h (−3%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Neutral 51</td>
+      <td style="text-align: center">0.00%</td>
+      <td style="text-align: left">Inflow to Bitfinex</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4/3/2024 14:30</td>
+      <td style="text-align: left">Before: Halving countdown 15 days ⇄ After: FOMO</td>
+      <td style="text-align: center">18 h (−3%)</td>
+      <td style="text-align: center">Outflow gradually ↓</td>
+      <td style="text-align: center">Greed 65→60</td>
+      <td style="text-align: center">+0.010%→0%</td>
+      <td style="text-align: left">OTC outflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4/21/2024 3:00</td>
+      <td style="text-align: left">Before: Halving #4 ⇄ After: Hash fee spike</td>
+      <td style="text-align: center">10 h (−5%)</td>
+      <td style="text-align: center">Reserve ↑ 8k BTC</td>
+      <td style="text-align: center">Neutral 54</td>
+      <td style="text-align: center">−0.004%</td>
+      <td style="text-align: left">Miner payout inflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5/15/2024 10:00</td>
+      <td style="text-align: left">Before: Hot CPI (Apr/May) ⇄ After: Risk-off</td>
+      <td style="text-align: center">6 h (−4%)</td>
+      <td style="text-align: center">Net-flow +6k BTC</td>
+      <td style="text-align: center">Fear 42</td>
+      <td style="text-align: center">−0.003%</td>
+      <td style="text-align: left">Inflow to Bybit</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7/16/2024 15:15</td>
+      <td style="text-align: left">Before: Mt.Gox repayment schedule ⇄ After: Supply concerns</td>
+      <td style="text-align: center">4 h (−3%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Fear 40</td>
+      <td style="text-align: center">−0.005%</td>
+      <td style="text-align: left">Anticipated inflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7/19/2024 16:15</td>
+      <td style="text-align: left">Before: DeFi hacks &gt; $120M ⇄ After: Risk sentiment worsens</td>
+      <td style="text-align: center">8 h (−4%)</td>
+      <td style="text-align: center">Net-flow +5k BTC</td>
+      <td style="text-align: center">Fear 38</td>
+      <td style="text-align: center">−0.006%</td>
+      <td style="text-align: left">Inflow to OKX</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8/25/2024 21:30</td>
+      <td style="text-align: left">Before: Powell hawkish at Jackson Hole ⇄ After: Risk-off</td>
+      <td style="text-align: center">24 h (−5%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Fear 35</td>
+      <td style="text-align: center">−0.007%</td>
+      <td style="text-align: left">Multi-exchange inflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10/6/2024 14:45</td>
+      <td style="text-align: left">Before: Middle East conflict escalates ⇄ After: Risk-off</td>
+      <td style="text-align: center">12 h (−4%)</td>
+      <td style="text-align: center">Net-flow +7k BTC</td>
+      <td style="text-align: center">Fear 40</td>
+      <td style="text-align: center">−0.004%</td>
+      <td style="text-align: left">Inflow to Binance</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10/7/2024 0:45</td>
+      <td style="text-align: left">Before: Market digests conflict ⇄ After: Sideways</td>
+      <td style="text-align: center">8 h (−2%)</td>
+      <td style="text-align: center">Reserve flat</td>
+      <td style="text-align: center">Neutral 46</td>
+      <td style="text-align: center">0%</td>
+      <td style="text-align: left">Side-flow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10/14/2024 3:30</td>
+      <td style="text-align: left">Before: Largest spot-ETF outflow in 3 months ⇄ After: Continued sell-off</td>
+      <td style="text-align: center">6 h (−3%)</td>
+      <td style="text-align: center">Net-flow +6k BTC</td>
+      <td style="text-align: center">Fear 42</td>
+      <td style="text-align: center">−0.003%</td>
+      <td style="text-align: left">Inflow to Coinbase</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10/14/2024 8:00</td>
+      <td style="text-align: left">Before: Ongoing ETF sell-off ⇄ After: BTC drops 5%</td>
+      <td style="text-align: center">4 h (−2%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Fear 41</td>
+      <td style="text-align: center">−0.002%</td>
+      <td style="text-align: left">Small inflow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10/20/2024 22:30</td>
+      <td style="text-align: left">Before: IRS proposes new crypto tax rules ⇄ After: Selling pressure</td>
+      <td style="text-align: center">8 h (−4%)</td>
+      <td style="text-align: center">Net-flow +5k BTC</td>
+      <td style="text-align: center">Fear 40</td>
+      <td style="text-align: center">−0.004%</td>
+      <td style="text-align: left">Inflow to Kraken</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">11/10/2024 3:30</td>
+      <td style="text-align: left">Before: US election unresolved ⇄ After: Uncertainty</td>
+      <td style="text-align: center">12 h (−4%)</td>
+      <td style="text-align: center">Reserve ↑</td>
+      <td style="text-align: center">Fear 38</td>
+      <td style="text-align: center">−0.005%</td>
+      <td style="text-align: left">Inflow to Binance</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">11/10/2024 17:45</td>
+      <td style="text-align: left">Before: Unclear US–China negotiations ⇄ After: Sideways</td>
+      <td style="text-align: center">6 h (−2%)</td>
+      <td style="text-align: center">Reserve flat</td>
+      <td style="text-align: center">Neutral 45</td>
+      <td style="text-align: center">0.00%</td>
+      <td style="text-align: left">Side-flow</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">11/18/2024 1:45</td>
+      <td style="text-align: left">Before: Binance pays DOJ fine ⇄ After: “Sell the fact”</td>
+      <td style="text-align: center">4 h (−4%)</td>
+      <td style="text-align: center">Net-flow +6k BTC</td>
+      <td style="text-align: center">Fear 44</td>
+      <td style="text-align: center">−0.003%</td>
+      <td style="text-align: left">Asia session inflow</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-buy-the-dip-signals-2025">📈 Buy The Dip Signals (2025)</h2>
+
+<p><em>Buy The Dip signal is triggered if level is greater than 10</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Timestamp</th>
+      <th style="text-align: center">Level</th>
+      <th style="text-align: center">Market Level</th>
+      <th style="text-align: center">Buy/Sell Area</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">2025-12-03 22:01:05</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-03 13:15:55</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-03 13:00:43</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-03 12:01:12</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-03 11:45:46</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-03 08:01:34</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-03 07:45:46</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-03 06:15:55</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-03 06:00:47</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 23:00:57</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 22:45:44</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 22:30:57</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 22:15:54</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 21:15:59</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 21:00:57</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 20:16:34</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 20:00:54</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 19:30:57</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 19:15:55</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 14:46:11</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 14:30:45</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 10:30:53</td>
+      <td style="text-align: center">5</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 07:15:47</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 06:00:56</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 05:30:52</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 05:01:15</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 04:45:44</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-02 01:46:07</td>
+      <td style="text-align: center">6</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-01 22:30:55</td>
+      <td style="text-align: center">5</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-01 08:00:54</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-01 07:46:13</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-12-01 07:15:55</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-29 03:01:11</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-29 02:45:44</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-29 00:30:54</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-29 00:16:09</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-28 23:16:11</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-28 23:01:11</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-28 22:46:30</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-28 22:30:55</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-28 21:15:58</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-28 21:00:55</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-28 18:16:12</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-27 02:16:10</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-27 02:00:55</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-27 01:31:11</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-27 01:15:55</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-27 00:46:11</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-27 00:30:54</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-26 22:45:57</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-26 06:01:12</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-26 05:45:45</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-26 04:01:14</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-26 03:45:44</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-25 21:45:45</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-25 20:45:54</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-25 04:30:55</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-25 04:15:53</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-25 01:16:09</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-25 01:00:46</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-25 00:45:57</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-25 00:30:52</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-24 23:15:55</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-24 23:00:55</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-24 12:31:07</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-24 12:15:44</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-24 11:30:45</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-24 11:15:46</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-24 09:30:56</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-24 09:15:52</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-23 22:01:31</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-23 20:16:10</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-23 19:46:07</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-23 19:30:52</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2025-11-23 18:30:54</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">12</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-signal-categories-legend">📋 Signal Categories Legend</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Column</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>Signal Trigger Time</strong></td>
+      <td style="text-align: left">Timestamp of when the signal was triggered</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Event</strong></td>
+      <td style="text-align: left">Market event before and after the signal</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Time Until BTC Correction</strong></td>
+      <td style="text-align: left">Time elapsed until price correction with percentage</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>On-chain Analysis</strong></td>
+      <td style="text-align: left">Blockchain data showing whale movements, exchange flows</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Market Sentiment</strong></td>
+      <td style="text-align: left">Fear &amp; Greed index values</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Funding-rate (8h)</strong></td>
+      <td style="text-align: left">Perpetual swap funding rates</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Flow Analysis</strong></td>
+      <td style="text-align: left">Exchange inflow/outflow patterns</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-key-insights">🔍 Key Insights</h2>
+
+<div class="insight-box">
+    <i class="fas fa-chart-pie"></i>
+    <h3>Statistical Analysis</h3>
+    <ul>
+        <li><strong>Average correction time:</strong> ~8-12 hours from signal trigger</li>
+        <li><strong>Average correction magnitude:</strong> 3-5%</li>
+        <li><strong>Most reliable signals:</strong> Occur during extreme fear/greed extremes</li>
+        <li><strong>Funding rate shifts:</strong> From positive to negative often precede corrections</li>
+        <li><strong>Exchange inflows:</strong> Spike 4-6 hours before major drops</li>
+    </ul>
+</div>
+
+<h3 id="pattern-recognition">Pattern Recognition</h3>
+
+<ol>
+  <li><strong>Pre-Signal Patterns</strong>
+    <ul>
+      <li>Volume divergence 2-4 hours before signal</li>
+      <li>Funding rate peaking then declining</li>
+      <li>Whale movement to exchanges</li>
+    </ul>
+  </li>
+  <li><strong>Signal Characteristics</strong>
+    <ul>
+      <li>Clear catalyst (news/event)</li>
+      <li>Multiple timeframe alignment</li>
+      <li>On-chain confirmation</li>
+    </ul>
+  </li>
+  <li><strong>Post-Signal Behavior</strong>
+    <ul>
+      <li>Initial 2-4% move within 6 hours</li>
+      <li>Extended move to 5%+ within 24 hours</li>
+      <li>Volume confirmation required</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="-trading-implications">🎯 Trading Implications</h2>
+
+<div class="tip-box">
+    <i class="fas fa-lightbulb"></i>
+    <p><strong>For Traders:</strong> Use this dataset to understand typical signal patterns and improve your entry/exit timing.</p>
+</div>
+
+<h3 id="best-practices">Best Practices</h3>
+
+<ol>
+  <li><strong>Wait for confirmation</strong> - Don’t enter on the first signal alone</li>
+  <li><strong>Check multiple timeframes</strong> - Align 15m, 1h, and 4h charts</li>
+  <li><strong>Monitor volume</strong> - Should increase during the move</li>
+  <li><strong>Set proper stops</strong> - 2-3% below/above entry depending on volatility</li>
+  <li><strong>Scale in/out</strong> - Don’t enter full position at once</li>
+</ol>
+
+<hr />
+
+<h2 id="-related-resources">📚 Related Resources</h2>
+
+<ul>
+  <li><a href="/learn/2026/02/15/ews-basics.html">EWS Fundamentals</a></li>
+  <li><a href="/learn/2026/02/16/strategy-guide.html">8 Trading Strategies Guide</a></li>
+  <li><a href="/learn/2026/02/18/risk-management.html">Risk Management</a></li>
+</ul>
+
+<hr />
+
+<h2 id="️-disclaimer">⚠️ Disclaimer</h2>
+
+<div class="warning-box">
+    <i class="fas fa-exclamation-triangle"></i>
+    <p><strong>Important:</strong> This dataset is for educational and research purposes only. Past performance does not guarantee future results. Always do your own research and never risk more than you can afford to lose.</p>
+</div>
+
+<hr />
+
+<p><em>Data compiled from BTC Signal Trigger Dataset (English Version)</em>
+<em>Last updated: 2026</em></p>
+
+        </div>
+    </div>
+    
+    <!-- Outline cho mobile (dropdown) -->
+    <div class="mobile-outline">
+        <button class="mobile-outline-toggle" id="mobileOutlineToggle">
+            <i class="fas fa-list-ul"></i>
+            <span>Table of Contents</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="mobile-outline-menu" id="mobileOutlineMenu">
+            <ul class="outline-list" id="mobileOutlineList">
+                <li class="loading-outline">Loading outline...</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Article Footer -->
+    <div class="article-footer-nav">
+        <a href="/learn" class="back-to-learn">
+            <i class="fas fa-arrow-left"></i> Back to Knowledge Base
+        </a>
+        <button class="share-article" onclick="shareArticle()">
+            <i class="fas fa-share-alt"></i> Share
+        </button>
+    </div>
+</div>
+
+<!-- JavaScript cho Outline -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    generateOutline();
+    setupMobileOutline();
+});
+
+function generateOutline() {
+    const content = document.getElementById('articleContent');
+    if (!content) return;
+    
+    // Tìm tất cả headings h2 và h3
+    const headings = content.querySelectorAll('h2, h3');
+    if (headings.length === 0) return;
+    
+    const outlineList = document.getElementById('outlineList');
+    const mobileOutlineList = document.getElementById('mobileOutlineList');
+    
+    if (!outlineList && !mobileOutlineList) return;
+    
+    let outlineHTML = '';
+    let mobileOutlineHTML = '';
+    
+    headings.forEach((heading, index) => {
+        // Thêm id cho heading nếu chưa có
+        if (!heading.id) {
+            heading.id = `section-${index}`;
+        }
+        
+        const level = heading.tagName === 'H2' ? 'h2' : 'h3';
+        const text = heading.textContent;
+        const indent = level === 'h3' ? 'style="margin-left: 20px;"' : '';
+        
+        outlineHTML += `
+            <li class="outline-item outline-${level}" ${indent}>
+                <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}')">
+                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle"></i>'} 
+                    ${text}
+                </a>
+            </li>
+        `;
+        
+        mobileOutlineHTML += `
+            <li class="outline-item outline-${level}" ${indent}>
+                <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}'); closeMobileOutline();">
+                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle"></i>'} 
+                    ${text}
+                </a>
+            </li>
+        `;
+    });
+    
+    if (outlineList) outlineList.innerHTML = outlineHTML;
+    if (mobileOutlineList) mobileOutlineList.innerHTML = mobileOutlineHTML;
+    
+    // Highlight active section khi scroll
+    setupActiveSectionHighlight(headings);
+}
+
+function smoothScroll(event, id) {
+    event.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function setupMobileOutline() {
+    const toggle = document.getElementById('mobileOutlineToggle');
+    const menu = document.getElementById('mobileOutlineMenu');
+    
+    if (!toggle || !menu) return;
+    
+    toggle.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        const icon = this.querySelector('.fa-chevron-down');
+        if (icon) {
+            icon.style.transform = menu.classList.contains('active') ? 'rotate(180deg)' : '';
+        }
+    });
+    
+    // Đóng menu khi click ra ngoài
+    document.addEventListener('click', function(event) {
+        if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+            menu.classList.remove('active');
+            const icon = toggle.querySelector('.fa-chevron-down');
+            if (icon) {
+                icon.style.transform = '';
+            }
+        }
+    });
+}
+
+function closeMobileOutline() {
+    const menu = document.getElementById('mobileOutlineMenu');
+    const toggle = document.getElementById('mobileOutlineToggle');
+    if (menu) menu.classList.remove('active');
+    if (toggle) {
+        const icon = toggle.querySelector('.fa-chevron-down');
+        if (icon) icon.style.transform = '';
+    }
+}
+
+function setupActiveSectionHighlight(headings) {
+    if (!headings || headings.length === 0) return;
+    
+    window.addEventListener('scroll', function() {
+        let current = '';
+        const scrollPosition = window.scrollY + 100;
+        
+        for (let i = headings.length - 1; i >= 0; i--) {
+            const heading = headings[i];
+            const headingTop = heading.offsetTop;
+            
+            if (scrollPosition >= headingTop) {
+                current = heading.id;
+                break;
+            }
+        }
+        
+        // Update active class in outline
+        document.querySelectorAll('.outline-item a').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+
+function shareArticle() {
+    const title = document.querySelector('.article-title')?.textContent || 'Bitcoin PeakDip Article';
+    const url = window.location.href;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: 'Check out this article from Bitcoin PeakDip',
+            url: url
+        });
+    } else {
+        navigator.clipboard.writeText(url);
+        alert('Link copied to clipboard!');
+    }
+}
+</script>
+
+<!-- CSS cho Outline và Article -->
+<style>
+.article-with-outline {
+    display: flex;
+    gap: 30px;
+    position: relative;
+}
+
+/* Article Header */
+.article-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.article-title {
+    font-size: 2.5em;
+    background: linear-gradient(to right, var(--wave-trough), var(--wave-peak));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 15px;
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: var(--text-glow);
+    font-size: 0.95em;
+}
+
+.article-meta i {
+    color: var(--wave-trough);
+    margin-right: 5px;
+}
+
+/* Outline Sidebar */
+.article-outline {
+    flex: 0 0 280px;
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.outline-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.outline-header i {
+    color: var(--wave-trough);
+    font-size: 1.2em;
+}
+
+.outline-header h3 {
+    color: white;
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.outline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.outline-item {
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+.outline-item a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    line-height: 1.4;
+}
+
+.outline-item a i {
+    color: var(--wave-trough);
+    font-size: 0.6em;
+}
+
+.outline-item a:hover {
+    background: rgba(0,212,255,0.1);
+    color: white;
+    padding-left: 15px;
+}
+
+.outline-item a.active {
+    background: rgba(0,212,255,0.2);
+    color: white;
+    border-left: 3px solid var(--wave-trough);
+}
+
+.outline-h3 a {
+    font-size: 0.9em;
+    opacity: 0.9;
+    padding-left: 25px;
+}
+
+/* Article Content */
+.article-content {
+    flex: 1;
+    min-width: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.article-content h2 {
+    color: white;
+    font-size: 2em;
+    margin: 40px 0 20px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+.article-content h3 {
+    color: var(--wave-trough);
+    font-size: 1.5em;
+    margin: 30px 0 15px;
+}
+
+.article-content p {
+    color: var(--text-glow);
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.article-content ul, .article-content ol {
+    color: var(--text-glow);
+    line-height: 1.8;
+    margin: 20px 0;
+    padding-left: 30px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+}
+
+.article-content strong {
+    color: var(--wave-trough);
+}
+
+.article-content blockquote {
+    background: rgba(0, 212, 255, 0.1);
+    border-left: 4px solid var(--wave-trough);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+}
+
+/* Mobile Outline */
+.mobile-outline {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.mobile-outline-toggle {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--wave-trough);
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.mobile-outline-toggle i:last-child {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.mobile-outline-menu {
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 5px;
+}
+
+.mobile-outline-menu.active {
+    display: block;
+}
+
+/* Article Footer */
+.article-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.back-to-learn {
+    color: var(--wave-trough);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-to-learn:hover {
+    gap: 12px;
+    color: white;
+}
+
+.share-article {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.share-article:hover {
+    background: rgba(0,212,255,0.2);
+    border-color: var(--wave-trough);
+}
+
+.loading-outline {
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 10px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .article-outline {
+        flex-basis: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .article-with-outline {
+        flex-direction: column;
+    }
+    
+    .article-outline {
+        display: none;
+    }
+    
+    .mobile-outline {
+        display: block;
+    }
+    
+    .article-title {
+        font-size: 2em;
+    }
+    
+    .article-content {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .article-content {
+        padding: 20px;
+    }
+    
+    .article-content h2 {
+        font-size: 1.6em;
+    }
+    
+    .article-content h3 {
+        font-size: 1.3em;
+    }
+    
+    .article-footer-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+</style>
+        
+        <!-- Footer -->
+        <footer id="pageFooter">
+    <div class="footer-brand">
+        <div class="brand-name">Bitcoin PeakDip</div>
+        <div class="brand-tagline">A Specialized Bitcoin Quantitative Research & Early Warning System Provider</div>
+    </div>            
+    <p>© 2021 - 2026 Nguyen Duc Hai Technologies. All rights reserved</p>
+    <!-- THÊM: Build Info -->
+    <!-- Footer Build Info -->
+<div class="footer-build-info">
+    <div class="build-version">
+        <i class="fas fa-code-branch"></i>
+        <span>v1.12.12</span>
+    </div>
+    <div class="build-date">
+        <i class="fas fa-calendar-alt"></i>
+        <span>2026-03-01</span>
+    </div>
+    
+    <div class="build-time">
+        <i class="fas fa-clock"></i>
+        <span>59443.0</span>
+    </div>
+    
+</div>    
+    <div class="footer-contact">
+        <div class="footer-contact-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:contact@bitcoinpeakdip.com">contact@bitcoinpeakdip.com</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-linkedin"></i>
+            <a href="https://www.linkedin.com/in/hai-nguyen-duc-1a6b5563" target="_blank">LinkedIn</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-telegram"></i>
+            <a href="https://t.me/bitcoinpeakdip" target="_blank">Telegram</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-x-twitter"></i>
+            <a href="https://x.com/bitcoinpeakdip" target="_blank">X.com</a>
+        </div>
+    </div>
+    
+    <div class="footer-links">
+        <a href="/" class="footer-link">Home</a>
+        <a href="/about" class="footer-link">About</a>
+        <a href="/product" class="footer-link">Product</a>
+        <a href="/signals" class="footer-link">EWS Signals</a>
+        <a href="/learn" class="footer-link">Learn</a>
+        <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+        <a href="/terms-of-service" class="footer-link">Terms of Service</a>
+        <a href="/risk-disclosure" class="footer-link">Risk Disclosure</a>
+    </div>
+</footer>
+    </div>
+    
+    <!-- Core Scripts -->
+    <script src="/assets/js/main.js?v=1.12.12"></script>
+    <script src="/assets/js/shared.js?v=1.12.12"></script>
+    <script src="/assets/js/reading-list.js?v=1.12.12"></script>
+    <script src="/assets/js/notifications.js?v=1.12.12"></script>
+    <script src="/assets/js/update-notifier.js?v=1.12.12"></script>
+    
+    <!-- Page Specific Scripts -->
+    
+    
+    
+    
+    
+    
+    
+
+    
+    <!-- Active Menu Fix -->
+    <script>
+    (function() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href');
+            
+            if (href === currentPage) link.classList.add('active');
+            if (currentPage === 'index.html' && href === 'index.html') link.classList.add('active');
+            if (currentPage.includes('learn') && href.includes('learn')) link.classList.add('active');
+            if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
+            if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
+            if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
+            if (currentPage.includes('reading-list') && href.includes('reading-list')) link.classList.add('active');
+        });
+    })();
+    </script>
+    
+    <!-- Debug Info (có thể xóa sau khi fix) -->
+    <!-- <script>
+    console.log('=== LAYOUT DEBUG ===');
+    console.log('Page layout:', 'post');
+    console.log('Page path:', '_posts/2026-02-16-btc-signal-trigger-dataset.md');
+    console.log('CSS loaded:', document.styleSheets.length);
+    </script> -->
+</body>
+</html>
