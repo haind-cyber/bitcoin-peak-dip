@@ -14,7 +14,7 @@ def generate_articles_json
   articles = []
   posts_dir = '_posts'
   data_dir = '_site/_data'
-  assets_data_dir = 'assets/data'
+  assets_data_dir = '_site/assets/data'
   
   # Kiểm tra thư mục _posts
   unless Dir.exist?(posts_dir)
