@@ -1,27 +1,34 @@
 // update-notifier.js - Thông báo cập nhật phiên bản mới
-// Version: 1.0.2 - FIXED: Chỉ thông báo khi version thực sự mới hơn
+// Version: 2.0.0 - Tối ưu hóa chạy song song, không block
 
 const UPDATE_CONFIG = {
-    version: '1.0.2',
+    version: '2.0.0',
     checkInterval: 60 * 60 * 1000, // 1 giờ kiểm tra 1 lần
+    initialDelay: 5000, // 5 giây delay ban đầu
     versionUrl: '/version.json',
-    dismissedKey: 'update_dismissed_', // Đã sửa: thêm _ để rõ ràng
+    dismissedKey: 'update_dismissed_',
     lastCheckKey: 'update_last_check',
-    minCheckInterval: 10 * 60 * 1000, // THÊM: 10 phút tối thiểu giữa các lần check
-    dismissExpiry: 24 * 60 * 60 * 1000 // THÊM: 24 giờ hết hạn dismiss
+    minCheckInterval: 10 * 60 * 1000, // 10 phút tối thiểu giữa các lần check
+    dismissExpiry: 24 * 60 * 60 * 1000, // 24 giờ hết hạn dismiss
+    fetchTimeout: 8000, // 8 giây timeout cho fetch
+    maxRetries: 2 // Số lần retry tối đa
 };
 
 class UpdateNotifier {
     constructor() {
-        // THÊM: Lấy version từ nhiều nguồn
         this.currentVersion = this.getCurrentVersion();
         this.latestVersion = null;
         this.updateBanner = null;
-        this.lastCheckTime = 0; // THÊM: Biến theo dõi thời gian check
-        this.init();
+        this.lastCheckTime = 0;
+        this.initialized = false;
+        this.initPromise = null;
+        this.retryCount = 0;
+        
+        // Khởi tạo không block
+        this.initialize();
     }
 
-    // THÊM: Hàm lấy version từ nhiều nguồn
+    // ===== LẤY VERSION HIỆN TẠI =====
     getCurrentVersion() {
         // Ưu tiên từ window.APP_VERSION
         if (window.APP_VERSION) return window.APP_VERSION;
@@ -34,159 +41,251 @@ class UpdateNotifier {
         return '1.12.2';
     }
 
-    async init() {
-        console.log('🔄 Update Notifier v' + UPDATE_CONFIG.version);
-        console.log('📌 Current version:', this.currentVersion);
-        
-        // SỬA: Không check ngay, đợi 5 giây để trang load hoàn chỉnh
-        setTimeout(() => this.checkForUpdate(), 5000);
-        
-        // Kiểm tra định kỳ (giữ nguyên)
-        setInterval(() => this.checkForUpdate(), UPDATE_CONFIG.checkInterval);
-        
-        // Lắng nghe service worker update
-        this.setupServiceWorkerListener();
-    }
+    // ===== KHỞI TẠO KHÔNG BLOCK =====
+    async initialize() {
+        if (this.initialized) return;
+        if (this.initPromise) return this.initPromise;
 
-    setupServiceWorkerListener() {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.addEventListener('message', (event) => {
-                if (event.data.type === 'NEW_VERSION_AVAILABLE') {
-                    // THÊM: Chỉ hiện nếu version thực sự mới
-                    const swVersion = event.data.version;
-                    if (this.isNewerVersion(swVersion, this.currentVersion)) {
-                        this.showUpdateBanner(swVersion);
-                    }
+        this.initPromise = new Promise(async (resolve) => {
+            console.log('🔄 Update Notifier v' + UPDATE_CONFIG.version);
+            console.log('📌 Current version:', this.currentVersion);
+            
+            // Đợi microtask để không block
+            await Promise.resolve();
+
+            // Sử dụng requestIdleCallback nếu có
+            const scheduleTask = (task, delay = 0) => {
+                if ('requestIdleCallback' in window) {
+                    requestIdleCallback(() => setTimeout(task, delay), { timeout: 3000 });
+                } else {
+                    setTimeout(task, delay);
                 }
-            });
-        }
+            };
+
+            // Lên lịch kiểm tra đầu tiên
+            scheduleTask(() => this.checkForUpdate(), UPDATE_CONFIG.initialDelay);
+
+            // Thiết lập kiểm tra định kỳ không block
+            setInterval(() => {
+                scheduleTask(() => this.checkForUpdate(), 0);
+            }, UPDATE_CONFIG.checkInterval);
+
+            // Lắng nghe service worker update
+            this.setupServiceWorkerListener();
+
+            this.initialized = true;
+            console.log('✅ Update Notifier initialized successfully');
+            resolve();
+        });
+
+        return this.initPromise;
     }
 
+    // ===== LẮNG NGHE TỪ SERVICE WORKER =====
+    setupServiceWorkerListener() {
+        if (!('serviceWorker' in navigator)) return;
+
+        // Không block - sử dụng Promise.resolve
+        Promise.resolve().then(() => {
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                // Xử lý trong microtask
+                setTimeout(() => {
+                    if (event.data.type === 'NEW_VERSION_AVAILABLE') {
+                        const swVersion = event.data.version;
+                        if (this.isNewerVersion(swVersion, this.currentVersion)) {
+                            this.showUpdateBanner(swVersion);
+                        }
+                    }
+                }, 0);
+            });
+        });
+    }
+
+    // ===== KIỂM TRA CẬP NHẬT =====
     async checkForUpdate(force = false) {
+        // Tạo microtask để không block
+        await Promise.resolve();
+
         const now = Date.now();
         
-        // THÊM: Tránh kiểm tra quá thường xuyên
+        // Tránh kiểm tra quá thường xuyên
         if (!force && (now - this.lastCheckTime) < UPDATE_CONFIG.minCheckInterval) {
             console.log('⏳ Skipping check - too frequent');
             return;
         }
 
-        try {
-            this.lastCheckTime = now;
-            
-            // THÊM: Kiểm tra localStorage với debounce
-            const lastCheck = localStorage.getItem(UPDATE_CONFIG.lastCheckKey);
-            if (!force && lastCheck && (now - parseInt(lastCheck)) < UPDATE_CONFIG.checkInterval) {
-                console.log('⏳ Using cached check time');
-                return;
-            }
+        // Kiểm tra localStorage debounce
+        const lastCheck = localStorage.getItem(UPDATE_CONFIG.lastCheckKey);
+        if (!force && lastCheck && (now - parseInt(lastCheck)) < UPDATE_CONFIG.checkInterval) {
+            console.log('⏳ Using cached check time');
+            return;
+        }
 
-            console.log('🔍 Checking for updates...');
+        this.lastCheckTime = now;
+        console.log('🔍 Checking for updates...');
+
+        // Sử dụng AbortController cho timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), UPDATE_CONFIG.fetchTimeout);
+
+        try {
             const response = await fetch(`${UPDATE_CONFIG.versionUrl}?t=${now}`, {
-                cache: 'no-store', // THÊM: Không cache
-                headers: { 'Cache-Control': 'no-cache' }
+                signal: controller.signal,
+                cache: 'no-store',
+                headers: { 
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache'
+                }
             });
             
-            if (!response.ok) throw new Error('Network error');
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
             const data = await response.json();
             this.latestVersion = data.version;
+            this.retryCount = 0; // Reset retry count on success
 
             console.log(`📊 Version check: current=${this.currentVersion}, latest=${this.latestVersion}`);
 
-            // SỬA QUAN TRỌNG: Kiểm tra version KHÁC và MỚI HƠN
+            // Kiểm tra version mới hơn
             if (this.latestVersion !== this.currentVersion && 
                 this.isNewerVersion(this.latestVersion, this.currentVersion)) {
                 
-                // Kiểm tra dismiss với thời gian hết hạn
-                const dismissed = localStorage.getItem(UPDATE_CONFIG.dismissedKey + this.latestVersion);
-                const dismissedTime = dismissed ? parseInt(dismissed) : 0;
-                
-                // THÊM: Chỉ hiện nếu chưa dismiss hoặc đã hết hạn 24h
-                if (!dismissed || (now - dismissedTime) > UPDATE_CONFIG.dismissExpiry) {
-                    this.showUpdateBanner(this.latestVersion, data.changelog);
-                } else {
-                    console.log(`⏰ Update ${this.latestVersion} dismissed until ${new Date(dismissedTime + UPDATE_CONFIG.dismissExpiry).toLocaleString()}`);
-                }
+                this.handleNewVersion(this.latestVersion, data.changelog || []);
             } else {
                 console.log('📊 No new version available');
             }
 
             localStorage.setItem(UPDATE_CONFIG.lastCheckKey, now.toString());
+
         } catch (error) {
-            console.log('⚠️ Update check failed:', error.message);
+            clearTimeout(timeoutId);
+            
+            if (error.name === 'AbortError') {
+                console.log('⏱️ Fetch timeout - check aborted');
+            } else {
+                console.log('⚠️ Update check failed:', error.message);
+                
+                // Retry logic
+                if (this.retryCount < UPDATE_CONFIG.maxRetries) {
+                    this.retryCount++;
+                    console.log(`🔄 Retry ${this.retryCount}/${UPDATE_CONFIG.maxRetries} in 5s`);
+                    
+                    setTimeout(() => {
+                        this.checkForUpdate(force);
+                    }, 5000 * this.retryCount);
+                }
+            }
         }
     }
 
+    // ===== XỬ LÝ PHIÊN BẢN MỚI =====
+    handleNewVersion(version, changelog) {
+        const now = Date.now();
+        const dismissed = localStorage.getItem(UPDATE_CONFIG.dismissedKey + version);
+        const dismissedTime = dismissed ? parseInt(dismissed) : 0;
+        
+        // Chỉ hiện nếu chưa dismiss hoặc đã hết hạn 24h
+        if (!dismissed || (now - dismissedTime) > UPDATE_CONFIG.dismissExpiry) {
+            // Dùng setTimeout để không block
+            setTimeout(() => {
+                this.showUpdateBanner(version, changelog);
+            }, 100);
+        } else {
+            const expiryDate = new Date(dismissedTime + UPDATE_CONFIG.dismissExpiry);
+            console.log(`⏰ Update ${version} dismissed until ${expiryDate.toLocaleString()}`);
+        }
+    }
+
+    // ===== KIỂM TRA VERSION MỚI HƠN =====
     isNewerVersion(latest, current) {
         if (!latest || !current) return false;
-        if (latest === current) return false; // ❌ QUAN TRỌNG: Không thông báo nếu bằng nhau
+        if (latest === current) return false;
         
-        const latestParts = latest.split('.').map(Number);
-        const currentParts = current.split('.').map(Number);
+        try {
+            const latestParts = latest.split('.').map(Number);
+            const currentParts = current.split('.').map(Number);
 
-        for (let i = 0; i < 3; i++) {
-            if (latestParts[i] > currentParts[i]) return true;
-            if (latestParts[i] < currentParts[i]) return false;
+            for (let i = 0; i < 3; i++) {
+                const latestNum = latestParts[i] || 0;
+                const currentNum = currentParts[i] || 0;
+                
+                if (latestNum > currentNum) return true;
+                if (latestNum < currentNum) return false;
+            }
+            return false;
+        } catch (e) {
+            console.log('⚠️ Version comparison error:', e.message);
+            return false;
         }
-        return false;
     }
 
-    // SỬA: Thêm tham số changelog
+    // ===== HIỂN THỊ BANNER CẬP NHẬT =====
     showUpdateBanner(version, changelog = []) {
         // Xóa banner cũ nếu có
         this.removeUpdateBanner();
 
-        const banner = document.createElement('div');
-        banner.className = 'update-notification-banner';
-        banner.id = 'updateNotificationBanner';
-        
-        // THÊM: Hiển thị changelog nếu có
-        const changelogHtml = changelog && changelog.length > 0 
-            ? `<div class="update-changelog">
-                <div class="changelog-title"><i class="fas fa-list"></i> What's new:</div>
-                <ul>${changelog.map(item => `<li>${item}</li>`).join('')}</ul>
-               </div>`
-            : '';
+        // Tạo banner trong setTimeout để không block
+        setTimeout(() => {
+            const banner = document.createElement('div');
+            banner.className = 'update-notification-banner';
+            banner.id = 'updateNotificationBanner';
+            
+            const changelogHtml = changelog && changelog.length > 0 
+                ? `<div class="update-changelog">
+                    <div class="changelog-title"><i class="fas fa-list"></i> What's new:</div>
+                    <ul>${changelog.map(item => `<li>${this.escapeHtml(item)}</li>`).join('')}</ul>
+                   </div>`
+                : '';
 
-        banner.innerHTML = `
-            <div class="update-notification-content">
-                <div class="update-icon">
-                    <i class="fas fa-sync-alt"></i>
-                </div>
-                <div class="update-text">
-                    <div class="update-title">
-                        <i class="fas fa-rocket"></i> 
-                        <span>Phiên bản mới ${version} đã sẵn sàng!</span>
-                    </div>
-                    <div class="update-description">
-                        Cập nhật để trải nghiệm các tính năng mới nhất và cải thiện hiệu suất.
-                    </div>
-                    ${changelogHtml}
-                </div>
-                <div class="update-actions">
-                    <button class="update-btn primary" onclick="window.updateNotifier.updateApp()">
+            banner.innerHTML = `
+                <div class="update-notification-content">
+                    <div class="update-icon">
                         <i class="fas fa-sync-alt"></i>
-                        <span>Cập nhật ngay</span>
-                    </button>
-                    <button class="update-btn secondary" onclick="window.updateNotifier.dismissUpdate('${version}')">
-                        <i class="fas fa-clock"></i>
-                        <span>Để sau</span>
-                    </button>
-                    <button class="update-btn close" onclick="window.updateNotifier.closeBanner()">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    </div>
+                    <div class="update-text">
+                        <div class="update-title">
+                            <i class="fas fa-rocket"></i> 
+                            <span>Phiên bản mới ${this.escapeHtml(version)} đã sẵn sàng!</span>
+                        </div>
+                        <div class="update-description">
+                            Cập nhật để trải nghiệm các tính năng mới nhất và cải thiện hiệu suất.
+                        </div>
+                        ${changelogHtml}
+                    </div>
+                    <div class="update-actions">
+                        <button class="update-btn primary" onclick="window.updateNotifier?.updateApp()">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Cập nhật ngay</span>
+                        </button>
+                        <button class="update-btn secondary" onclick="window.updateNotifier?.dismissUpdate('${this.escapeHtml(version)}')">
+                            <i class="fas fa-clock"></i>
+                            <span>Để sau</span>
+                        </button>
+                        <button class="update-btn close" onclick="window.updateNotifier?.closeBanner()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
 
-        document.body.appendChild(banner);
-        this.updateBanner = banner;
+            document.body.appendChild(banner);
+            this.updateBanner = banner;
 
-        // Animation hiện
-        setTimeout(() => banner.classList.add('show'), 10);
+            // Animation hiện
+            setTimeout(() => banner.classList.add('show'), 10);
+        }, 0);
     }
 
+    // ===== ESCAPE HTML ĐỂ TRÁNH XSS =====
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // ===== XÓA BANNER =====
     removeUpdateBanner() {
         if (this.updateBanner) {
             this.updateBanner.remove();
@@ -194,13 +293,7 @@ class UpdateNotifier {
         }
     }
 
-    // SỬA: Dismiss lưu timestamp thay vì 'true'
-    dismissUpdate(version) {
-        localStorage.setItem(UPDATE_CONFIG.dismissedKey + version, Date.now().toString());
-        this.closeBanner();
-        this.showToast('⏰ Sẽ nhắc lại sau 24 giờ', 'info');
-    }
-
+    // ===== ĐÓNG BANNER =====
     closeBanner() {
         if (this.updateBanner) {
             this.updateBanner.classList.remove('show');
@@ -208,67 +301,111 @@ class UpdateNotifier {
         }
     }
 
+    // ===== DỜI THÔNG BÁO =====
+    dismissUpdate(version) {
+        try {
+            localStorage.setItem(UPDATE_CONFIG.dismissedKey + version, Date.now().toString());
+            this.closeBanner();
+            this.showToast('⏰ Sẽ nhắc lại sau 24 giờ', 'info');
+        } catch (e) {
+            console.error('Error dismissing update:', e);
+        }
+    }
+
+    // ===== CẬP NHẬT ỨNG DỤNG =====
     async updateApp() {
         this.showToast('🔄 Đang cập nhật...', 'info');
 
-        // Clear cache
-        if ('caches' in window) {
+        // Dùng setTimeout để không block UI
+        setTimeout(async () => {
             try {
-                const keys = await caches.keys();
-                await Promise.all(keys.map(key => caches.delete(key)));
-                console.log('✅ Đã xóa cache cũ');
-            } catch (e) {
-                console.error('Lỗi xóa cache:', e);
+                // Clear cache - dùng Promise.allSettled để không block
+                if ('caches' in window) {
+                    try {
+                        const keys = await caches.keys();
+                        const cacheDeletePromises = keys
+                            .filter(key => key.includes('bitcoin-peakdip'))
+                            .map(key => caches.delete(key));
+                        
+                        await Promise.allSettled(cacheDeletePromises);
+                        console.log('✅ Đã xóa cache cũ');
+                    } catch (e) {
+                        console.error('Lỗi xóa cache:', e);
+                    }
+                }
+
+                // Unregister service workers cũ
+                if ('serviceWorker' in navigator) {
+                    try {
+                        const registrations = await navigator.serviceWorker.getRegistrations();
+                        const unregisterPromises = registrations.map(reg => reg.unregister());
+                        await Promise.allSettled(unregisterPromises);
+                        console.log('✅ Đã unregister service workers cũ');
+                    } catch (e) {
+                        console.error('Lỗi unregister SW:', e);
+                    }
+                }
+
+                // Reload trang
+                this.showToast('✅ Đã cập nhật, đang tải lại...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = window.location.pathname + '?updated=' + Date.now();
+                }, 1000);
+
+            } catch (error) {
+                console.error('❌ Update failed:', error);
+                this.showToast('❌ Cập nhật thất bại, thử lại sau', 'error');
             }
-        }
-
-        // Unregister service workers cũ
-        if ('serviceWorker' in navigator) {
-            try {
-                const registrations = await navigator.serviceWorker.getRegistrations();
-                await Promise.all(registrations.map(reg => reg.unregister()));
-                console.log('✅ Đã unregister service workers cũ');
-            } catch (e) {
-                console.error('Lỗi unregister SW:', e);
-            }
-        }
-
-        // Hiển thị thông báo đang reload
-        this.showToast('✅ Đã cập nhật, đang tải lại...', 'success');
-
-        // Reload trang (force reload)
-        setTimeout(() => {
-            window.location.href = window.location.pathname + '?updated=' + Date.now();
-        }, 1000);
+        }, 0);
     }
 
+    // ===== HIỂN THỊ TOAST =====
     showToast(message, type = 'info', duration = 3000) {
-        const toast = document.createElement('div');
-        toast.className = `update-toast update-toast-${type}`;
-        
-        const icons = {
-            success: 'fa-check-circle',
-            info: 'fa-info-circle',
-            warning: 'fa-exclamation-triangle',
-            error: 'fa-times-circle'
-        };
-        
-        toast.innerHTML = `
-            <i class="fas ${icons[type]}"></i>
-            <span>${message}</span>
-        `;
+        // Kiểm tra toast trùng
+        const existingToasts = document.querySelectorAll('.update-toast');
+        for (let toast of existingToasts) {
+            if (toast.querySelector('span')?.textContent === message) {
+                return;
+            }
+        }
 
-        document.body.appendChild(toast);
+        // Xóa toast cũ
+        const oldToast = document.querySelector('.update-toast');
+        if (oldToast) oldToast.remove();
 
-        setTimeout(() => toast.classList.add('show'), 10);
+        // Tạo toast mới trong setTimeout
         setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, duration);
+            const toast = document.createElement('div');
+            toast.className = `update-toast update-toast-${type}`;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle',
+                error: 'fa-times-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type]}"></i>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(toast);
+
+            // Animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Tự động ẩn
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }, 0);
     }
 }
 
-// THÊM: CSS cho changelog
+// ===== CSS CHO UPDATE NOTIFIER =====
 (function addUpdateStyles() {
     if (document.getElementById('update-notifier-styles')) return;
 
@@ -354,7 +491,6 @@ class UpdateNotifier {
             margin-bottom: 10px;
         }
 
-        /* THÊM: Style cho changelog */
         .update-changelog {
             background: rgba(0, 212, 255, 0.1);
             border-radius: 8px;
@@ -451,22 +587,6 @@ class UpdateNotifier {
             animation: spin 2s linear infinite;
         }
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-            }
-            50% {
-                transform: scale(1.1);
-                box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
-            }
-        }
-
         /* Update Toast */
         .update-toast {
             position: fixed;
@@ -505,6 +625,23 @@ class UpdateNotifier {
 
         .update-toast i {
             font-size: 1.2em;
+        }
+
+        /* Animations */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+            }
         }
 
         /* Mobile Responsive */
@@ -558,6 +695,31 @@ class UpdateNotifier {
     document.head.appendChild(style);
 })();
 
-// Khởi tạo
-const updateNotifier = new UpdateNotifier();
-window.updateNotifier = updateNotifier;
+// ===== KHỞI TẠO KHÔNG BLOCK =====
+(function initializeUpdateNotifier() {
+    // Sử dụng requestIdleCallback nếu có
+    const initTask = () => {
+        if (!window.updateNotifier) {
+            window.updateNotifier = new UpdateNotifier();
+        }
+    };
+
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(initTask, { timeout: 3000 });
+    } else {
+        // Fallback: setTimeout với độ ưu tiên thấp
+        setTimeout(initTask, 1000);
+    }
+})();
+
+// Fallback nếu DOM đã load xong
+if (document.readyState === 'complete' && !window.updateNotifier) {
+    setTimeout(() => {
+        if (!window.updateNotifier) {
+            window.updateNotifier = new UpdateNotifier();
+        }
+    }, 100);
+}
+
+// Export
+window.UpdateNotifier = UpdateNotifier;

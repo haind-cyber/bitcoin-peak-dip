@@ -11,31 +11,32 @@
     gtag('js', new Date());
     gtag('config', 'G-HR78BDQYJJ');
     </script>
-    <!-- Trong phần head của default.html, thêm dòng này -->
-    <meta name="app-version" content="1.12.12">
-    <script>
-    window.APP_VERSION = '1.12.12';
-    </script>    
+    
+    <meta name="app-version" content="1.12.13">
+    <script>window.APP_VERSION = '1.12.13';</script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Font Awesome - CHỈ 1 LẦN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     
     <!-- SEO -->
     <title>Early Warning System for Bitcoin Peaks and Dips - Bitcoin PeakDip</title>
     <meta name="description" content="Bitcoin PeakDip: A Specialized Bitcoin Quantitative Research & Early Warning System Provider by Nguyen Duc Hai Technologies. High-confidence signals since 2021.">
     
-    <link rel="manifest" href="/manifest.json?v=1.12.12">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json?v=1.12.13">
     
     <!-- Main CSS -->
-    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.12">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.13">
     
-    <!-- Page Specific CSS - LOAD TẤT CẢ CHO MỌI TRANG -->
-    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.12">
-    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.12">
-    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.12">
-    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.12">
-    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.12">
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.13">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.13">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#00d4ff">
@@ -50,74 +51,6 @@
     <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-192x192.png">
     <link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/icon-192x192.png">
-
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    
-    <!-- Service Worker Registration -->
-    <script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(function(registration) {
-                console.log('✅ Service Worker registered with scope:', registration.scope);
-                
-                registration.addEventListener('updatefound', function() {
-                    const newWorker = registration.installing;
-                    
-                    newWorker.addEventListener('statechange', function() {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            window.showUpdateNotification?.();
-                        }
-                    });
-                });
-            })
-            .catch(function(error) {
-                console.error('❌ Service Worker registration failed:', error);
-            });
-        
-        setInterval(() => {
-            navigator.serviceWorker.ready.then(registration => {
-                registration.update();
-            });
-        }, 60 * 60 * 1000);
-    });
-}
-
-window.showUpdateNotification = function() {
-    const banner = document.createElement('div');
-    banner.className = 'update-banner';
-    banner.innerHTML = `
-        <div class="update-content">
-            <i class="fas fa-sync-alt"></i>
-            <span>New version available!</span>
-            <button onclick="window.updateApp()" class="update-btn">Update</button>
-            <button onclick="this.closest('.update-banner').remove()" class="close-btn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
-    document.body.appendChild(banner);
-};
-
-window.updateApp = function() {
-    if ('caches' in window) {
-        caches.keys().then(cacheNames => {
-            cacheNames.forEach(cacheName => {
-                caches.delete(cacheName);
-            });
-        });
-    }
-    
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        registrations.forEach(registration => {
-            registration.unregister();
-        });
-    }).then(() => {
-        window.location.reload(true);
-    });
-};
-</script>
     
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Early Warning System for Bitcoin Peaks and Dips">
@@ -145,13 +78,13 @@ window.updateApp = function() {
         }
     }
     </script>
-    <!-- Thêm script kiểm tra PWA version -->
+    
+    <!-- PWA Version Check -->
     <script>
-    // Kiểm tra PWA version khi cài đặt
     if ('serviceWorker' in navigator) {
         window.addEventListener('beforeinstallprompt', (e) => {
             const pwaVersion = localStorage.getItem('pwa_version');
-            const currentVersion = '1.12.12';
+            const currentVersion = '1.12.13';
             
             if (pwaVersion && pwaVersion !== currentVersion) {
                 console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
@@ -159,8 +92,9 @@ window.updateApp = function() {
             }
         });
     }
-    </script>    
+    </script>
 </head>
+
 <body>
     <script>
 (function() {
@@ -187,9 +121,6 @@ window.updateApp = function() {
     }
 })();
 </script>
-    
-    <!-- Interactive Background (commented out by default) -->
-    <!-- <div class="interactive-background" id="interactiveBackground"></div> -->
     
     <!-- Sensor Alert Container -->
     <div class="sensor-alert" id="sensorAlert"></div>
@@ -496,34 +427,34 @@ window.updateApp = function() {
 
 <div class="learn-grid">
     
-    <a href="/learn/2026/02/16/btc-signal-trigger-dataset.html" class="learn-card">
+    <a href="/learn/2026/02/28/EWS-Signal-Snapshot.html" class="learn-card">
         <div class="card-icon">
-            <i class="fas fa-book"></i>
+            <i class="fas fa-bell"></i>
         </div>
-        <h3>Btc Signal Trigger Dataset</h3>
-        <p>
-2. File 2026-02-16-btc-signal-trigger-dataset.md (đã thêm frontmatter và cấu trúc đúng)
+        <h3>EWS Signal Snapshot - February 28, 2026</h3>
+        <p>EWS Signal Snapshot - February 28, 2026
+Local Top Signal · Whale Advance
 </p>
         <div class="card-meta">
             <span><i class="fas fa-clock"></i> 5 min read</span>
-            <span><i class="fas fa-signal"></i> Beginner</span>
-        </div>
-    </a>
-    
-    <a href="/learn/2026/02/16/BTC_Market_Cycles.html" class="learn-card">
-        <div class="card-icon">
-            <i class="fas fa-chart-line"></i>
-        </div>
-        <h3>Bitcoin Market Cycles Through ATH History</h3>
-        <p>Tóm Tắt: Hành Trình Các ATH Của Bitcoin Qua Các Chu Kỳ
-</p>
-        <div class="card-meta">
-            <span><i class="fas fa-clock"></i> 8 min read</span>
             <span><i class="fas fa-signal"></i> Intermediate</span>
         </div>
     </a>
     
-    <a href="/learn/2026/02/15/ews-basics.html" class="learn-card">
+    <a href="/learn/2026/02/26/strategy-guide-check.html" class="learn-card">
+        <div class="card-icon">
+            <i class="fas fa-chess-knight"></i>
+        </div>
+        <h3>8 Trading Strategies Explained</h3>
+        <p>Overview
+</p>
+        <div class="card-meta">
+            <span><i class="fas fa-clock"></i> 15 min read</span>
+            <span><i class="fas fa-signal"></i> Intermediate</span>
+        </div>
+    </a>
+    
+    <a href="/learn/2026/02/26/ews-basics.html" class="learn-card">
         <div class="card-icon">
             <i class="fas fa-satellite-dish"></i>
         </div>
@@ -536,6 +467,19 @@ window.updateApp = function() {
         </div>
     </a>
     
+    <a href="/learn/2026/02/25/strategy-guide.html" class="learn-card">
+        <div class="card-icon">
+            <i class="fas fa-chess-knight"></i>
+        </div>
+        <h3>8 Trading Strategies Explained</h3>
+        <p>Overview
+</p>
+        <div class="card-meta">
+            <span><i class="fas fa-clock"></i> 15 min read</span>
+            <span><i class="fas fa-signal"></i> Intermediate</span>
+        </div>
+    </a>
+    
 </div>
 
 <!-- Recent Posts -->
@@ -544,25 +488,25 @@ window.updateApp = function() {
     <div class="posts-list">
         
         <div class="post-item">
-            <h4><a href="/learn/2026/02/16/btc-signal-trigger-dataset.html">Btc Signal Trigger Dataset</a></h4>
+            <h4><a href="/learn/2026/02/28/EWS-Signal-Snapshot.html">EWS Signal Snapshot - February 28, 2026</a></h4>
             <div class="post-meta">
-                <span><i class="fas fa-calendar"></i> Feb 16, 2026</span>
+                <span><i class="fas fa-calendar"></i> Feb 28, 2026</span>
                 <span><i class="fas fa-clock"></i> 5 min</span>
             </div>
         </div>
         
         <div class="post-item">
-            <h4><a href="/learn/2026/02/16/BTC_Market_Cycles.html">Bitcoin Market Cycles Through ATH History</a></h4>
+            <h4><a href="/learn/2026/02/26/strategy-guide-check.html">8 Trading Strategies Explained</a></h4>
             <div class="post-meta">
-                <span><i class="fas fa-calendar"></i> Feb 16, 2026</span>
-                <span><i class="fas fa-clock"></i> 8 min</span>
+                <span><i class="fas fa-calendar"></i> Feb 26, 2026</span>
+                <span><i class="fas fa-clock"></i> 15 min</span>
             </div>
         </div>
         
         <div class="post-item">
-            <h4><a href="/learn/2026/02/15/ews-basics.html">EWS Fundamentals: How Our Early Warning System Works</a></h4>
+            <h4><a href="/learn/2026/02/26/ews-basics.html">EWS Fundamentals: How Our Early Warning System Works</a></h4>
             <div class="post-meta">
-                <span><i class="fas fa-calendar"></i> Feb 15, 2026</span>
+                <span><i class="fas fa-calendar"></i> Feb 26, 2026</span>
                 <span><i class="fas fa-clock"></i> 10 min</span>
             </div>
         </div>
@@ -617,7 +561,7 @@ window.updateApp = function() {
 <div class="footer-build-info">
     <div class="build-version">
         <i class="fas fa-code-branch"></i>
-        <span>v1.12.12</span>
+        <span>v1.12.13</span>
     </div>
     <div class="build-date">
         <i class="fas fa-calendar-alt"></i>
@@ -626,7 +570,7 @@ window.updateApp = function() {
     
     <div class="build-time">
         <i class="fas fa-clock"></i>
-        <span>59443.0</span>
+        <span>85377.0</span>
     </div>
     
 </div>    
@@ -662,52 +606,121 @@ window.updateApp = function() {
 </footer>
     </div>
     
-    <!-- Core Scripts -->
-    <script src="/assets/js/main.js?v=1.12.12"></script>
-    <script src="/assets/js/shared.js?v=1.12.12"></script>
-    <script src="/assets/js/reading-list.js?v=1.12.12"></script>
-    <script src="/assets/js/notifications.js?v=1.12.12"></script>
-    <script src="/assets/js/update-notifier.js?v=1.12.12"></script>
+    <!-- ========== SCRIPTS LOADING - TỐI ƯU ========== -->
     
-    <!-- Page Specific Scripts -->
+    <!-- 1. SHARED UTILITIES (không block, load sớm) -->
+    <script src="/assets/js/shared.js?v=1.12.13" defer></script>
+    <script src="/assets/js/reading-list.js?v=1.12.13" defer></script>
+
+    <!-- 2. NOTIFICATION SYSTEM (ưu tiên cao) -->
+    <script src="/assets/js/notifications.js?v=1.12.13" defer></script>
+
+    <!-- 3. MAIN APP LOGIC -->
+    <script src="/assets/js/main.js?v=1.12.13" defer></script>
+
+    <!-- 4. UPDATE NOTIFIER (chạy sau) -->
+    <script src="/assets/js/update-notifier.js?v=1.12.13" defer></script>
+
+    <!-- 5. PAGE SPECIFIC SCRIPTS (chạy cuối) -->
     
-    <script src="/assets/js/interactions.js?v=1.12.12"></script>
-    
-    
-    
-    
-    
-    
+    <script src="/assets/js/interactions.js?v=1.12.13" defer></script>
     
 
     
-    <!-- Active Menu Fix -->
+
+    
+
+    
+
+    <!-- 6. SERVICE WORKER REGISTRATION (chạy cuối cùng) -->
     <script>
-    (function() {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const navLinks = document.querySelectorAll('.nav-link');
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('✅ Service Worker registered with scope:', registration.scope);
+                
+                registration.addEventListener('updatefound', function() {
+                    const newWorker = registration.installing;
+                    
+                    newWorker.addEventListener('statechange', function() {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            window.showUpdateNotification?.();
+                        }
+                    });
+                });
+            })
+            .catch(function(error) {
+                console.error('❌ Service Worker registration failed:', error);
+            });
         
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            const href = link.getAttribute('href');
+        setInterval(() => {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.update();
+            });
+        }, 60 * 60 * 1000);
+    });
+}
+
+window.showUpdateNotification = function() {
+    const banner = document.createElement('div');
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+        <div class="update-content">
+            <i class="fas fa-sync-alt"></i>
+            <span>New version available!</span>
+            <button onclick="window.updateApp()" class="update-btn">Update</button>
+            <button onclick="this.closest('.update-banner').remove()" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+};
+
+window.updateApp = function() {
+    if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+            });
+        });
+    }
+    
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => {
+            registration.unregister();
+        });
+    }).then(() => {
+        window.location.reload(true);
+    });
+};
+</script>
+
+    <!-- 7. ACTIVE MENU FIX (chạy sau cùng) -->
+    <script defer>
+    (function() {
+        // Đợi DOM load xong
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
             
-            if (href === currentPage) link.classList.add('active');
-            if (currentPage === 'index.html' && href === 'index.html') link.classList.add('active');
-            if (currentPage.includes('learn') && href.includes('learn')) link.classList.add('active');
-            if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
-            if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
-            if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
-            if (currentPage.includes('reading-list') && href.includes('reading-list')) link.classList.add('active');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                
+                if (href === currentPage) link.classList.add('active');
+                if (currentPage === 'index.html' && href === 'index.html') link.classList.add('active');
+                if (currentPage.includes('learn') && href.includes('learn')) link.classList.add('active');
+                if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
+                if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
+                if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
+                if (currentPage.includes('reading-list') && href.includes('reading-list')) link.classList.add('active');
+            });
+            
+            console.log('✅ Menu active state updated for:', currentPage);
         });
     })();
     </script>
-    
-    <!-- Debug Info (có thể xóa sau khi fix) -->
-    <!-- <script>
-    console.log('=== LAYOUT DEBUG ===');
-    console.log('Page layout:', 'home');
-    console.log('Page path:', 'index.md');
-    console.log('CSS loaded:', document.styleSheets.length);
-    </script> -->
 </body>
 </html>

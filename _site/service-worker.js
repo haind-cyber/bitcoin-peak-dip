@@ -1,8 +1,8 @@
 // Bitcoin PeakDip Service Worker
-// Version: 1.12.12 - Có thông báo cập nhật phiên bản mới
+// Version: 1.12.13 - Đồng bộ với build system
 
-const CACHE_NAME = 'bitcoin-peakdip-v1.12.12';
-const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.12';
+const CACHE_NAME = 'bitcoin-peakdip-v1.12.13';
+const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.13';
 
 // Local assets - có thể cache
 const LOCAL_ASSETS = [
@@ -30,6 +30,7 @@ const LOCAL_ASSETS = [
   '/assets/js/reading-list.js',
   '/assets/js/notifications.js',
   '/assets/js/update-notifier.js',
+  '/assets/js/shared.js',           // ĐÃ THÊM
   '/assets/icons/icon-72x72.png',
   '/assets/icons/icon-96x96.png',
   '/assets/icons/icon-128x128.png',
@@ -48,9 +49,15 @@ const CDN_ASSETS = [
   'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns'
 ];
 
+// ========== HELPER FUNCTIONS ==========
+function getVersionFromCacheName(cacheName) {
+  const match = cacheName.match(/v([\d\.]+)/);
+  return match ? match[1] : '1.12.12';
+}
+
 // ========== INSTALL EVENT ==========
 self.addEventListener('install', event => {
-  console.log('📦 Service Worker installing version 1.12.10...');
+  console.log(`📦 Service Worker installing version 1.12.12...`);
   
   // Force activation
   self.skipWaiting();
@@ -72,12 +79,12 @@ self.addEventListener('install', event => {
 
 // ========== ACTIVATE EVENT ==========
 self.addEventListener('activate', event => {
-  console.log('🚀 Service Worker activating version 1.12.10...');
+  console.log(`🚀 Service Worker activating version 1.12.12...`);
   
   event.waitUntil(
     caches.keys()
       .then(cacheNames => {
-        // Xóa cache cũ (bao gồm cả manifest cũ)
+        // Xóa cache cũ
         return Promise.all(
           cacheNames
             .filter(name => name !== CACHE_NAME && name !== DYNAMIC_CACHE)
@@ -93,7 +100,7 @@ self.addEventListener('activate', event => {
           clients.forEach(client => {
             client.postMessage({
               type: 'PWA_UPDATED',
-              version: '1.12.10'
+              version: '1.12.12'
             });
           });
         });
@@ -103,97 +110,79 @@ self.addEventListener('activate', event => {
       })
   );
 });
-// Helper: Lấy version từ cache name
-function getVersionFromCacheName(cacheName) {
-  const match = cacheName.match(/v([\d\.]+)/);
-  return match ? match[1] : '1.8.7';
-}
 
 // ========== MESSAGE HANDLER ==========
 self.addEventListener('message', event => {
   console.log('📨 Service Worker received message:', event.data);
   
-  // Xử lý message từ client
-  if (event.data) {
-    switch (event.data.type) {
-      
-      // Kiểm tra version hiện tại
-      case 'CHECK_VERSION':
-        event.waitUntil(
-          clients.matchAll().then(clients => {
+  if (!event.data) return;
+  
+  switch (event.data.type) {
+    case 'CHECK_VERSION':
+      event.waitUntil(
+        clients.matchAll().then(clients => {
+          clients.forEach(client => {
+            client.postMessage({
+              type: 'VERSION_RESPONSE',
+              version: getVersionFromCacheName(CACHE_NAME)
+            });
+          });
+        })
+      );
+      break;
+    
+    case 'FORCE_UPDATE':
+      console.log('🔄 Force update requested');
+      event.waitUntil(
+        caches.keys().then(cacheNames => {
+          return Promise.all(
+            cacheNames.map(name => caches.delete(name))
+          );
+        }).then(() => {
+          return clients.matchAll().then(clients => {
             clients.forEach(client => {
               client.postMessage({
-                type: 'VERSION_RESPONSE',
-                version: getVersionFromCacheName(CACHE_NAME)
+                type: 'UPDATE_COMPLETED',
+                message: 'Cache cleared, ready to reload'
               });
             });
-          })
-        );
-        break;
-      
-      // Force update
-      case 'FORCE_UPDATE':
-        console.log('🔄 Force update requested');
-        event.waitUntil(
-          caches.keys().then(cacheNames => {
-            return Promise.all(
-              cacheNames.map(name => caches.delete(name))
-            );
-          }).then(() => {
-            return clients.matchAll().then(clients => {
-              clients.forEach(client => {
-                client.postMessage({
-                  type: 'UPDATE_COMPLETED',
-                  message: 'Cache cleared, ready to reload'
-                });
-              });
-            });
-          })
-        );
-        break;
-      
-      // SHOW_NOTIFICATION từ app
-      case 'SHOW_NOTIFICATION':
-        const article = event.data.article;
-        event.waitUntil(
-          self.registration.showNotification('📚 Bài viết mới từ Bitcoin PeakDip', {
-            body: article.body,
-            icon: '/assets/icons/icon-192x192.png',
-            badge: '/assets/icons/icon-72x72.png',
-            vibrate: [200, 100, 200],
-            data: {
-              url: article.url,
-              articleId: article.id,
-              slug: article.slug,
-              title: article.title,
-              date: article.date
-            },
-            actions: [
-              {
-                action: 'read',
-                title: '📖 Đọc ngay'
-              },
-              {
-                action: 'later',
-                title: '⏰ Đọc sau'
-              }
-            ],
-            tag: `article-${article.id}`,
-            renotify: true,
-            requireInteraction: true
-          })
-        );
-        break;
-      
-      // Kiểm tra bài viết mới
-      case 'CHECK_NEW_ARTICLES':
-        console.log('🔍 Checking for new articles...');
-        // Có thể fetch articles.json ở đây nếu cần
-        break;
-      
-      default:
-        console.log('Unknown message type:', event.data.type);
-    }
+          });
+        })
+      );
+      break;
+    
+    case 'SHOW_NOTIFICATION':
+      const article = event.data.article;
+      event.waitUntil(
+        self.registration.showNotification('📚 Bài viết mới từ Bitcoin PeakDip', {
+          body: article.body,
+          icon: '/assets/icons/icon-192x192.png',
+          badge: '/assets/icons/icon-72x72.png',
+          vibrate: [200, 100, 200],
+          data: {
+            url: article.url,
+            articleId: article.id,
+            slug: article.slug,
+            title: article.title,
+            date: article.date
+          },
+          actions: [
+            { action: 'read', title: '📖 Đọc ngay' },
+            { action: 'later', title: '⏰ Đọc sau' }
+          ],
+          tag: `article-${article.id}`,
+          renotify: true,
+          requireInteraction: true
+        })
+      );
+      break;
+    
+    case 'CHECK_NEW_ARTICLES':
+      console.log('🔍 Checking for new articles...');
+      break;
+    
+    default:
+      console.log('Unknown message type:', event.data.type);
   }
 });
 
@@ -206,13 +195,11 @@ self.addEventListener('notificationclick', event => {
   const data = event.notification.data;
   
   if (action === 'later') {
-    // Lưu vào reading list
     event.waitUntil(handleSaveForLater(data));
     return;
   }
   
   if (action === 'read' || action === 'view' || !action) {
-    // Mặc định: đọc ngay
     const url = data?.url || '/learn/';
     
     event.waitUntil(
@@ -233,29 +220,31 @@ self.addEventListener('notificationclick', event => {
 async function handleSaveForLater(data) {
   console.log('💾 Saving for later:', data);
   
-  // Lưu vào cache
-  const cache = await caches.open('reading-list-queue');
-  await cache.put(
-    'pending-save',
-    new Response(JSON.stringify(data), {
-      headers: { 'Content-Type': 'application/json' }
-    })
-  );
-  
-  // Thông báo cho tất cả clients
-  const clients = await self.clients.matchAll();
-  clients.forEach(client => {
-    client.postMessage({
-      type: 'SAVE_FOR_LATER',
-      article: {
-        id: data.articleId || data.id,
-        title: data.title,
-        slug: data.slug,
-        date: data.date,
-        url: data.url
-      }
+  try {
+    const cache = await caches.open('reading-list-queue');
+    await cache.put(
+      'pending-save',
+      new Response(JSON.stringify(data), {
+        headers: { 'Content-Type': 'application/json' }
+      })
+    );
+    
+    const clients = await self.clients.matchAll();
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'SAVE_FOR_LATER',
+        article: {
+          id: data.articleId || data.id,
+          title: data.title,
+          slug: data.slug,
+          date: data.date,
+          url: data.url
+        }
+      });
     });
-  });
+  } catch (error) {
+    console.error('❌ Error saving for later:', error);
+  }
 }
 
 // ========== FETCH HANDLER ==========
@@ -277,7 +266,6 @@ self.addEventListener('fetch', event => {
       fetch(event.request)
         .catch(error => {
           console.warn(`⚠️ CDN fetch failed: ${url.pathname}`, error.message);
-          // Trả về response rỗng hoặc fallback
           if (url.pathname.includes('font-awesome')) {
             return new Response('', { 
               status: 200,
@@ -296,20 +284,14 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // version.json - network first (luôn lấy mới)
+  // version.json - network first
   if (url.pathname.includes('version.json')) {
     event.respondWith(networkFirst(event.request));
     return;
   }
   
-  // Cache markdown articles với stale-while-revalidate
-  if (url.pathname.includes('/learn/articles/') && url.pathname.endsWith('.md')) {
-    event.respondWith(staleWhileRevalidate(event.request));
-    return;
-  }
-
-  // Cache articles.json với network-first
-  if (url.pathname.includes('/_data/articles.json')) {
+  // articles.json - SỬA ĐƯỜNG DẪN
+  if (url.pathname.includes('/assets/data/articles.json')) {
     event.respondWith(networkFirst(event.request));
     return;
   }  
@@ -341,7 +323,6 @@ self.addEventListener('fetch', event => {
 
 // ========== CACHING STRATEGIES ==========
 
-// Helper: Network first strategy
 function networkFirst(request) {
   return fetch(request)
     .then(response => {
@@ -360,11 +341,9 @@ function networkFirst(request) {
           if (cachedResponse) {
             return cachedResponse;
           }
-          // Return offline fallback for HTML
           if (request.headers.get('Accept')?.includes('text/html')) {
             return caches.match('/offline.html');
           }
-          // Return offline fallback for CSV
           if (request.url.includes('.csv')) {
             return new Response(
               'timestamp,signal_type,price,confidence,distance,validation,strategy\n' +
@@ -379,9 +358,7 @@ function networkFirst(request) {
     });
 }
 
-// Helper: Cache first strategy
 function cacheFirst(request) {
-  // Bỏ qua chrome-extension:// requests
   if (request.url.startsWith('chrome-extension://')) {
     return fetch(request);
   }
@@ -405,7 +382,6 @@ function cacheFirst(request) {
     });
 }
 
-// Helper: Stale while revalidate
 function staleWhileRevalidate(request) {
   if (request.url.startsWith('chrome-extension://')) {
     return fetch(request);
@@ -440,7 +416,6 @@ self.addEventListener('sync', event => {
   }
 });
 
-// Sync function for CSV data
 async function syncCSVData() {
   try {
     const cache = await caches.open(DYNAMIC_CACHE);
@@ -487,16 +462,13 @@ self.addEventListener('push', event => {
       vibrate: [200, 100, 200],
       data: data.data,
       actions: [
-        {
-          action: 'view',
-          title: 'View Signals'
-        }
+        { action: 'view', title: 'View Signals' }
       ]
     })
   );
 });
 
-// ========== PERIODIC SYNC (nếu browser hỗ trợ) ==========
+// ========== PERIODIC SYNC ==========
 self.addEventListener('periodicsync', event => {
   if (event.tag === 'update-check') {
     event.waitUntil(checkForUpdates());
@@ -523,4 +495,4 @@ async function checkForUpdates() {
   }
 }
 
-console.log('✅ Service Worker v2.0.0 loaded successfully');
+console.log('✅ Service Worker v1.12.12 loaded successfully');
