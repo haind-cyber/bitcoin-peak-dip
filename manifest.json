@@ -1,0 +1,130 @@
+{
+  "name": "Bitcoin PeakDip",
+  "short_name": "Bitcoin PeakDip",
+  "description": "{{ site.description }}",
+  "start_url": "/?v={{ site.version }}&utm_source=pwa",
+  "display": "standalone",
+  "background_color": "#050811",
+  "theme_color": "#00d4ff",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-72x72.png?v={{ site.version }}",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/icon-96x96.png?v={{ site.version }}",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/icon-128x128.png?v={{ site.version }}",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/icon-144x144.png?v={{ site.version }}",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/icon-152x152.png?v={{ site.version }}",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/icon-192x192.png?v={{ site.version }}",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/icon-384x384.png?v={{ site.version }}",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/icon-512x512.png?v={{ site.version }}",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "EWS Signals",
+      "short_name": "Signals",
+      "description": "View real-time Bitcoin signals",
+      "url": "/signals.html?v={{ site.version }}",
+      "icons": [
+        {
+          "src": "/assets/icons/signal-icon-192x192.png?v={{ site.version }}",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Product Suite",
+      "short_name": "Products",
+      "description": "Explore trading strategies",
+      "url": "/product.html?v={{ site.version }}"
+    },
+    {
+      "name": "About System",
+      "short_name": "About",
+      "description": "Learn how EWS works",
+      "url": "/about.html?v={{ site.version }}"
+    }
+  ],
+  "categories": [
+    "finance",
+    "cryptocurrency",
+    "trading"
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.jpg?v={{ site.version }}",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Bitcoin PeakDip Home Screen"
+    },
+    {
+      "src": "/screenshots/signals.jpg?v={{ site.version }}",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "EWS Signals Dashboard"
+    },
+    {
+      "src": "/screenshots/learn.jpg?v={{ site.version }}",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Knowledge Base"
+    },
+    {
+      "src": "/screenshots/article.jpg?v={{ site.version }}",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Article View"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "lang": "en",
+  "dir": "ltr",
+  "display_override": [
+    "standalone",
+    "fullscreen"
+  ]
+}

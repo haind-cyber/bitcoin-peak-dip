@@ -1,0 +1,20 @@
+{
+  "name": "bitcoin-peakdip",
+  "version": "1.12.2",
+  "description": "Bitcoin PeakDip - Early Warning System",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.js && bundle exec jekyll build",
+    "serve": "node build.js && bundle exec jekyll serve",
+    "dev": "node build.js && bundle exec jekyll serve --livereload",
+    "prebuild": "bundle install",
+    "postbuild": "echo '✅ Build successful!'",
+    "generate-articles": "ruby generate_local.rb"
+  },
+  "keywords": ["bitcoin", "trading", "ews", "cryptocurrency"],
+  "author": "Nguyen Duc Hai",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

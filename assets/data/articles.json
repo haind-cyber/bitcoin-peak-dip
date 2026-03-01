@@ -1,0 +1,48 @@
+{
+  "articles": [
+    {
+      "id": "BTC_Market_Cycles",
+      "slug": "BTC_Market_Cycles",
+      "url": "/learn/2026/02/16/BTC_Market_Cycles.html",
+      "title": "Bitcoin Market Cycles Through ATH History",
+      "description": "Comprehensive analysis of Bitcoin's ATH milestones across different market cycles from 2013 to 2025, with insights on halving events and institutional adoption",
+      "date": "2026-02-16",
+      "author": "Bitcoin PeakDip Team",
+      "category": "Market Analysis",
+      "reading_time": 8,
+      "level": "Intermediate",
+      "icon": "chart-line",
+      "featured": false
+    },
+    {
+      "id": "btc-signal-trigger-dataset",
+      "slug": "btc-signal-trigger-dataset",
+      "url": "/learn/2026/02/16/btc-signal-trigger-dataset.html",
+      "title": "BTC Signal Trigger Dataset (2022-2025)",
+      "description": "Comprehensive dataset of Bitcoin peak and dip signals from 2022-2025 with market analysis and on-chain metrics",
+      "date": "2026-02-16",
+      "author": "Bitcoin PeakDip Team",
+      "category": "Market Analysis",
+      "reading_time": 12,
+      "level": "Advanced",
+      "icon": "database",
+      "featured": false
+    },
+    {
+      "id": "ews-basics",
+      "slug": "ews-basics",
+      "url": "/learn/2026/02/15/ews-basics.html",
+      "title": "EWS Fundamentals: How Our Early Warning System Works",
+      "description": "Learn how our Early Warning System detects Bitcoin peaks and dips using advanced AI algorithms.",
+      "date": "2026-02-15",
+      "author": "Bitcoin PeakDip Team",
+      "category": "fundamentals",
+      "reading_time": 10,
+      "level": "Beginner",
+      "icon": "satellite-dish",
+      "featured": false
+    }
+  ],
+  "last_updated": "2026-03-01T18:10:11+07:00",
+  "total": 3
+}
