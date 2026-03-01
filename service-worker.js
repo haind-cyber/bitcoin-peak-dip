@@ -1,8 +1,8 @@
 // Bitcoin PeakDip Service Worker
-// Version: 1.12.8 - Có thông báo cập nhật phiên bản mới
+// Version: 1.12.11 - Có thông báo cập nhật phiên bản mới
 
-const CACHE_NAME = 'bitcoin-peakdip-v1.12.8';
-const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.8';
+const CACHE_NAME = 'bitcoin-peakdip-v1.12.11';
+const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.11';
 
 // Local assets - có thể cache
 const LOCAL_ASSETS = [
@@ -50,16 +50,14 @@ const CDN_ASSETS = [
 
 // ========== INSTALL EVENT ==========
 self.addEventListener('install', event => {
-  console.log('📦 Service Worker installing...');
+  console.log('📦 Service Worker installing version 1.12.10...');
   
-  // Skip waiting để active ngay lập tức
+  // Force activation
   self.skipWaiting();
   
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('✅ Caching local assets...');
-        // Cache từng file riêng lẻ để biết file nào lỗi
         return Promise.allSettled(
           LOCAL_ASSETS.map(url => {
             return cache.add(url).catch(err => {
@@ -69,26 +67,17 @@ self.addEventListener('install', event => {
           })
         );
       })
-      .then(results => {
-        const failed = results.filter(r => r.status === 'rejected');
-        if (failed.length > 0) {
-          console.warn(`⚠️ ${failed.length} local assets failed to cache`);
-        } else {
-          console.log('✅ All local assets cached successfully');
-        }
-        return self.skipWaiting();
-      })
   );
 });
 
 // ========== ACTIVATE EVENT ==========
 self.addEventListener('activate', event => {
-  console.log('🚀 Service Worker activating...');
+  console.log('🚀 Service Worker activating version 1.12.10...');
   
   event.waitUntil(
     caches.keys()
       .then(cacheNames => {
-        // Xóa cache cũ
+        // Xóa cache cũ (bao gồm cả manifest cũ)
         return Promise.all(
           cacheNames
             .filter(name => name !== CACHE_NAME && name !== DYNAMIC_CACHE)
@@ -99,14 +88,12 @@ self.addEventListener('activate', event => {
         );
       })
       .then(() => {
-        console.log('✅ Service Worker activated, taking control');
-        
-        // THÊM: Thông báo cho tất cả clients về version mới
+        // Thông báo cho tất cả clients về version mới
         return clients.matchAll().then(clients => {
           clients.forEach(client => {
             client.postMessage({
-              type: 'NEW_VERSION_AVAILABLE',
-              version: getVersionFromCacheName(CACHE_NAME)
+              type: 'PWA_UPDATED',
+              version: '1.12.10'
             });
           });
         });
@@ -116,7 +103,6 @@ self.addEventListener('activate', event => {
       })
   );
 });
-
 // Helper: Lấy version từ cache name
 function getVersionFromCacheName(cacheName) {
   const match = cacheName.match(/v([\d\.]+)/);

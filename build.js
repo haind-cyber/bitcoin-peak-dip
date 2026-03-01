@@ -72,6 +72,21 @@ swContent = swContent.replace(
     `CACHE_NAME = 'bitcoin-peakdip-v${newVersion}'`
 );
 
+// 7. Update manifest.json với version mới
+console.log('📝 Updating manifest.json...');
+const manifestPath = path.join(__dirname, 'manifest.json');
+if (fs.existsSync(manifestPath)) {
+    let manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    
+    // Cập nhật name với version mới
+    manifest.name = `Bitcoin PeakDip v${newVersion}`;
+    manifest.short_name = `PeakDip v${newVersion}`;
+    
+    // Ghi lại file
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+    console.log('✅ manifest.json updated');
+}
+
 // Update DYNAMIC_CACHE
 swContent = swContent.replace(
     /DYNAMIC_CACHE = ['"]bitcoin-peakdip-dynamic-v[\d.]+['"]/,

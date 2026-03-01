@@ -23,6 +23,7 @@
     <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
     <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
     
+    <link rel="manifest" href="{{ '/manifest.json' | relative_url }}?v={{ site.version }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -82,6 +83,21 @@
         }
     }
     </script>
+    <!-- Thêm script kiểm tra PWA version -->
+    <script>
+    // Kiểm tra PWA version khi cài đặt
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            const pwaVersion = localStorage.getItem('pwa_version');
+            const currentVersion = '{{ site.version }}';
+            
+            if (pwaVersion && pwaVersion !== currentVersion) {
+                console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
+                localStorage.removeItem('pwa_version');
+            }
+        });
+    }
+    </script>    
 </head>
 <body>
     {% include mobile-detection.html %}

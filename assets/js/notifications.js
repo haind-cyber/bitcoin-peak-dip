@@ -1,16 +1,18 @@
-// notifications.js - Hệ thống thông báo bài viết mới tập trung
-// Version: 2.1.3 - Tối ưu: Chỉ toast khi lỗi, nút thay đổi text
+// notifications.js - Hệ thống thông báo bài viết mới
+// Version: 2.5.0 - Tự động xin quyền notification từ trình duyệt
+// Bảo toàn: Reading list, Cache, Polling, Service Worker, Toast, Badge
 
 const NOTIFICATION_CONFIG = {
-    version: '2.1.3',
-    checkInterval: 60 * 60 * 1000, // 30 phút
-    articleMetadataPath: '/_data/articles.json',
+    version: '2.5.0',
+    checkInterval: 60 * 60 * 1000, // 60 phút (đồng bộ với comment)
+    articleMetadataPath: '/learn/articles.json',
     notifiedKey: 'peakdip_notified_articles_v2',
     enabledKey: 'peakdip_notifications_enabled',
     cacheKey: 'peakdip_articles_cache',
     cacheTimeKey: 'peakdip_articles_cache_time',
     cacheDuration: 24 * 60 * 60 * 1000, // 24 giờ
-    newArticleDays: 7
+    newArticleDays: 7,
+    permissionPromptedKey: 'peakdip_permission_prompted' // Theo dõi đã hỏi quyền chưa
 };
 
 class ArticleNotificationSystem {
@@ -21,6 +23,7 @@ class ArticleNotificationSystem {
         this.isEnabled = this.getNotificationStatus();
         this.lastCheckTime = null;
         this.pendingArticles = [];
+        this.permissionPrompted = localStorage.getItem(NOTIFICATION_CONFIG.permissionPromptedKey) === 'true';
         
         // Flag để tránh double notification
         this.isFirstTimeEnable = true;
@@ -39,20 +42,24 @@ class ArticleNotificationSystem {
             return;
         }
 
-        // Kiểm tra trạng thái đã được bật chưa
-        if (this.isEnabled && Notification.permission === 'granted') {
-            this.startPolling();
-            this.addNotificationButton('enabled');
-            this.isFirstTimeEnable = false;
-        } else {
-            this.addNotificationButton();
-        }
+        // Kiểm tra trạng thái permission
+        const permission = Notification.permission;
+        console.log('📌 Notification permission:', permission);
+
+        // Luôn hiển thị nút bật/tắt, không phụ thuộc vào permission
+        this.addNotificationButton();
 
         // Load articles ngay lập tức
         this.loadArticles();
         
         // Lắng nghe messages từ Service Worker
         this.setupServiceWorkerListener();
+
+        // Tự động start polling nếu đã được cấp quyền và enabled
+        if (permission === 'granted' && this.isEnabled) {
+            this.startPolling();
+            this.isFirstTimeEnable = false;
+        }
     }
 
     // ===== LẮNG NGHE TỪ SERVICE WORKER =====
@@ -212,6 +219,10 @@ class ArticleNotificationSystem {
 
     // ===== KIỂM TRA BÀI VIẾT MỚI =====
     async checkNewArticles(skipNotification = false) {
+        if (!this.isEnabled || Notification.permission !== 'granted') {
+            return;
+        }
+
         console.log('🔄 Đang kiểm tra bài viết mới...');
         
         // Tìm bài viết mới
@@ -268,15 +279,15 @@ class ArticleNotificationSystem {
                 
                 await registration.showNotification('📚 Bài viết mới từ Bitcoin PeakDip', {
                     body: `${article.title}\n⏱️ ${article.reading_time} phút đọc • ${article.level}`,
-                    icon: '/assets/icons/icon-192x192.png',
-                    badge: '/assets/icons/icon-72x72.png',
+                    icon: '/icons/icon-192x192.png',
+                    badge: '/icons/icon-72x72.png',
                     vibrate: [200, 100, 200],
                     tag: `article-${article.id}`,
                     renotify: true,
                     requireInteraction: true,
                     silent: false,
                     data: {
-                        url: `/learn/article.html?id=${article.slug}`,
+                        url: article.url || `/learn/article.html?id=${article.slug}`,
                         articleId: article.id,
                         title: article.title,
                         slug: article.slug,
@@ -296,8 +307,8 @@ class ArticleNotificationSystem {
                 
                 await registration.showNotification(`📚 ${articles.length} bài viết mới từ Bitcoin PeakDip`, {
                     body: titles + (titles.length >= 150 ? '...' : ''),
-                    icon: '/assets/icons/icon-192x192.png',
-                    badge: '/assets/icons/icon-72x72.png',
+                    icon: '/icons/icon-192x192.png',
+                    badge: '/icons/icon-72x72.png',
                     vibrate: [200, 100, 200],
                     tag: 'multiple-articles',
                     requireInteraction: true,
@@ -333,8 +344,8 @@ class ArticleNotificationSystem {
             
             const notification = new Notification('📚 Bài viết mới từ Bitcoin PeakDip', {
                 body: `${article.title}\n⏱️ ${article.reading_time} phút đọc • ${article.level}`,
-                icon: '/assets/icons/icon-192x192.png',
-                badge: '/assets/icons/icon-72x72.png',
+                icon: '/icons/icon-192x192.png',
+                badge: '/icons/icon-72x72.png',
                 tag: `article-${article.id}`,
                 renotify: true,
                 requireInteraction: true,
@@ -344,7 +355,7 @@ class ArticleNotificationSystem {
             notification.onclick = (event) => {
                 event.preventDefault();
                 window.focus();
-                window.location.href = `/learn/article.html?id=${article.slug}`;
+                window.location.href = article.url || `/learn/article.html?id=${article.slug}`;
             };
 
         } else {
@@ -352,8 +363,8 @@ class ArticleNotificationSystem {
             
             const notification = new Notification(`📚 ${articles.length} bài viết mới từ Bitcoin PeakDip`, {
                 body: titles + (titles.length >= 150 ? '...' : ''),
-                icon: '/assets/icons/icon-192x192.png',
-                badge: '/assets/icons/icon-72x72.png',
+                icon: '/icons/icon-192x192.png',
+                badge: '/icons/icon-72x72.png',
                 tag: 'multiple-articles',
                 requireInteraction: true,
                 silent: false
@@ -416,35 +427,51 @@ class ArticleNotificationSystem {
         }
     }
 
-    // ===== NÚT BẬT/TẮT THÔNG BÁO (ĐÃ SỬA VỊ TRÍ SANG GÓC PHẢI) =====
-    addNotificationButton(status = 'prompt') {
-        if (!document.getElementById('statusIndicator')) {
-            setTimeout(() => this.addNotificationButton(status), 500);
-            return;
-        }
-
+    // ===== NÚT BẬT/TẮT THÔNG BÁO =====
+    addNotificationButton() {
         // Xóa tất cả nút cũ
         const oldBtns = document.querySelectorAll('.notification-toggle-btn, .push-simple-btn');
         oldBtns.forEach(btn => btn.remove());
 
         const btn = document.createElement('button');
-        btn.className = `notification-toggle-btn ${status}`;
+        btn.className = 'notification-toggle-btn';
+        btn.id = 'notificationToggleBtn';
         
-        if (status === 'enabled') {
-            // ĐÃ SỬA: "BẠT" → "BẬT"
-            btn.innerHTML = '<i class="fas fa-bell"></i><span>Thông báo BẬT</span>';
-            btn.onclick = (e) => this.handleButtonClick(e, 'disable');
-        } else {
-            btn.innerHTML = '<i class="fas fa-bell-slash"></i><span>Bật thông báo bài viết mới</span>';
-            btn.onclick = (e) => this.handleButtonClick(e, 'enable');
-        }
+        const permission = Notification.permission;
+        const isEnabled = this.isEnabled;
 
-        // THAY ĐỔI: Append trực tiếp vào body thay vì statusIndicator
+        // Xác định nội dung nút dựa trên trạng thái
+        let icon, text;
+        
+        if (permission === 'granted') {
+            if (isEnabled) {
+                icon = 'fa-bell';
+                text = 'Thông báo BẬT';
+                btn.classList.add('enabled');
+            } else {
+                icon = 'fa-bell-slash';
+                text = 'Thông báo TẮT';
+            }
+        } else if (permission === 'denied') {
+            icon = 'fa-ban';
+            text = 'Thông báo ĐÃ BỊ CHẶN';
+            btn.classList.add('blocked');
+        } else {
+            // permission === 'default' - Chưa hỏi
+            icon = 'fa-bell';
+            text = 'Bật thông báo bài viết mới';
+        }
+        
+        btn.innerHTML = `<i class="fas ${icon}"></i><span>${text}</span>`;
+
+        // Xử lý click
+        btn.onclick = (e) => this.handleButtonClick(e);
+
         document.body.appendChild(btn);
     }
 
     // ===== XỬ LÝ CLICK VỚI DEBOUNCE =====
-    handleButtonClick(e, action) {
+    handleButtonClick(e) {
         e.preventDefault();
         
         if (this.clickTimeout) {
@@ -453,47 +480,107 @@ class ArticleNotificationSystem {
         }
         
         this.clickTimeout = setTimeout(async () => {
-            if (action === 'enable') {
+            const permission = Notification.permission;
+            
+            if (permission === 'granted') {
+                // Đã được cấp quyền -> Toggle on/off
+                if (this.isEnabled) {
+                    this.disableNotifications();
+                } else {
+                    this.enableNotifications();
+                }
+            } else {
+                // Chưa được cấp quyền (default hoặc denied) -> Xin quyền
                 await this.requestPermission();
-            } else if (action === 'disable') {
-                this.disableNotifications();
             }
+            
             this.clickTimeout = null;
         }, 300);
     }
 
-    // ===== YÊU CẦU QUYỀN (ĐÃ TỐI ƯU: CHỈ TOAST KHI LỖI) =====
+    // ===== YÊU CẦU QUYỀN TỰ ĐỘNG TỪ TRÌNH DUYỆT =====
     async requestPermission() {
         try {
-            if (this.isEnabled && Notification.permission === 'granted') {
-                console.log('ℹ️ Notifications already enabled');
-                return;
+            // Kiểm tra nếu đã bị denied
+            if (Notification.permission === 'denied') {
+                this.showToast('❌ Trình duyệt đã chặn thông báo. Nhấn lại để thử.', 'warning', 4000);
+                return false;
             }
             
+            // Hiển thị thông báo đang xin quyền
+            this.showToast('🔄 Đang yêu cầu quyền thông báo...', 'info', 2000);
+            
+            // Gọi requestPermission - ĐÂY LÀ LỆNH DUY NHẤT ĐỂ HIỆN POPUP
             const permission = await Notification.requestPermission();
             
+            console.log('✅ Permission result:', permission);
+            
             if (permission === 'granted') {
+                // User đã cho phép
                 this.setNotificationStatus(true);
-                this.addNotificationButton('enabled');
-                this.startPolling();
+                this.permissionPrompted = true;
+                localStorage.setItem(NOTIFICATION_CONFIG.permissionPromptedKey, 'true');
                 
+                this.startPolling();
                 this.showTestNotification();
                 
-                // ✅ BỎ TOAST - chỉ log console
+                // Cập nhật nút
+                this.addNotificationButton();
+                
+                // Chỉ toast khi thành công (giữ nguyên behavior cũ)
                 console.log('✅ Đã bật thông báo bài viết mới');
                 
                 await this.loadArticles(true, true);
                 this.isFirstTimeEnable = false;
-            } else {
-                // ✅ CHỈ TOAST KHI TỪ CHỐI QUYỀN
+                
+                return true;
+                
+            } else if (permission === 'denied') {
+                // User đã từ chối
+                this.setNotificationStatus(false);
+                this.permissionPrompted = true;
+                localStorage.setItem(NOTIFICATION_CONFIG.permissionPromptedKey, 'true');
+                
+                this.addNotificationButton();
+                
+                // Chỉ toast khi lỗi (giữ nguyên behavior cũ)
                 this.showToast('❌ Cần bật thông báo để nhận bài viết mới', 'warning');
+                return false;
+                
+            } else {
+                // User đóng popup (permission === 'default')
+                this.addNotificationButton();
+                // Không toast, chỉ log console (giữ nguyên behavior cũ)
+                console.log('ℹ️ Người dùng đã đóng hộp thoại thông báo');
+                return false;
             }
+            
         } catch (error) {
-            console.error('Lỗi yêu cầu quyền:', error);
+            console.error('❌ Lỗi yêu cầu quyền:', error);
+            this.showToast('❌ Có lỗi xảy ra khi yêu cầu quyền', 'error');
+            return false;
         }
     }
 
-    // ===== TẮT THÔNG BÁO (ĐÃ TỐI ƯU: CHỈ TOAST KHI LỖI) =====
+    // ===== BẬT NOTIFICATION (KHI ĐÃ CÓ QUYỀN) =====
+    enableNotifications() {
+        if (Notification.permission !== 'granted') {
+            this.requestPermission();
+            return;
+        }
+        
+        this.setNotificationStatus(true);
+        this.startPolling();
+        this.addNotificationButton();
+        
+        // Log console, không toast (giữ nguyên behavior cũ)
+        console.log('✅ Đã bật thông báo bài viết mới');
+        
+        // Kiểm tra bài viết mới ngay
+        this.loadArticles(true, true);
+    }
+
+    // ===== TẮT THÔNG BÁO =====
     disableNotifications() {
         if (!this.isEnabled) {
             console.log('ℹ️ Notifications already disabled');
@@ -502,9 +589,9 @@ class ArticleNotificationSystem {
         
         this.setNotificationStatus(false);
         this.stopPolling();
-        this.addNotificationButton('prompt');
+        this.addNotificationButton();
         
-        // ✅ BỎ TOAST - chỉ log console
+        // Log console, không toast (giữ nguyên behavior cũ)
         console.log('🔕 Đã tắt thông báo bài viết mới');
     }
 
@@ -538,20 +625,20 @@ class ArticleNotificationSystem {
             if (registration && registration.active) {
                 await registration.showNotification('✅ Đã bật thông báo thành công', {
                     body: 'Bạn sẽ nhận được thông báo khi có bài viết mới',
-                    icon: '/assets/icons/icon-192x192.png',
+                    icon: '/icons/icon-192x192.png',
                     tag: 'test-notification',
                     silent: false
                 });
             } else {
                 new Notification('✅ Đã bật thông báo thành công', {
                     body: 'Bạn sẽ nhận được thông báo khi có bài viết mới',
-                    icon: '/assets/icons/icon-192x192.png'
+                    icon: '/icons/icon-192x192.png'
                 });
             }
         } catch (e) {
             new Notification('✅ Đã bật thông báo thành công', {
                 body: 'Bạn sẽ nhận được thông báo khi có bài viết mới',
-                icon: '/assets/icons/icon-192x192.png'
+                icon: '/icons/icon-192x192.png'
             });
         }
     }
@@ -615,24 +702,18 @@ class ArticleNotificationSystem {
     }
 }
 
-// ===== CSS CHO NOTIFICATION - ĐÃ SỬA VỊ TRÍ SANG GÓC PHẢI =====
+// ===== CSS CHO NOTIFICATION =====
 (function addNotificationStyles() {
     if (document.getElementById('notification-styles')) return;
 
     const style = document.createElement('style');
     style.id = 'notification-styles';
     style.textContent = `
-        /* ===== NÚT BẬT/TẮT THÔNG BÁO - GÓC PHẢI ===== */
+        /* NÚT BẬT/TẮT THÔNG BÁO */
         .notification-toggle-btn {
-            /* Vị trí - GÓC PHẢI DƯỚI CÙNG */
             position: fixed;
             bottom: 30px;
             right: 30px;
-            left: auto !important;
-            top: auto !important;
-            transform: none !important;
-            
-            /* Style */
             background: linear-gradient(135deg, #00d4ff, #f7931a);
             color: white;
             border: none;
@@ -649,17 +730,10 @@ class ArticleNotificationSystem {
             border: 2px solid rgba(255,255,255,0.3);
             transition: all 0.3s ease;
             animation: slideInRight 0.5s ease;
-            
-            /* Đảm bảo không bị ảnh hưởng bởi style khác */
-            margin: 0;
-            width: auto;
-            height: auto;
-            pointer-events: auto;
         }
 
-        /* Hover effect */
         .notification-toggle-btn:hover {
-            transform: translateY(-3px) !important;
+            transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0,212,255,0.6);
             border-color: white;
         }
@@ -675,81 +749,22 @@ class ArticleNotificationSystem {
             box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6);
         }
 
+        /* Khi bị chặn */
+        .notification-toggle-btn.blocked {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            opacity: 0.9;
+        }
+
+        .notification-toggle-btn.blocked:hover {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+        }
+
         /* Icon */
         .notification-toggle-btn i {
             font-size: 16px;
         }
 
-        /* ===== MOBILE: SÁT MÉP PHẢI HƠN ===== */
-        @media (max-width: 768px) {
-            .notification-toggle-btn {
-                bottom: 20px;
-                right: 15px !important;
-                padding: 0;
-                width: 52px;
-                height: 52px;
-                border-radius: 50%;
-                justify-content: center;
-                box-shadow: 0 4px 15px rgba(0,212,255,0.5);
-                animation: slideInRight 0.5s ease, mobilePulse 2s infinite;
-            }
-            
-            /* Ẩn text trên mobile */
-            .notification-toggle-btn span {
-                display: none;
-            }
-            
-            /* Icon to hơn dễ bấm */
-            .notification-toggle-btn i {
-                font-size: 24px;
-                margin: 0;
-            }
-            
-            /* Mở rộng vùng bấm cho dễ dùng */
-            .notification-toggle-btn::after {
-                content: '';
-                position: absolute;
-                top: -10px;
-                right: -10px;
-                bottom: -10px;
-                left: -10px;
-                background: transparent;
-                border-radius: 50%;
-            }
-            
-            /* Animation pulse cho mobile */
-            @keyframes mobilePulse {
-                0%, 100% {
-                    box-shadow: 0 4px 15px rgba(0,212,255,0.5);
-                }
-                50% {
-                    box-shadow: 0 4px 25px rgba(0,212,255,0.9);
-                }
-            }
-        }
-
-        /* Màn hình rất nhỏ (dưới 480px) */
-        @media (max-width: 480px) {
-            .notification-toggle-btn {
-                right: 12px !important;
-                bottom: 15px;
-                width: 48px;
-                height: 48px;
-            }
-            
-            .notification-toggle-btn i {
-                font-size: 22px;
-            }
-            
-            .notification-toggle-btn::after {
-                top: -8px;
-                right: -8px;
-                bottom: -8px;
-                left: -8px;
-            }
-        }
-
-        /* ===== STATUS INDICATOR - GIỮ NGUYÊN Ở GIỮA ===== */
+        /* STATUS INDICATOR */
         .status-indicator {
             position: fixed;
             bottom: 30px;
@@ -810,26 +825,7 @@ class ArticleNotificationSystem {
             }
         }
 
-        /* Responsive cho status indicator */
-        @media (max-width: 768px) {
-            .status-indicator {
-                padding: 12px 20px;
-                bottom: 20px;
-                max-width: 90%;
-            }
-            
-            .status-text {
-                font-size: 1em;
-                letter-spacing: 1px;
-            }
-            
-            .status-light {
-                width: 16px;
-                height: 16px;
-            }
-        }
-
-        /* ===== TOAST MESSAGE - GIỮA DƯỚI ===== */
+        /* TOAST MESSAGE */
         .notification-toast {
             position: fixed;
             bottom: 100px;
@@ -872,8 +868,44 @@ class ArticleNotificationSystem {
             background: linear-gradient(135deg, #00d4ff, #0088cc);
         }
 
-        /* Responsive cho toast */
+        /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
+            .notification-toggle-btn {
+                bottom: 20px;
+                right: 15px;
+                padding: 0;
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(0,212,255,0.5);
+            }
+            
+            .notification-toggle-btn span {
+                display: none;
+            }
+            
+            .notification-toggle-btn i {
+                font-size: 24px;
+                margin: 0;
+            }
+            
+            .status-indicator {
+                padding: 12px 20px;
+                bottom: 20px;
+                max-width: 90%;
+            }
+            
+            .status-text {
+                font-size: 1em;
+                letter-spacing: 1px;
+            }
+            
+            .status-light {
+                width: 16px;
+                height: 16px;
+            }
+            
             .notification-toast {
                 bottom: 90px;
                 padding: 10px 20px;
@@ -882,6 +914,17 @@ class ArticleNotificationSystem {
         }
 
         @media (max-width: 480px) {
+            .notification-toggle-btn {
+                right: 12px;
+                bottom: 15px;
+                width: 48px;
+                height: 48px;
+            }
+            
+            .notification-toggle-btn i {
+                font-size: 22px;
+            }
+            
             .notification-toast {
                 bottom: 80px;
                 padding: 8px 16px;
@@ -889,7 +932,6 @@ class ArticleNotificationSystem {
             }
         }
 
-        /* ===== ANIMATIONS ===== */
         @keyframes slideInRight {
             from {
                 transform: translateX(100%);
@@ -910,14 +952,6 @@ class ArticleNotificationSystem {
                 transform: translate(-50%, 0);
                 opacity: 1;
             }
-        }
-
-        /* Đảm bảo không xung đột */
-        .status-indicator,
-        .notification-toggle-btn,
-        .notification-toast {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
     `;
 
