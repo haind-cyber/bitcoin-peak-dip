@@ -1,6 +1,20 @@
 {
   "articles": [
     {
+      "id": "BTC_Market_Cycles",
+      "slug": "BTC_Market_Cycles",
+      "url": "/learn/2026/02/28/BTC_Market_Cycles.html",
+      "title": "Bitcoin Market Cycles Through ATH History",
+      "description": "Comprehensive analysis of Bitcoin's ATH milestones across different market cycles from 2013 to 2025, with insights on halving events and institutional adoption",
+      "date": "2026-02-28",
+      "author": "Bitcoin PeakDip Team",
+      "category": "Market Analysis",
+      "reading_time": 8,
+      "level": "Intermediate",
+      "icon": "chart-line",
+      "featured": false
+    },
+    {
       "id": "EWS-Signal-Snapshot",
       "slug": "EWS-Signal-Snapshot",
       "url": "/learn/2026/02/28/EWS-Signal-Snapshot.html",
@@ -57,6 +71,6 @@
       "featured": false
     }
   ],
-  "last_updated": "2026-03-01T23:46:58+07:00",
-  "total": 4
+  "last_updated": "2026-03-02T00:10:29+07:00",
+  "total": 5
 }
