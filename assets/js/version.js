@@ -1,20 +1,28 @@
-// version.js - Auto-incrementing version system với PWA support
+// version.js - Auto-generated build 1.12.7
 const VERSION = {
     major: 1,
-    minor: 4,
-    patch: Date.now() // Using timestamp ensures unique version every time
+    minor: 12,
+    patch: 7
 };
 
 window.APP_VERSION = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
+// Build info
+window.BUILD_INFO = {
+    version: '1.12.7',
+    date: '2026-03-01',
+    time: '11:38:15',
+    timestamp: 1772339895710
+};
+
+console.log('🏗️  Build:', window.BUILD_INFO);
+
 // PWA Cache Management
 if ('serviceWorker' in navigator) {
-    // Check for PWA installation
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         window.deferredPrompt = e;
         
-        // Show install button after 3 seconds
         setTimeout(() => {
             showInstallPrompt();
         }, 3000);
@@ -26,7 +34,6 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Function to show install prompt
 function showInstallPrompt() {
     if (!window.deferredPrompt) return;
     if (localStorage.getItem('pwa_dismissed')) return;
@@ -36,7 +43,7 @@ function showInstallPrompt() {
     installPrompt.innerHTML = `
         <div class="install-content">
             <i class="fas fa-download"></i>
-            <span>Install Bitcoin PeakDip for offline access!</span>
+            <span>Install Bitcoin PeakDip v${window.APP_VERSION} for offline access!</span>
             <button onclick="installPWA()" class="install-btn">Install</button>
             <button onclick="dismissInstall(this)" class="dismiss-btn">
                 <i class="fas fa-times"></i>
@@ -46,7 +53,6 @@ function showInstallPrompt() {
     
     document.body.appendChild(installPrompt);
     
-    // Auto hide after 30 seconds
     setTimeout(() => {
         if (installPrompt.parentNode) {
             installPrompt.remove();
@@ -63,13 +69,10 @@ window.installPWA = function() {
     prompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
             console.log('User accepted PWA installation');
-        } else {
-            console.log('User dismissed PWA installation');
         }
         window.deferredPrompt = null;
     });
     
-    // Remove install prompt
     document.querySelector('.install-prompt')?.remove();
 };
 

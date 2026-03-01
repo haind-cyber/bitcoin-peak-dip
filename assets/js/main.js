@@ -568,4 +568,28 @@ mainStyle.textContent = `
         gap: 5px;
     }
 `;
+
+// Thêm vào cuối file main.js
+// Export global functions (fix lỗi undefined)
+window.intensifyWaves = function(intensity = 1) {
+    console.log('🌊 Wave intensification:', intensity);
+    // Có thể thêm hiệu ứng wave ở đây nếu cần
+    const waves = document.querySelectorAll('.bitcoin-wave');
+    waves.forEach(wave => {
+        wave.style.transform = `scale(${1 + intensity * 0.1})`;
+        wave.style.opacity = (0.1 + intensity * 0.2).toString();
+        setTimeout(() => {
+            wave.style.transform = '';
+            wave.style.opacity = '';
+        }, 1000);
+    });
+};
+
+// Đảm bảo syncWavesWithDetection cũng được export
+if (typeof syncWavesWithDetection === 'undefined') {
+    window.syncWavesWithDetection = function() {
+        console.log('🔄 Syncing waves with detection');
+    };
+}
+
 document.head.appendChild(mainStyle);

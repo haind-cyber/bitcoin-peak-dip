@@ -1,29 +1,47 @@
 // update-notifier.js - Thông báo cập nhật phiên bản mới
-// Version: 1.0.0
+// Version: 1.0.2 - FIXED: Chỉ thông báo khi version thực sự mới hơn
 
 const UPDATE_CONFIG = {
-    version: '1.0.0',
+    version: '1.0.2',
     checkInterval: 60 * 60 * 1000, // 1 giờ kiểm tra 1 lần
     versionUrl: '/version.json',
-    dismissedKey: 'update_dismissed_v',
-    lastCheckKey: 'update_last_check'
+    dismissedKey: 'update_dismissed_', // Đã sửa: thêm _ để rõ ràng
+    lastCheckKey: 'update_last_check',
+    minCheckInterval: 10 * 60 * 1000, // THÊM: 10 phút tối thiểu giữa các lần check
+    dismissExpiry: 24 * 60 * 60 * 1000 // THÊM: 24 giờ hết hạn dismiss
 };
 
 class UpdateNotifier {
     constructor() {
-        this.currentVersion = window.APP_VERSION || '1.8.7';
+        // THÊM: Lấy version từ nhiều nguồn
+        this.currentVersion = this.getCurrentVersion();
         this.latestVersion = null;
         this.updateBanner = null;
+        this.lastCheckTime = 0; // THÊM: Biến theo dõi thời gian check
         this.init();
+    }
+
+    // THÊM: Hàm lấy version từ nhiều nguồn
+    getCurrentVersion() {
+        // Ưu tiên từ window.APP_VERSION
+        if (window.APP_VERSION) return window.APP_VERSION;
+        
+        // Sau đó từ meta tag
+        const meta = document.querySelector('meta[name="app-version"]');
+        if (meta) return meta.getAttribute('content');
+        
+        // Cuối cùng là fallback
+        return '1.12.2';
     }
 
     async init() {
         console.log('🔄 Update Notifier v' + UPDATE_CONFIG.version);
+        console.log('📌 Current version:', this.currentVersion);
         
-        // Kiểm tra ngay lập tức
-        await this.checkForUpdate();
+        // SỬA: Không check ngay, đợi 5 giây để trang load hoàn chỉnh
+        setTimeout(() => this.checkForUpdate(), 5000);
         
-        // Kiểm tra định kỳ
+        // Kiểm tra định kỳ (giữ nguyên)
         setInterval(() => this.checkForUpdate(), UPDATE_CONFIG.checkInterval);
         
         // Lắng nghe service worker update
@@ -34,42 +52,76 @@ class UpdateNotifier {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.addEventListener('message', (event) => {
                 if (event.data.type === 'NEW_VERSION_AVAILABLE') {
-                    this.showUpdateBanner(event.data.version);
+                    // THÊM: Chỉ hiện nếu version thực sự mới
+                    const swVersion = event.data.version;
+                    if (this.isNewerVersion(swVersion, this.currentVersion)) {
+                        this.showUpdateBanner(swVersion);
+                    }
                 }
             });
         }
     }
 
-    async checkForUpdate() {
+    async checkForUpdate(force = false) {
+        const now = Date.now();
+        
+        // THÊM: Tránh kiểm tra quá thường xuyên
+        if (!force && (now - this.lastCheckTime) < UPDATE_CONFIG.minCheckInterval) {
+            console.log('⏳ Skipping check - too frequent');
+            return;
+        }
+
         try {
-            // Tránh kiểm tra quá thường xuyên
+            this.lastCheckTime = now;
+            
+            // THÊM: Kiểm tra localStorage với debounce
             const lastCheck = localStorage.getItem(UPDATE_CONFIG.lastCheckKey);
-            if (lastCheck && (Date.now() - parseInt(lastCheck)) < UPDATE_CONFIG.checkInterval) {
+            if (!force && lastCheck && (now - parseInt(lastCheck)) < UPDATE_CONFIG.checkInterval) {
+                console.log('⏳ Using cached check time');
                 return;
             }
 
-            const response = await fetch(`${UPDATE_CONFIG.versionUrl}?t=${Date.now()}`);
-            if (!response.ok) throw new Error('Không thể lấy thông tin version');
+            console.log('🔍 Checking for updates...');
+            const response = await fetch(`${UPDATE_CONFIG.versionUrl}?t=${now}`, {
+                cache: 'no-store', // THÊM: Không cache
+                headers: { 'Cache-Control': 'no-cache' }
+            });
+            
+            if (!response.ok) throw new Error('Network error');
 
             const data = await response.json();
             this.latestVersion = data.version;
 
-            // So sánh version
-            if (this.isNewerVersion(this.latestVersion, this.currentVersion)) {
-                // Kiểm tra xem user đã dismiss version này chưa
+            console.log(`📊 Version check: current=${this.currentVersion}, latest=${this.latestVersion}`);
+
+            // SỬA QUAN TRỌNG: Kiểm tra version KHÁC và MỚI HƠN
+            if (this.latestVersion !== this.currentVersion && 
+                this.isNewerVersion(this.latestVersion, this.currentVersion)) {
+                
+                // Kiểm tra dismiss với thời gian hết hạn
                 const dismissed = localStorage.getItem(UPDATE_CONFIG.dismissedKey + this.latestVersion);
-                if (!dismissed) {
-                    this.showUpdateBanner(this.latestVersion);
+                const dismissedTime = dismissed ? parseInt(dismissed) : 0;
+                
+                // THÊM: Chỉ hiện nếu chưa dismiss hoặc đã hết hạn 24h
+                if (!dismissed || (now - dismissedTime) > UPDATE_CONFIG.dismissExpiry) {
+                    this.showUpdateBanner(this.latestVersion, data.changelog);
+                } else {
+                    console.log(`⏰ Update ${this.latestVersion} dismissed until ${new Date(dismissedTime + UPDATE_CONFIG.dismissExpiry).toLocaleString()}`);
                 }
+            } else {
+                console.log('📊 No new version available');
             }
 
-            localStorage.setItem(UPDATE_CONFIG.lastCheckKey, Date.now().toString());
+            localStorage.setItem(UPDATE_CONFIG.lastCheckKey, now.toString());
         } catch (error) {
-            console.log('⚠️ Không thể kiểm tra cập nhật:', error.message);
+            console.log('⚠️ Update check failed:', error.message);
         }
     }
 
     isNewerVersion(latest, current) {
+        if (!latest || !current) return false;
+        if (latest === current) return false; // ❌ QUAN TRỌNG: Không thông báo nếu bằng nhau
+        
         const latestParts = latest.split('.').map(Number);
         const currentParts = current.split('.').map(Number);
 
@@ -80,13 +132,23 @@ class UpdateNotifier {
         return false;
     }
 
-    showUpdateBanner(version) {
+    // SỬA: Thêm tham số changelog
+    showUpdateBanner(version, changelog = []) {
         // Xóa banner cũ nếu có
         this.removeUpdateBanner();
 
         const banner = document.createElement('div');
         banner.className = 'update-notification-banner';
         banner.id = 'updateNotificationBanner';
+        
+        // THÊM: Hiển thị changelog nếu có
+        const changelogHtml = changelog && changelog.length > 0 
+            ? `<div class="update-changelog">
+                <div class="changelog-title"><i class="fas fa-list"></i> What's new:</div>
+                <ul>${changelog.map(item => `<li>${item}</li>`).join('')}</ul>
+               </div>`
+            : '';
+
         banner.innerHTML = `
             <div class="update-notification-content">
                 <div class="update-icon">
@@ -100,6 +162,7 @@ class UpdateNotifier {
                     <div class="update-description">
                         Cập nhật để trải nghiệm các tính năng mới nhất và cải thiện hiệu suất.
                     </div>
+                    ${changelogHtml}
                 </div>
                 <div class="update-actions">
                     <button class="update-btn primary" onclick="window.updateNotifier.updateApp()">
@@ -131,13 +194,11 @@ class UpdateNotifier {
         }
     }
 
+    // SỬA: Dismiss lưu timestamp thay vì 'true'
     dismissUpdate(version) {
-        // Lưu lại để không hiện lại version này
-        localStorage.setItem(UPDATE_CONFIG.dismissedKey + version, 'true');
+        localStorage.setItem(UPDATE_CONFIG.dismissedKey + version, Date.now().toString());
         this.closeBanner();
-        
-        // Hiển thị toast thông báo
-        this.showToast('⏰ Bạn sẽ được nhắc lại sau 24 giờ', 'info');
+        this.showToast('⏰ Sẽ nhắc lại sau 24 giờ', 'info');
     }
 
     closeBanner() {
@@ -207,7 +268,7 @@ class UpdateNotifier {
     }
 }
 
-// Thêm CSS
+// THÊM: CSS cho changelog
 (function addUpdateStyles() {
     if (document.getElementById('update-notifier-styles')) return;
 
@@ -236,30 +297,9 @@ class UpdateNotifier {
             top: 20px;
         }
 
-        .update-notification-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(0, 212, 255, 0.1) 50%,
-                transparent 70%
-            );
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
         .update-notification-content {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 15px;
             padding: 20px;
             position: relative;
@@ -274,6 +314,7 @@ class UpdateNotifier {
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
             animation: pulse 2s infinite;
         }
 
@@ -310,12 +351,45 @@ class UpdateNotifier {
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.9em;
             line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        /* THÊM: Style cho changelog */
+        .update-changelog {
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .changelog-title {
+            color: #00d4ff;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .update-changelog ul {
+            margin: 0;
+            padding-left: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85em;
+        }
+
+        .update-changelog li {
+            margin-bottom: 4px;
+            line-height: 1.4;
         }
 
         .update-actions {
             display: flex;
             gap: 8px;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .update-btn {
@@ -382,6 +456,17 @@ class UpdateNotifier {
             to { transform: rotate(360deg); }
         }
 
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+            }
+        }
+
         /* Update Toast */
         .update-toast {
             position: fixed;
@@ -434,6 +519,10 @@ class UpdateNotifier {
                 padding: 15px;
             }
 
+            .update-icon {
+                margin: 0 auto;
+            }
+
             .update-actions {
                 width: 100%;
                 justify-content: center;
@@ -444,6 +533,10 @@ class UpdateNotifier {
                 flex: 1;
                 min-width: 100px;
                 justify-content: center;
+            }
+
+            .update-changelog {
+                text-align: left;
             }
         }
 
@@ -458,17 +551,6 @@ class UpdateNotifier {
 
             .update-btn {
                 width: 100%;
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-            }
-            50% {
-                transform: scale(1.1);
-                box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
             }
         }
     `;
