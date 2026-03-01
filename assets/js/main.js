@@ -593,3 +593,24 @@ if (typeof syncWavesWithDetection === 'undefined') {
 }
 
 document.head.appendChild(mainStyle);
+
+// ===== HIỂN THỊ VERSION TRONG CONSOLE =====
+// Thêm vào cuối file main.js, trước dòng cuối cùng
+
+// Hiển thị version info trong console
+(function showVersionInConsole() {
+    const style = 'background: linear-gradient(135deg, #00d4ff, #f7931a); color: black; font-weight: bold; padding: 4px 8px; border-radius: 4px;';
+    
+    // Lấy từ window.APP_VERSION hoặc meta tag
+    const version = window.APP_VERSION || '1.12.7';
+    const buildDate = document.querySelector('meta[name="build-date"]')?.getAttribute('content') || '2026-03-01';
+    
+    console.log('%c🏗️  Bitcoin PeakDip ' + version, style);
+    console.log('📅 Build date: ' + buildDate);
+    
+    // Thêm thông tin chi tiết nếu có
+    if (window.BUILD_INFO) {
+        console.log('⏰ Build time:', window.BUILD_INFO.time);
+        console.log('🔨 Build timestamp:', window.BUILD_INFO.timestamp);
+    }
+})();

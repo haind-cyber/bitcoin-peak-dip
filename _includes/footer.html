@@ -4,7 +4,8 @@
         <div class="brand-tagline">{{ site.tagline }}</div>
     </div>            
     <p>© 2021 - {{ site.time | date: '%Y' }} Nguyen Duc Hai Technologies. All rights reserved</p>
-    
+    <!-- THÊM: Build Info -->
+    {% include footer-build-info.html %}    
     <div class="footer-contact">
         <div class="footer-contact-item">
             <i class="fas fa-envelope"></i>

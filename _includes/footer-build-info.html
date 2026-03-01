@@ -1,0 +1,17 @@
+<!-- Footer Build Info -->
+<div class="footer-build-info">
+    <div class="build-version">
+        <i class="fas fa-code-branch"></i>
+        <span>v{{ site.data.version.version | default: site.version }}</span>
+    </div>
+    <div class="build-date">
+        <i class="fas fa-calendar-alt"></i>
+        <span>{{ site.data.version.build_date | default: site.build_date | default: "2026-03-01" }}</span>
+    </div>
+    {% if site.data.version.build_time %}
+    <div class="build-time">
+        <i class="fas fa-clock"></i>
+        <span>{{ site.data.version.build_time }}</span>
+    </div>
+    {% endif %}
+</div>
