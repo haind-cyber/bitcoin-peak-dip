@@ -1,6 +1,20 @@
 {
   "articles": [
     {
+      "id": "EWS-Signal-Snapshot",
+      "slug": "EWS-Signal-Snapshot",
+      "url": "/learn/2026/03/02/EWS-Signal-Snapshot.html",
+      "title": "EWS Signal Snapshot - February 28, 2026",
+      "description": "Local Top Signal detection with whale advance analysis",
+      "date": "2026-03-02",
+      "author": "Bitcoin PeakDip Team",
+      "category": "signals",
+      "reading_time": 5,
+      "level": "Intermediate",
+      "icon": "bell",
+      "featured": false
+    },
+    {
       "id": "BTC_Market_Cycles",
       "slug": "BTC_Market_Cycles",
       "url": "/learn/2026/02/28/BTC_Market_Cycles.html",
@@ -43,6 +57,6 @@
       "featured": false
     }
   ],
-  "last_updated": "2026-03-02T17:27:50+07:00",
-  "total": 3
+  "last_updated": "2026-03-02T17:50:23+07:00",
+  "total": 4
 }
