@@ -15,6 +15,20 @@
       "featured": false
     },
     {
+      "id": "The-Influence-of-the-Middle-East-Region-on-the-Cryptocurrency-Market",
+      "slug": "The-Influence-of-the-Middle-East-Region-on-the-Cryptocurrency-Market",
+      "url": "/learn/2026/03/02/The-Influence-of-the-Middle-East-Region-on-the-Cryptocurrency-Market.html",
+      "title": "Ảnh Hưởng Của Khu Vực Trung Đông Đến Thị Trường Tiền Điện Tử",
+      "description": "Phân tích chuyên sâu về tác động của địa chính trị Trung Đông lên thị trường tiền điện tử, bao gồm xung đột, dòng vốn và chiến lược giao dịch.",
+      "date": "2026-03-02",
+      "author": "Bitcoin PeakDip Team",
+      "category": "Market Analysis",
+      "reading_time": 8,
+      "level": "Intermediate",
+      "icon": "globe-asia",
+      "featured": false
+    },
+    {
       "id": "BTC_Market_Cycles",
       "slug": "BTC_Market_Cycles",
       "url": "/learn/2026/02/28/BTC_Market_Cycles.html",
@@ -57,6 +71,6 @@
       "featured": false
     }
   ],
-  "last_updated": "2026-03-02T17:50:23+07:00",
-  "total": 4
+  "last_updated": "2026-03-02T18:08:32+07:00",
+  "total": 5
 }
