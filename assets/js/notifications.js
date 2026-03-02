@@ -3,13 +3,13 @@
 
 const NOTIFICATION_CONFIG = {
     version: '3.0.0',
-    checkInterval: 1 * 60 * 1000, // 5 phút
+    checkInterval: 1 * 60 * 1000, // 
     articleMetadataPath: '/assets/data/articles.json', // ĐÃ SỬA ĐƯỜNG DẪN
     notifiedKey: 'peakdip_notified_articles_v3',
     enabledKey: 'peakdip_notifications_enabled',
     cacheKey: 'peakdip_articles_cache_v3',
     cacheTimeKey: 'peakdip_articles_cache_time_v3',
-    cacheDuration: 1 * 60 * 1000, // 5 phút (đồng bộ với checkInterval)
+    cacheDuration: 1 * 60 * 1000, // 
     newArticleDays: 30, // 30 ngày
     permissionPromptedKey: 'peakdip_permission_prompted',
     maxRetries: 3,
