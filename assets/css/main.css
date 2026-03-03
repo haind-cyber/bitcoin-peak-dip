@@ -2961,22 +2961,3 @@ body.mobile-device .product-card {
     }
 }
 
-/* Thêm vào main.css - critical path */
-.notification-toggle-btn-critical {
-    display: none; /* Ẩn mặc định, sẽ hiện khi JS load */
-}
-
-/* Hoặc style fallback */
-.notification-placeholder {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #00d4ff20, #f7931a20);
-    border: 2px solid rgba(255,255,255,0.1);
-    pointer-events: none;
-    z-index: 9998;
-}
-
