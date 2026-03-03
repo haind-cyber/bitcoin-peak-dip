@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "EWS Signal Snapshot - February 28, 2026"
-date: 2026-02-28
+date: 2026-03-02
 author: "Bitcoin PeakDip Team"
 reading_time: 5
 level: "Intermediate"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "8 Trading Strategies Explained"
-date: 2026-02-26
+date: 2026-02-27
 author: "Bitcoin PeakDip Team"
 reading_time: 15
 level: "Intermediate"

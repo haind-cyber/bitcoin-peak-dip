@@ -22,7 +22,8 @@ touch "$SITE_PATH/.nojekyll"
 cd "$SITE_PATH"
 git add .
 git commit -m "Deploy: $(date +'%Y-%m-%d %H:%M:%S')"
-git push origin btcpeakdip
+git push -f origin btcpeakdip
 
 cd "$MAIN_PATH"
 echo "✅ Deploy complete!"
+pause

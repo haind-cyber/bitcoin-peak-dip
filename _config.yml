@@ -127,8 +127,8 @@ exclude:
   - .git/
 
 # ===== CUSTOM VARIABLES =====
-version: "1.12.13"
-build_date: "2026-03-01"
+version: "1.12.19"
+build_date: "2026-03-03"
 google_analytics: "G-HR78BDQYJJ"
 
 # ===== SOCIAL MEDIA =====
