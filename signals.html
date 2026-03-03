@@ -12,8 +12,8 @@
     gtag('config', 'G-HR78BDQYJJ');
     </script>
     
-    <meta name="app-version" content="1.12.21">
-    <script>window.APP_VERSION = '1.12.21';</script>
+    <meta name="app-version" content="1.12.22">
+    <script>window.APP_VERSION = '1.12.22';</script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,17 +26,17 @@
     <meta name="description" content="Real-time Bitcoin Peak and Dip Detection Records">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json?v=1.12.21">
+    <link rel="manifest" href="/manifest.json?v=1.12.22">
     
     <!-- Main CSS -->
-    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.21">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.22">
     
     <!-- Page Specific CSS -->
-    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.21">
-    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.21">
-    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.21">
-    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.21">
-    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.21">
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.22">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.22">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.22">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.22">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.22">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#00d4ff">
@@ -84,7 +84,7 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('beforeinstallprompt', (e) => {
             const pwaVersion = localStorage.getItem('pwa_version');
-            const currentVersion = '1.12.21';
+            const currentVersion = '1.12.22';
             
             if (pwaVersion && pwaVersion !== currentVersion) {
                 console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
@@ -96,7 +96,7 @@
 </head>
 
 <body>
-    <script src="/assets/js/critical.js?v=1.12.21"></script>
+    <script src="/assets/js/critical.js?v=1.12.22"></script>
     <script>
 (function() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -210,6 +210,18 @@
     <div class="signals-badge">
         <i class="fas fa-satellite-dish"></i> LIVE SIGNAL MONITORING
     </div>
+    <!-- THÊM NÚT DESKTOP VIEW CHO MOBILE -->
+    <div class="desktop-view-container">
+        <button id="desktopViewBtn" class="desktop-view-btn">
+            <i class="fas fa-desktop"></i>
+            <span>Desktop View</span>
+        </button>
+        <span class="desktop-view-hint">Xem bảng đầy đủ như trên desktop</span>
+    </div>
+    
+    <div class="signals-badge">
+        <i class="fas fa-chart-line"></i> Early Warning System Active
+    </div>    
 </div>
 
 <!-- Bitcoin Price Chart with Signals -->
@@ -719,7 +731,7 @@ window.exitClickZoomMode = function() {
 <div class="footer-build-info">
     <div class="build-version">
         <i class="fas fa-code-branch"></i>
-        <span>v1.12.21</span>
+        <span>v1.12.22</span>
     </div>
     <div class="build-date">
         <i class="fas fa-calendar-alt"></i>
@@ -728,7 +740,7 @@ window.exitClickZoomMode = function() {
     
     <div class="build-time">
         <i class="fas fa-clock"></i>
-        <span>62876.0</span>
+        <span>64244.0</span>
     </div>
     
 </div>    
@@ -767,8 +779,8 @@ window.exitClickZoomMode = function() {
     <!-- ========== SCRIPTS LOADING - TỐI ƯU ========== -->
     
     <!-- 1. SHARED UTILITIES (không block, load sớm) -->
-    <script src="/assets/js/shared.js?v=1.12.21" defer></script>
-    <script src="/assets/js/reading-list.js?v=1.12.21" defer></script>
+    <script src="/assets/js/shared.js?v=1.12.22" defer></script>
+    <script src="/assets/js/reading-list.js?v=1.12.22" defer></script>
 
     <!-- 3. NOTIFICATION SYSTEM - DELAYED LOADING (QUAN TRỌNG) -->
     <script>
@@ -776,7 +788,7 @@ window.exitClickZoomMode = function() {
     if ('requestIdleCallback' in window) {
         requestIdleCallback(() => {
             const script = document.createElement('script');
-            script.src = "/assets/js/notifications.js?v=1.12.21";
+            script.src = "/assets/js/notifications.js?v=1.12.22";
             script.defer = true;
             document.body.appendChild(script);
         }, { timeout: 2000 });
@@ -784,7 +796,7 @@ window.exitClickZoomMode = function() {
         // Fallback: load sau 2 giây
         setTimeout(() => {
             const script = document.createElement('script');
-            script.src = "/assets/js/notifications.js?v=1.12.21";
+            script.src = "/assets/js/notifications.js?v=1.12.22";
             script.defer = true;
             document.body.appendChild(script);
         }, 2000);
@@ -792,21 +804,21 @@ window.exitClickZoomMode = function() {
     </script>
 
     <!-- 3. MAIN APP LOGIC -->
-    <script src="/assets/js/main.js?v=1.12.21" defer></script>
+    <script src="/assets/js/main.js?v=1.12.22" defer></script>
 
     <!-- 4. UPDATE NOTIFIER - CŨNG DELAY -->
     <script>
     if ('requestIdleCallback' in window) {
         requestIdleCallback(() => {
             const script = document.createElement('script');
-            script.src = "/assets/js/update-notifier.js?v=1.12.21";
+            script.src = "/assets/js/update-notifier.js?v=1.12.22";
             script.defer = true;
             document.body.appendChild(script);
         }, { timeout: 3000 });
     } else {
         setTimeout(() => {
             const script = document.createElement('script');
-            script.src = "/assets/js/update-notifier.js?v=1.12.21";
+            script.src = "/assets/js/update-notifier.js?v=1.12.22";
             script.defer = true;
             document.body.appendChild(script);
         }, 3000);
@@ -819,7 +831,7 @@ window.exitClickZoomMode = function() {
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns" defer></script>
-    <script src="/assets/js/signals.js?v=1.12.21" defer></script>
+    <script src="/assets/js/signals.js?v=1.12.22" defer></script>
     
 
     

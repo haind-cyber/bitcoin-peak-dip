@@ -1886,4 +1886,151 @@ function addDynamicStyles() {
 if (window.realCsvData) parseSignalsData(window.realCsvData);
 if (window.bitcoinPriceData) parseBitcoinData(window.bitcoinPriceData);
 
+// ===== DESKTOP VIEW TOGGLE CHO MOBILE =====
+(function setupDesktopView() {
+    // Chỉ chạy trên mobile
+    if (!window.IS_MOBILE && !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return;
+    }
+    
+    console.log('📱 Setting up Desktop View button for mobile');
+    
+    const desktopBtn = document.getElementById('desktopViewBtn');
+    if (!desktopBtn) return;
+    
+    const logContainer = document.querySelector('.log-container');
+    const signalsTable = document.querySelector('.signals-table');
+    const mobileScrollHint = document.querySelector('.mobile-scroll-hint');
+    
+    let desktopMode = false;
+    
+    // Tạo hint element
+    const hint = document.createElement('div');
+    hint.className = 'desktop-mode-hint';
+    hint.innerHTML = '<i class="fas fa-arrows-alt-h"></i> Kéo ngang để xem toàn bộ bảng';
+    hint.style.display = 'none';
+    document.body.appendChild(hint);
+    
+    // Function cập nhật UI
+    function toggleDesktopMode() {
+        desktopMode = !desktopMode;
+        
+        if (desktopMode) {
+            // Bật chế độ desktop
+            document.body.classList.add('desktop-mode-active');
+            desktopBtn.classList.add('desktop-mode');
+            desktopBtn.innerHTML = '<i class="fas fa-mobile-alt"></i><span>Mobile View</span>';
+            
+            // Hiển thị hint
+            hint.style.display = 'block';
+            setTimeout(() => {
+                hint.style.opacity = '0';
+                setTimeout(() => {
+                    hint.style.display = 'none';
+                    hint.style.opacity = '1';
+                }, 500);
+            }, 3000);
+            
+            // Log
+            console.log('📱 Desktop mode activated');
+            
+            // Force reflow để cập nhật scroll
+            setTimeout(() => {
+                if (logContainer) {
+                    logContainer.style.overflowX = 'auto';
+                }
+            }, 100);
+            
+        } else {
+            // Tắt chế độ desktop
+            document.body.classList.remove('desktop-mode-active');
+            desktopBtn.classList.remove('desktop-mode');
+            desktopBtn.innerHTML = '<i class="fas fa-desktop"></i><span>Desktop View</span>';
+            
+            // Ẩn hint
+            hint.style.display = 'none';
+            
+            console.log('📱 Desktop mode deactivated');
+        }
+    }
+    
+    // Click event
+    desktopBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleDesktopMode();
+    });
+    
+    // Vuốt để tắt chế độ desktop (tùy chọn)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    if (logContainer) {
+        logContainer.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        logContainer.addEventListener('touchend', function(e) {
+            if (!desktopMode) return;
+            
+            touchEndX = e.changedTouches[0].clientX;
+            const diffX = touchEndX - touchStartX;
+            
+            // Nếu vuốt trái/phải quá xa mà không scroll được, có thể user muốn thoát
+            if (Math.abs(diffX) > 100) {
+                const scrollLeft = logContainer.scrollLeft;
+                const maxScroll = logContainer.scrollWidth - logContainer.clientWidth;
+                
+                // Nếu đã scroll đến biên, hỏi user có muốn thoát không
+                if (scrollLeft <= 5 || scrollLeft >= maxScroll - 5) {
+                    if (confirm('Thoát chế độ Desktop View?')) {
+                        toggleDesktopMode();
+                    }
+                }
+            }
+        }, { passive: true });
+    }
+    
+    // Thêm shortcut double-tap để thoát (tùy chọn)
+    let lastTap = 0;
+    desktopBtn.addEventListener('touchend', function(e) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        
+        if (tapLength < 300 && tapLength > 0) {
+            // Double tap detected
+            if (desktopMode) {
+                toggleDesktopMode();
+            }
+        }
+        lastTap = currentTime;
+    });
+    
+    // Thêm style cho hint
+    const style = document.createElement('style');
+    style.textContent = `
+        .desktop-mode-hint {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-size: 1em;
+            font-weight: 500;
+            border: 2px solid #00d4ff;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            z-index: 10000;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.5s ease;
+        }
+        .desktop-mode-hint i {
+            color: #00d4ff;
+            margin-right: 8px;
+        }
+    `;
+    document.head.appendChild(style);
+})();
 console.log('✅ signals.js v1.5.2 - UPDATED: Floating details, layout fixed');
