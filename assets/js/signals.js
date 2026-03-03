@@ -3,6 +3,18 @@
 // Version: 1.12.2 - UPDATED - Signal Details Floating & Layout
 // ============================================
 
+// ========== FORCE DESKTOP VIEW ==========
+// Kích hoạt Desktop View ngay khi script load
+if (document.body) {
+    document.body.classList.add('force-desktop-view');
+    localStorage.setItem('signals_view_mode', 'desktop');
+} else {
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('force-desktop-view');
+        localStorage.setItem('signals_view_mode', 'desktop');
+    });
+}
+// ========================================
 // ========== APP CONFIGURATION ==========
 const APP_CONFIG = {
     version: '1.5.2', // Tăng version
