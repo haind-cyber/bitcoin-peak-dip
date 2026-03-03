@@ -3,27 +3,14 @@
 // Version: 1.12.2 - UPDATED - Signal Details Floating & Layout
 // ============================================
 
-// ========== FORCE DESKTOP VIEW ==========
-(function() {
-    // Thêm class vào body
-    if (document.body) {
-        document.body.classList.add('force-desktop-view');
-        console.log('🖥️ Desktop Mode activated - Full view like IMG_7051.jpeg');
-    } else {
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.classList.add('force-desktop-view');
-        });
-    }
-})();
-
 // ========== APP CONFIGURATION ==========
 const APP_CONFIG = {
-    version: '1.5.2',
+    version: '1.5.2', // Tăng version
     itemsPerPage: 15,
     versionKey: 'peakdip_version',
     dataPaths: {
-        signals: ['assets/data/signals.csv', './assets/data/signals.csv', 'signals.csv'],
-        bitcoin: ['assets/data/Binance_BTCUSDT_d.csv', './assets/data/Binance_BTCUSDT_d.csv', 'Binance_BTCUSDT_d.csv']
+        signals: ['data/signals.csv', './data/signals.csv', 'signals.csv'],
+        bitcoin: ['data/Binance_BTCUSDT_d.csv', './data/Binance_BTCUSDT_d.csv', 'Binance_BTCUSDT_d.csv']
     }
 };
 
@@ -1899,4 +1886,4 @@ function addDynamicStyles() {
 if (window.realCsvData) parseSignalsData(window.realCsvData);
 if (window.bitcoinPriceData) parseBitcoinData(window.bitcoinPriceData);
 
-console.log('✅ signals.js v1.5.2 - UPDATED: Floating details, layout fixed, Desktop Mode enabled');
+console.log('✅ signals.js v1.5.2 - UPDATED: Floating details, layout fixed');
