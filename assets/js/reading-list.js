@@ -527,58 +527,164 @@ const READING_LIST = {
     }
 };
 
-// ========== AUTO INITIALIZATION ==========
-(function initializeReadingList() {
+// ========== CẤU HÌNH DELAY CHO READING LIST ==========
+const READING_LIST_LOAD_CONFIG = {
+    // Thời gian delay tối thiểu (ms)
+    minInitDelay: typeof window !== 'undefined' && window.IS_MOBILE ? 4000 : 2000,
+    
+    // Chỉ khởi tạo khi tab active
+    requireVisible: true,
+    
+    // Timeout cho idle callback
+    idleTimeout: typeof window !== 'undefined' && window.IS_MOBILE ? 8000 : 4000,
+    
+    // Không cập nhật badge ngay lập tức
+    deferBadgeUpdate: true
+};
+
+// ===== HÀM KIỂM TRA ĐIỀU KIỆN =====
+function canInitializeReadingList() {
+    // Không khởi tạo nếu đang trong quá trình load ban đầu
+    if (document.readyState === 'loading') {
+        console.log('⏳ Document still loading, defer reading list init');
+        return false;
+    }
+    
+    // Trên mobile, chỉ khởi tạo khi tab visible
+    if (window.IS_MOBILE && document.hidden) {
+        console.log('📱 Mobile tab hidden, defer reading list init');
+        return false;
+    }
+    
+    return true;
+}
+
+// ===== HÀM KHỞI TẠO CHÍNH =====
+function initializeReadingList() {
+    // Kiểm tra nếu đã khởi tạo
+    if (window.readingListInitialized) {
+        console.log('ℹ️ Reading List already initialized');
+        return;
+    }
+    
+    // Kiểm tra điều kiện
+    if (!canInitializeReadingList()) {
+        // Thử lại sau 3 giây
+        setTimeout(initializeReadingList, 3000);
+        return;
+    }
+    
     console.log('📚 Reading List Manager v' + READING_LIST.VERSION + ' initializing...');
     
-    // Khởi tạo không block
-    const initTask = () => {
-        READING_LIST.updateBadges();
-        
+    try {
         // Cache DOM elements
         READING_LIST._elements.readingListLink = document.getElementById('readingListLink');
         READING_LIST._elements.badge = document.getElementById('readingListBadge');
         
-        console.log('📚 Reading List Manager initialized');
-    };
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initTask);
-    } else {
-        // Sử dụng requestIdleCallback nếu có
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(initTask, { timeout: 1000 });
+        // Cập nhật badges nhưng có thể delay thêm trên mobile
+        if (window.IS_MOBILE) {
+            // Trên mobile, delay cập nhật badge thêm 1 giây
+            setTimeout(() => {
+                READING_LIST.updateBadges();
+                console.log('📱 Mobile: Reading List badges updated after delay');
+            }, 1000);
         } else {
-            setTimeout(initTask, 0);
+            READING_LIST.updateBadges();
+        }
+        
+        // Đánh dấu đã khởi tạo
+        window.readingListInitialized = true;
+        console.log('📚 Reading List Manager initialized successfully');
+        
+    } catch (error) {
+        console.error('❌ Failed to initialize Reading List:', error);
+        // Thử lại sau 10 giây nếu lỗi
+        setTimeout(initializeReadingList, 10000);
+    }
+}
+
+// ===== CHIẾN LƯỢC KHỞI TẠO THEO GIAI ĐOẠN =====
+(function() {
+    console.log('📖 Reading List loader ready');
+    
+    // Phase 1: Đợi DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('📄 DOM ready, scheduling reading list init...');
+            scheduleReadingListInit();
+        });
+    } else {
+        scheduleReadingListInit();
+    }
+    
+    function scheduleReadingListInit() {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                setTimeout(initializeReadingList, READING_LIST_LOAD_CONFIG.minInitDelay);
+            }, { timeout: READING_LIST_LOAD_CONFIG.idleTimeout });
+        } else {
+            setTimeout(initializeReadingList, READING_LIST_LOAD_CONFIG.minInitDelay + 1000);
         }
     }
     
-    // Lắng nghe sự thay đổi từ tab khác
-    window.addEventListener('storage', (e) => {
-        if (e.key === READING_LIST.KEY) {
-            READING_LIST.updateBadges();
-            
-            // Reload trang reading list nếu đang mở
-            if (window.location.pathname.includes('reading-list.html')) {
-                if (typeof window.loadReadingList === 'function') {
-                    setTimeout(() => window.loadReadingList(), 0);
-                }
-            }
+    // Phase 2: Lắng nghe visibility change
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && !window.readingListInitialized) {
+            console.log('📱 Tab became visible, initializing reading list');
+            setTimeout(initializeReadingList, 2000);
         }
     });
     
-    // Lắng nghe message từ service worker
+    // Phase 3: Fallback sau 15 giây
+    setTimeout(() => {
+        if (!window.readingListInitialized) {
+            console.log('⏰ Fallback: forcing reading list init after 15s');
+            initializeReadingList();
+        }
+    }, 15000);
+})();
+
+// ===== EVENT LISTENERS - GIỮ NGUYÊN NHƯNG DELAY =====
+(function setupReadingListListeners() {
+    // Lắng nghe sự thay đổi từ tab khác - nhưng có delay
+    window.addEventListener('storage', (e) => {
+        if (e.key === READING_LIST.KEY) {
+            // Delay nhẹ để không ảnh hưởng performance
+            setTimeout(() => {
+                if (window.readingListInitialized) {
+                    READING_LIST.updateBadges();
+                    
+                    // Reload trang reading list nếu đang mở
+                    if (window.location.pathname.includes('reading-list.html')) {
+                        if (typeof window.loadReadingList === 'function') {
+                            window.loadReadingList();
+                        }
+                    }
+                }
+            }, 500);
+        }
+    });
+    
+    // Lắng nghe message từ service worker - nhưng có delay
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.addEventListener('message', (event) => {
-            console.log('📨 ReadingList received:', event.data);
-            
-            if (event.data.type === 'SAVE_FOR_LATER' && event.data.article) {
-                READING_LIST.add(event.data.article);
-            }
-            
-            if (event.data.type === 'READING_LIST_UPDATED') {
-                READING_LIST.updateBadges();
-            }
+        // Đợi service worker ready
+        navigator.serviceWorker.ready.then(() => {
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                // Xử lý trong microtask, không block
+                setTimeout(() => {
+                    if (!window.readingListInitialized) return;
+                    
+                    console.log('📨 ReadingList received:', event.data);
+                    
+                    if (event.data.type === 'SAVE_FOR_LATER' && event.data.article) {
+                        READING_LIST.add(event.data.article);
+                    }
+                    
+                    if (event.data.type === 'READING_LIST_UPDATED') {
+                        READING_LIST.updateBadges();
+                    }
+                }, 0);
+            });
         });
     }
 })();

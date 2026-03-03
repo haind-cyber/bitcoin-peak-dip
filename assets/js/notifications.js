@@ -1433,39 +1433,137 @@ class ArticleNotificationSystem {
     document.head.appendChild(style);
 })();
 
-// ===== KHỞI TẠO KHÔNG BLOCK =====
-(function initializeNotificationSystem() {
-    console.log('🚀 Initializing notification system v4.2.0...');
+// ===== CẤU HÌNH DELAY - THÊM ĐẦU FILE =====
+const NOTIFICATION_LOAD_CONFIG = {
+    // Thời gian delay tối thiểu trước khi khởi tạo (ms)
+    minInitDelay: typeof window !== 'undefined' && window.IS_MOBILE ? 3000 : 2000,
     
-    const initTask = () => {
-        if (!window.articleNotifications) {
-            window.articleNotifications = new ArticleNotificationSystem();
-            window.articleNotifications.init().catch(err => {
-                console.error('❌ Failed to initialize notification system:', err);
-            });
-        }
-    };
+    // Chỉ khởi tạo khi tab active
+    requireVisible: true,
+    
+    // Đợi page idle hoàn toàn
+    idleTimeout: typeof window !== 'undefined' && window.IS_MOBILE ? 10000 : 5000,
+    
+    // Không khởi tạo nếu đang trong quá trình render critical
+    skipDuringCritical: true
+};
 
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(initTask, { timeout: 3000 });
+// ===== HÀM KIỂM TRA ĐIỀU KIỆN =====
+function canInitializeNotification() {
+    // Không khởi tạo nếu đang trong quá trình load ban đầu
+    if (document.readyState === 'loading') {
+        console.log('⏳ Document still loading, defer notification init');
+        return false;
+    }
+    
+    // Trên mobile, chỉ khởi tạo khi tab visible
+    if (window.IS_MOBILE && document.hidden) {
+        console.log('📱 Mobile tab hidden, defer notification init');
+        return false;
+    }
+    
+    // Kiểm tra network (không khởi tạo nếu offline)
+    if (navigator.onLine === false) {
+        console.log('📱 Offline, defer notification init');
+        return false;
+    }
+    
+    return true;
+}
+
+// ===== HÀM KHỞI TẠO CHÍNH - CÓ DELAY =====
+function initializeNotificationSystem() {
+    // Kiểm tra nếu đã có instance
+    if (window.articleNotifications) {
+        console.log('ℹ️ Notification system already initialized');
+        return;
+    }
+    
+    // Kiểm tra điều kiện
+    if (!canInitializeNotification()) {
+        // Thử lại sau 5 giây
+        setTimeout(initializeNotificationSystem, 5000);
+        return;
+    }
+    
+    console.log(`🚀 Initializing notification system v${NOTIFICATION_CONFIG?.version || '4.2.0'}...`);
+    console.log(`📱 Device: ${window.IS_MOBILE ? 'Mobile' : 'Desktop'}`);
+    
+    try {
+        window.articleNotifications = new ArticleNotificationSystem();
+        
+        // Gọi init với Promise để không block
+        window.articleNotifications.init()
+            .then(() => {
+                console.log('✅ Notification system initialized successfully');
+            })
+            .catch(err => {
+                console.error('❌ Failed to initialize notification system:', err);
+                // Xóa instance lỗi
+                window.articleNotifications = null;
+                
+                // Thử lại sau 30 giây nếu lỗi
+                setTimeout(initializeNotificationSystem, 30000);
+            });
+    } catch (err) {
+        console.error('❌ Critical error initializing notification system:', err);
+        window.articleNotifications = null;
+    }
+}
+
+// ===== CHIẾN LƯỢC KHỞI TẠO THEO GIAI ĐOẠN =====
+(function() {
+    // Phase 1: Critical path - không làm gì cả
+    console.log('🔔 Notification loader ready');
+    
+    // Phase 2: Sau khi DOM ready nhưng vẫn delay
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('📄 DOM ready, scheduling notification init...');
+            
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => {
+                    setTimeout(initializeNotificationSystem, NOTIFICATION_LOAD_CONFIG.minInitDelay);
+                }, { timeout: NOTIFICATION_LOAD_CONFIG.idleTimeout });
+            } else {
+                setTimeout(initializeNotificationSystem, NOTIFICATION_LOAD_CONFIG.minInitDelay + 1000);
+            }
+        });
     } else {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initTask);
+        // DOM đã sẵn sàng, nhưng vẫn delay
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                setTimeout(initializeNotificationSystem, NOTIFICATION_LOAD_CONFIG.minInitDelay);
+            }, { timeout: NOTIFICATION_LOAD_CONFIG.idleTimeout });
         } else {
-            setTimeout(initTask, 100);
+            setTimeout(initializeNotificationSystem, NOTIFICATION_LOAD_CONFIG.minInitDelay + 1000);
         }
     }
-})();
-
-// Fallback
-if (document.readyState === 'complete' && !window.articleNotifications) {
+    
+    // Phase 3: Lắng nghe sự kiện online để khởi tạo nếu cần
+    window.addEventListener('online', () => {
+        if (!window.articleNotifications && canInitializeNotification()) {
+            console.log('📱 Back online, initializing notification system');
+            setTimeout(initializeNotificationSystem, 5000);
+        }
+    });
+    
+    // Phase 4: Lắng nghe visibility change để khởi tạo khi tab active
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && !window.articleNotifications && canInitializeNotification()) {
+            console.log('📱 Tab became visible, initializing notification system');
+            setTimeout(initializeNotificationSystem, 3000);
+        }
+    });
+    
+    // Phase 5: Fallback cuối cùng - đảm bảo khởi tạo sau 30 giây
     setTimeout(() => {
         if (!window.articleNotifications) {
-            window.articleNotifications = new ArticleNotificationSystem();
-            window.articleNotifications.init();
+            console.log('⏰ Fallback: forcing notification init after 30s');
+            initializeNotificationSystem();
         }
-    }, 100);
-}
+    }, 30000);
+})();
 
 // Export
 window.ArticleNotificationSystem = ArticleNotificationSystem;
