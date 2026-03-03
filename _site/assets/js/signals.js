@@ -9,8 +9,8 @@ const APP_CONFIG = {
     itemsPerPage: 15,
     versionKey: 'peakdip_version',
     dataPaths: {
-        signals: ['assets/data/signals.csv', './assets/data/signals.csv', 'signals.csv'],
-        bitcoin: ['assets/data/Binance_BTCUSDT_d.csv', './assets/data/Binance_BTCUSDT_d.csv', 'Binance_BTCUSDT_d.csv']
+        signals: ['assets/data/signals.csv', './data/signals.csv', 'signals.csv'],
+        bitcoin: ['assets/data/Binance_BTCUSDT_d.csv', './data/Binance_BTCUSDT_d.csv', 'Binance_BTCUSDT_d.csv']
     }
 };
 

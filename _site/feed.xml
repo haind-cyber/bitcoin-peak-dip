@@ -1,950 +1,729 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2026-03-02T11:54:19+07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Bitcoin PeakDip</title><subtitle>Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered</subtitle><entry><title type="html">Btc Signal Trigger Dataset</title><link href="http://localhost:4000/learn/2026/03/01/btc-signal-trigger-dataset.html" rel="alternate" type="text/html" title="Btc Signal Trigger Dataset" /><published>2026-03-01T00:00:00+07:00</published><updated>2026-03-01T00:00:00+07:00</updated><id>http://localhost:4000/learn/2026/03/01/btc-signal-trigger-dataset</id><content type="html" xml:base="http://localhost:4000/learn/2026/03/01/btc-signal-trigger-dataset.html"><![CDATA[<h2 id="2-file-2026-02-16-btc-signal-trigger-datasetmd-đã-thêm-frontmatter-và-cấu-trúc-đúng">2. File <code class="language-plaintext highlighter-rouge">2026-02-16-btc-signal-trigger-dataset.md</code> (đã thêm frontmatter và cấu trúc đúng)</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://bitcoin-peak-dip.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://bitcoin-peak-dip.com/" rel="alternate" type="text/html" /><updated>2026-03-03T23:10:48+07:00</updated><id>https://bitcoin-peak-dip.com/feed.xml</id><title type="html">Bitcoin PeakDip</title><subtitle>Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered</subtitle><entry><title type="html">Phân Tích Chu Kỳ &amp;amp; Trạng Thái Thị Trường Bitcoin (2025-2026)</title><link href="https://bitcoin-peak-dip.com/learn/2026/03/03/Market-Analysis-bitcoin-2026.html" rel="alternate" type="text/html" title="Phân Tích Chu Kỳ &amp;amp; Trạng Thái Thị Trường Bitcoin (2025-2026)" /><published>2026-03-03T00:00:00+07:00</published><updated>2026-03-03T00:00:00+07:00</updated><id>https://bitcoin-peak-dip.com/learn/2026/03/03/Market-Analysis-bitcoin-2026</id><content type="html" xml:base="https://bitcoin-peak-dip.com/learn/2026/03/03/Market-Analysis-bitcoin-2026.html"><![CDATA[<h2 id="1-tổng-quan-vĩ-mô">1. Tổng Quan Vĩ Mô</h2>
 
-<h2 id="markdown">```markdown</h2>
-<p>layout: post
-title: “BTC Signal Trigger Dataset (2022-2025)”
-date: 2026-02-29
-author: “Bitcoin PeakDip Team”
-reading_time: 12
-level: “Advanced”
-category: “Market Analysis”
-tags: [dataset, signals, analysis, on-chain]
-icon: database
-description: “Comprehensive dataset of Bitcoin peak and dip signals from 2022-2025 with market analysis and on-chain metrics”
-—</p>
+<p>Bitcoin đã bước vào giai đoạn điều chỉnh cấu trúc từ đỉnh $124,700 (10/2025). Hiện tại đã trải qua 5 tháng giảm liên tiếp - dài nhất từ 2018.</p>
 
-<h1 id="btc-signal-trigger-dataset">BTC Signal Trigger Dataset</h1>
-<h2 id="bitcoin-peak-and-dip-detection-signals">Bitcoin Peak and Dip Detection Signals</h2>
+<p><strong>Đặc điểm nhận dạng:</strong></p>
+<ul>
+  <li>Tương quan tài sản bất thường: Bitcoin giảm, vàng tăng 48%</li>
+  <li>Độ lệch tương quan Nasdaq: Dao động từ -0.68 đến +0.72</li>
+  <li>Yếu tố chính sách chi phối chu kỳ 4 năm truyền thống</li>
+</ul>
 
-<p><em>Dataset compiled from historical Bitcoin market events (2022-2025)</em></p>
+<h2 id="2-phân-tích-kỹ-thuật">2. Phân Tích Kỹ Thuật</h2>
+
+<h3 id="khung-lớn-weekly">Khung lớn (Weekly)</h3>
+<ul>
+  <li>Xu hướng: Giảm trung hạn</li>
+  <li>Hỗ trợ: $60,000 - $62,000</li>
+  <li>Hỗ trợ mạnh: $56,800 - $58,500 (MA200 tuần)</li>
+</ul>
+
+<h3 id="khung-ngắn-daily">Khung ngắn (Daily)</h3>
+<ul>
+  <li>Mô hình: Bear flag $62,300 - $71,300</li>
+  <li>Phân kỳ RSI giảm</li>
+  <li>Kháng cự: $68,000 - $72,000</li>
+</ul>
+
+<h3 id="các-ngưỡng-quan-trọng">Các ngưỡng quan trọng</h3>
+<p>| Ngưỡng | Giá trị | Ý nghĩa |
+|——–|———|———|
+| Kháng cự mạnh | $96,800 | MA200 ngày |
+| Kháng cự TB | $77,200 - $79,000 | MA50 ngày |
+| Hỗ trợ ngay | $62,000 - $63,000 | Đáy cục bộ |
+| Hỗ trợ mạnh | $56,800 - $58,500 | Fib 0.618 |</p>
+
+<h2 id="3-hành-vi-thị-trường">3. Hành Vi Thị Trường</h2>
+
+<h3 id="short-term-holders">Short-term Holders</h3>
+<ul>
+  <li>Lỗ trung bình: 26.3%</li>
+  <li>Lượng nắm giữ: 3.2M BTC</li>
+  <li>Giá trị lỗ: $84 tỷ</li>
+</ul>
+
+<h3 id="cá-voi-tích-lũy">Cá voi tích lũy</h3>
+<ul>
+  <li>Đã mua 372,000 BTC từ tháng 12/2025</li>
+  <li>Cá voi lớn nhất tăng từ 676,540 lên 690,000 BTC</li>
+</ul>
+
+<h3 id="áp-lực-bán-cạn-kiệt">Áp lực bán cạn kiệt</h3>
+<ul>
+  <li>ETF outflows giảm 94% (từ $3.48 tỷ xuống $206.5M)</li>
+  <li>LTH bán ròng giảm từ -243,737 xuống -31,967 BTC</li>
+</ul>
+
+<h2 id="4-bối-cảnh-vĩ-mô">4. Bối Cảnh Vĩ Mô</h2>
+
+<h3 id="tiêu-cực">Tiêu cực</h3>
+<ul>
+  <li>Fed duy trì lập trường diều hâu</li>
+  <li>Căng thẳng Iran đẩy giá dầu</li>
+</ul>
+
+<h3 id="tích-cực">Tích cực</h3>
+<ul>
+  <li>Financial repression hỗ trợ tài sản thay thế</li>
+  <li>Bitcoin trụ vững tốt trước biến động địa chính trị</li>
+</ul>
+
+<h3 id="dự-báo-tổ-chức">Dự báo tổ chức</h3>
+<ul>
+  <li>Bernstein: $150,000 (2026)</li>
+  <li>JPMorgan: $55,000 (Q2/2026)</li>
+  <li>Fidelity: $180,000 (2027)</li>
+</ul>
+
+<h2 id="5-ba-kịch-bản">5. Ba Kịch Bản</h2>
+
+<h3 id="kịch-bản-1-trung-tính-60">Kịch bản 1: Trung tính (60%)</h3>
+<ul>
+  <li>Giá dao động $60,000 - $72,000</li>
+  <li>Chiến lược: Trading range, DCA tại hỗ trợ</li>
+</ul>
+
+<h3 id="kịch-bản-2-tích-cực-25">Kịch bản 2: Tích cực (25%)</h3>
+<ul>
+  <li>Phá vỡ &gt; $72,000, xác nhận &gt; $79,000</li>
+  <li>Mục tiêu: $85,000 - $96,800</li>
+  <li>Chiến lược: Tăng tỷ trọng lên 60-70%</li>
+</ul>
+
+<h3 id="kịch-bản-3-tiêu-cực-15">Kịch bản 3: Tiêu cực (15%)</h3>
+<ul>
+  <li>Mất $62,000, về $56,000 - $58,000</li>
+  <li>Có thể xuống $45,000 - $47,000</li>
+  <li>Chiến lược: Phòng thủ, chờ mua vùng sâu</li>
+</ul>
+
+<h2 id="6-chiến-lược-đầu-tư">6. Chiến Lược Đầu Tư</h2>
+
+<h3 id="phân-bổ-danh-mục">Phân bổ danh mục</h3>
+<ul>
+  <li>Bảo thủ: 15-25% (vùng $58K-$62K)</li>
+  <li>Trung dung: 30-50% (DCA $52K-$62K)</li>
+  <li>Táo bạo: 50-70% (vùng $45K-$58K)</li>
+</ul>
+
+<h3 id="chỉ-báo-theo-dõi">Chỉ báo theo dõi</h3>
+<ul>
+  <li>ETF flows: 3 ngày liên tiếp &gt; $100M</li>
+  <li>STH loss ratio: Dưới 15%</li>
+  <li>Funding rate: -0.01% đến 0%</li>
+  <li>Puell Multiple: Dưới 0.5</li>
+</ul>
+
+<h3 id="timeline-hành-động">Timeline hành động</h3>
+<ul>
+  <li><strong>Tuần 1-2/3</strong>: Quan sát $62K, mua 10-15% nếu giữ vững</li>
+  <li><strong>Tuần 3-4/3</strong>: Theo dõi họp Fed (19/3), CPI (15/3)</li>
+  <li><strong>Tháng 4-5</strong>: Tăng tỷ trọng lên 40-50% nếu &gt; $65K</li>
+</ul>
+
+<h2 id="kết-luận">Kết Luận</h2>
+
+<p>Ngưỡng $62,000 là phòng tuyến cuối cùng. Giữ vững và phá $72,000 sẽ mở ra chu kỳ mới. Quản trị rủi ro là ưu tiên hàng đầu.</p>
+
+<hr />
+
+<p><em>Tuyên bố: Thông tin mang tính tham khảo, không phải lời khuyên đầu tư.</em></p>]]></content><author><name>Bitcoin PeakDip Research</name></author><summary type="html"><![CDATA[Phân tích chuyên sâu về sự chuyển đổi cấu trúc thị trường Bitcoin]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" /><media:content medium="image" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Ảnh Hưởng Của Khu Vực Trung Đông Đến Thị Trường Tiền Điện Tử</title><link href="https://bitcoin-peak-dip.com/learn/2026/03/02/The-Influence-of-the-Middle-East-Region-on-the-Cryptocurrency-Market.html" rel="alternate" type="text/html" title="Ảnh Hưởng Của Khu Vực Trung Đông Đến Thị Trường Tiền Điện Tử" /><published>2026-03-02T00:00:00+07:00</published><updated>2026-03-02T00:00:00+07:00</updated><id>https://bitcoin-peak-dip.com/learn/2026/03/02/The-Influence-of-the-Middle-East-Region-on-the-Cryptocurrency-Market</id><content type="html" xml:base="https://bitcoin-peak-dip.com/learn/2026/03/02/The-Influence-of-the-Middle-East-Region-on-the-Cryptocurrency-Market.html"><![CDATA[<h1 id="ảnh-hưởng-của-khu-vực-trung-đông-đến-thị-trường-tiền-điện-tử">Ảnh Hưởng Của Khu Vực Trung Đông Đến Thị Trường Tiền Điện Tử</h1>
+
+<h2 id="tổng-quan">Tổng Quan</h2>
+
+<p>Khu vực Trung Đông từ lâu đã được biết đến với nguồn dầu mỏ dồi dào và vai trò then chốt trong nền kinh tế toàn cầu. Tuy nhiên, trong những năm gần đây, khu vực này đang nổi lên như một trung tâm tiền điện tử quan trọng, đồng thời cũng là nguồn gốc của nhiều biến động địa chính trị ảnh hưởng sâu sắc đến thị trường crypto.</p>
 
 <div class="info-box">
-    <i class="fas fa-database"></i>
-    <p><strong>Dataset Overview:</strong> This comprehensive dataset includes signal triggers, market events, on-chain analysis, and sentiment data from 2022-2025.</p>
+    <i class="fas fa-globe-asia"></i>
+    <p><strong>Góc nhìn chiến lược:</strong> Trung Đông đang chuyển mình từ nền kinh tế dựa vào dầu mỏ sang trung tâm công nghệ tài chính, với UAE và Saudi Arabia dẫn đầu cuộc chơi tiền điện tử.</p>
 </div>
 
 <hr />
 
-<h2 id="-signal-data-table">📊 Signal Data Table</h2>
+<h2 id="bối-cảnh-địa-chính-trị-trung-đông">Bối Cảnh Địa Chính Trị Trung Đông</h2>
+
+<h3 id="các-điểm-nóng-địa-chính-trị">Các Điểm Nóng Địa Chính Trị</h3>
 
 <table>
   <thead>
     <tr>
-      <th style="text-align: center">Signal Trigger Time</th>
-      <th style="text-align: left">Event (Before ⇄ After)</th>
-      <th style="text-align: center">Time Until BTC Correction</th>
-      <th style="text-align: center">On-chain Analysis</th>
-      <th style="text-align: center">Market Sentiment</th>
-      <th style="text-align: center">Funding-rate (8h)</th>
-      <th style="text-align: left">Flow Analysis</th>
+      <th>Khu vực</th>
+      <th>Yếu tố ảnh hưởng</th>
+      <th>Tác động đến crypto</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><strong>2022</strong></td>
-      <td style="text-align: left"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: left"> </td>
+      <td><strong>Israel - Hamas</strong></td>
+      <td>Xung đột leo thang</td>
+      <td>Tăng nhu cầu trú ẩn an toàn</td>
     </tr>
     <tr>
-      <td style="text-align: center">9/27/2022 7:15</td>
-      <td style="text-align: left">Before: Fed reaffirms tightening ⇄ After: BTC breaks below $20k</td>
-      <td style="text-align: center">&lt; 6 h (−6%)</td>
-      <td style="text-align: center">Reserve ↑ 10k BTC</td>
-      <td style="text-align: center">Extreme Fear 23</td>
-      <td style="text-align: center">−0.008%</td>
-      <td style="text-align: left">18k BTC inflow to CEX</td>
+      <td><strong>Iran - Hạt nhân</strong></td>
+      <td>Căng thẳng hạt nhân</td>
+      <td>Bitcoin như kênh tránh trừng phạt</td>
     </tr>
     <tr>
-      <td style="text-align: center">11/1/2022 13:15</td>
-      <td style="text-align: left">Before: Rumors FTX insolvent ⇄ After: Panic</td>
-      <td style="text-align: center">≈ 36 h (−5%)</td>
-      <td style="text-align: center">Net-flow +40k BTC</td>
-      <td style="text-align: center">Fear 31→22</td>
-      <td style="text-align: center">−0.015%</td>
-      <td style="text-align: left">Strong inflow to Binance</td>
+      <td><strong>Ả Rập Saudi - Iran</strong></td>
+      <td>Đối đầu khu vực</td>
+      <td>Biến động giá dầu → ảnh hưởng Bitcoin</td>
     </tr>
     <tr>
-      <td style="text-align: center">11/5/2022 7:45</td>
-      <td style="text-align: left">Before: Binance sells FTT ⇄ After: FTX crisis</td>
-      <td style="text-align: center">&lt; 8 h (−9%)</td>
-      <td style="text-align: center">Net-flow +140k BTC</td>
-      <td style="text-align: center">Extreme Fear 20</td>
-      <td style="text-align: center">−0.020%</td>
-      <td style="text-align: left">Record inflow on Nov 9</td>
-    </tr>
-    <tr>
-      <td style="text-align: center"><strong>2023</strong></td>
-      <td style="text-align: left"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: center">1/20/2023 20:15</td>
-      <td style="text-align: left">Before: Lunar New Year rally to 23k ⇄ After: Profit-taking</td>
-      <td style="text-align: center">24 h (−4%)</td>
-      <td style="text-align: center">High whale outflow</td>
-      <td style="text-align: center">Greed 55</td>
-      <td style="text-align: center">0.01%</td>
-      <td style="text-align: left">High OTC outflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">1/23/2023 11:00</td>
-      <td style="text-align: left">Before: NASDAQ drops ⇄ After: BTC follows</td>
-      <td style="text-align: center">6 h (−3%)</td>
-      <td style="text-align: center">Reserve slightly ↑</td>
-      <td style="text-align: center">Greed 53→48</td>
-      <td style="text-align: center">0.01%</td>
-      <td style="text-align: left">Small inflow to Coinbase</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2/2/2023 0:45</td>
-      <td style="text-align: left">Before: FOMC +25 bp ⇄ After: “Sell the news”</td>
-      <td style="text-align: center">12 h (−5%)</td>
-      <td style="text-align: center">Futures CVD negative</td>
-      <td style="text-align: center">Neutral 49</td>
-      <td style="text-align: center">+0.015%→0</td>
-      <td style="text-align: left">Small inflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center"><strong>2024</strong></td>
-      <td style="text-align: left"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: center"> </td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: center">1/11/2024 13:00</td>
-      <td style="text-align: left">Before: SEC approves ETF ⇄ After: “Sell the news”</td>
-      <td style="text-align: center">6 h (−5%)</td>
-      <td style="text-align: center">Reserve outflow</td>
-      <td style="text-align: center">Greed 65</td>
-      <td style="text-align: center">+0.020%→-0.005%</td>
-      <td style="text-align: left">Inflow to CEX</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2/15/2024 15:00</td>
-      <td style="text-align: left">Before: US CPI hotter than forecast ⇄ After: Strong USD</td>
-      <td style="text-align: center">8 h (−4%)</td>
-      <td style="text-align: center">Net-flow +5k BTC</td>
-      <td style="text-align: center">Neutral 55→48</td>
-      <td style="text-align: center">0.01%</td>
-      <td style="text-align: left">Inflow to Binance</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2/16/2024 3:15</td>
-      <td style="text-align: left">Before: BTC hits 52k ⇄ After: Profit-taking</td>
-      <td style="text-align: center">4 h (−3%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Neutral 50</td>
-      <td style="text-align: center">0.00%</td>
-      <td style="text-align: left">Small inflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2/20/2024 23:15</td>
-      <td style="text-align: left">Before: Accelerating GBTC outflows ⇄ After: ETF supply pressure</td>
-      <td style="text-align: center">10 h (−4%)</td>
-      <td style="text-align: center">Net-flow +7k BTC</td>
-      <td style="text-align: center">Fear 45</td>
-      <td style="text-align: center">−0.003%</td>
-      <td style="text-align: left">Inflow to Coinbase</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2/26/2024 16:00</td>
-      <td style="text-align: left">Before: Weekend CME gap fill ⇄ After: Reversal</td>
-      <td style="text-align: center">6 h (−3%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Neutral 49</td>
-      <td style="text-align: center">0%</td>
-      <td style="text-align: left">Inflow to Bybit</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">3/3/2024 12:30</td>
-      <td style="text-align: left">Before: MicroStrategy buys 3k BTC ⇄ After: Spike</td>
-      <td style="text-align: center">24 h (−4%)</td>
-      <td style="text-align: center">Large outflow</td>
-      <td style="text-align: center">Greed 62→55</td>
-      <td style="text-align: center">0.01%</td>
-      <td style="text-align: left">Outflow to cold wallets</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">3/3/2024 17:00</td>
-      <td style="text-align: left">Before: Post-MSTR effect fades ⇄ After: Sideways → Drop</td>
-      <td style="text-align: center">6 h (−2%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Neutral 54</td>
-      <td style="text-align: center">0.00%</td>
-      <td style="text-align: left">Small inflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">3/7/2024 8:15</td>
-      <td style="text-align: left">Before: Miner selling pre-halving ⇄ After: Supply pressure</td>
-      <td style="text-align: center">8 h (−3%)</td>
-      <td style="text-align: center">Net-flow +4k BTC</td>
-      <td style="text-align: center">Neutral 50</td>
-      <td style="text-align: center">−0.001%</td>
-      <td style="text-align: left">Miner inflow → CEX</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">3/8/2024 17:30</td>
-      <td style="text-align: left">Before: High NFP (March) ⇄ After: Strong USD</td>
-      <td style="text-align: center">12 h (−4%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Fear 46</td>
-      <td style="text-align: center">−0.002%</td>
-      <td style="text-align: left">Inflow to Kraken</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">3/24/2024 20:15</td>
-      <td style="text-align: left">Before: Coinbase outage spike ⇄ After: Momentum loss</td>
-      <td style="text-align: center">4 h (−4%)</td>
-      <td style="text-align: center">Net-flow +5k BTC</td>
-      <td style="text-align: center">Neutral 52</td>
-      <td style="text-align: center">−0.001%</td>
-      <td style="text-align: left">Inflow to Binance</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">3/31/2024 13:15</td>
-      <td style="text-align: left">Before: Q1 close ⇄ After: Fund profit-taking</td>
-      <td style="text-align: center">10 h (−3%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Neutral 51</td>
-      <td style="text-align: center">0.00%</td>
-      <td style="text-align: left">Inflow to Bitfinex</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">4/3/2024 14:30</td>
-      <td style="text-align: left">Before: Halving countdown 15 days ⇄ After: FOMO</td>
-      <td style="text-align: center">18 h (−3%)</td>
-      <td style="text-align: center">Outflow gradually ↓</td>
-      <td style="text-align: center">Greed 65→60</td>
-      <td style="text-align: center">+0.010%→0%</td>
-      <td style="text-align: left">OTC outflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">4/21/2024 3:00</td>
-      <td style="text-align: left">Before: Halving #4 ⇄ After: Hash fee spike</td>
-      <td style="text-align: center">10 h (−5%)</td>
-      <td style="text-align: center">Reserve ↑ 8k BTC</td>
-      <td style="text-align: center">Neutral 54</td>
-      <td style="text-align: center">−0.004%</td>
-      <td style="text-align: left">Miner payout inflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">5/15/2024 10:00</td>
-      <td style="text-align: left">Before: Hot CPI (Apr/May) ⇄ After: Risk-off</td>
-      <td style="text-align: center">6 h (−4%)</td>
-      <td style="text-align: center">Net-flow +6k BTC</td>
-      <td style="text-align: center">Fear 42</td>
-      <td style="text-align: center">−0.003%</td>
-      <td style="text-align: left">Inflow to Bybit</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">7/16/2024 15:15</td>
-      <td style="text-align: left">Before: Mt.Gox repayment schedule ⇄ After: Supply concerns</td>
-      <td style="text-align: center">4 h (−3%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Fear 40</td>
-      <td style="text-align: center">−0.005%</td>
-      <td style="text-align: left">Anticipated inflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">7/19/2024 16:15</td>
-      <td style="text-align: left">Before: DeFi hacks &gt; $120M ⇄ After: Risk sentiment worsens</td>
-      <td style="text-align: center">8 h (−4%)</td>
-      <td style="text-align: center">Net-flow +5k BTC</td>
-      <td style="text-align: center">Fear 38</td>
-      <td style="text-align: center">−0.006%</td>
-      <td style="text-align: left">Inflow to OKX</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">8/25/2024 21:30</td>
-      <td style="text-align: left">Before: Powell hawkish at Jackson Hole ⇄ After: Risk-off</td>
-      <td style="text-align: center">24 h (−5%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Fear 35</td>
-      <td style="text-align: center">−0.007%</td>
-      <td style="text-align: left">Multi-exchange inflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">10/6/2024 14:45</td>
-      <td style="text-align: left">Before: Middle East conflict escalates ⇄ After: Risk-off</td>
-      <td style="text-align: center">12 h (−4%)</td>
-      <td style="text-align: center">Net-flow +7k BTC</td>
-      <td style="text-align: center">Fear 40</td>
-      <td style="text-align: center">−0.004%</td>
-      <td style="text-align: left">Inflow to Binance</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">10/7/2024 0:45</td>
-      <td style="text-align: left">Before: Market digests conflict ⇄ After: Sideways</td>
-      <td style="text-align: center">8 h (−2%)</td>
-      <td style="text-align: center">Reserve flat</td>
-      <td style="text-align: center">Neutral 46</td>
-      <td style="text-align: center">0%</td>
-      <td style="text-align: left">Side-flow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">10/14/2024 3:30</td>
-      <td style="text-align: left">Before: Largest spot-ETF outflow in 3 months ⇄ After: Continued sell-off</td>
-      <td style="text-align: center">6 h (−3%)</td>
-      <td style="text-align: center">Net-flow +6k BTC</td>
-      <td style="text-align: center">Fear 42</td>
-      <td style="text-align: center">−0.003%</td>
-      <td style="text-align: left">Inflow to Coinbase</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">10/14/2024 8:00</td>
-      <td style="text-align: left">Before: Ongoing ETF sell-off ⇄ After: BTC drops 5%</td>
-      <td style="text-align: center">4 h (−2%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Fear 41</td>
-      <td style="text-align: center">−0.002%</td>
-      <td style="text-align: left">Small inflow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">10/20/2024 22:30</td>
-      <td style="text-align: left">Before: IRS proposes new crypto tax rules ⇄ After: Selling pressure</td>
-      <td style="text-align: center">8 h (−4%)</td>
-      <td style="text-align: center">Net-flow +5k BTC</td>
-      <td style="text-align: center">Fear 40</td>
-      <td style="text-align: center">−0.004%</td>
-      <td style="text-align: left">Inflow to Kraken</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">11/10/2024 3:30</td>
-      <td style="text-align: left">Before: US election unresolved ⇄ After: Uncertainty</td>
-      <td style="text-align: center">12 h (−4%)</td>
-      <td style="text-align: center">Reserve ↑</td>
-      <td style="text-align: center">Fear 38</td>
-      <td style="text-align: center">−0.005%</td>
-      <td style="text-align: left">Inflow to Binance</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">11/10/2024 17:45</td>
-      <td style="text-align: left">Before: Unclear US–China negotiations ⇄ After: Sideways</td>
-      <td style="text-align: center">6 h (−2%)</td>
-      <td style="text-align: center">Reserve flat</td>
-      <td style="text-align: center">Neutral 45</td>
-      <td style="text-align: center">0.00%</td>
-      <td style="text-align: left">Side-flow</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">11/18/2024 1:45</td>
-      <td style="text-align: left">Before: Binance pays DOJ fine ⇄ After: “Sell the fact”</td>
-      <td style="text-align: center">4 h (−4%)</td>
-      <td style="text-align: center">Net-flow +6k BTC</td>
-      <td style="text-align: center">Fear 44</td>
-      <td style="text-align: center">−0.003%</td>
-      <td style="text-align: left">Asia session inflow</td>
+      <td><strong>UAE - Dubai</strong></td>
+      <td>Trung tâm tài chính mới</td>
+      <td>Điểm đến của dòng vốn crypto</td>
     </tr>
   </tbody>
 </table>
 
-<hr />
-
-<h2 id="-buy-the-dip-signals-2025">📈 Buy The Dip Signals (2025)</h2>
-
-<p><em>Buy The Dip signal is triggered if level is greater than 10</em></p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">Timestamp</th>
-      <th style="text-align: center">Level</th>
-      <th style="text-align: center">Market Level</th>
-      <th style="text-align: center">Buy/Sell Area</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">2025-12-03 22:01:05</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-03 13:15:55</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-03 13:00:43</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-03 12:01:12</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-03 11:45:46</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-03 08:01:34</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-03 07:45:46</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-03 06:15:55</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-03 06:00:47</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 23:00:57</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 22:45:44</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 22:30:57</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 22:15:54</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 21:15:59</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 21:00:57</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 20:16:34</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 20:00:54</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 19:30:57</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 19:15:55</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 14:46:11</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 14:30:45</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 10:30:53</td>
-      <td style="text-align: center">5</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 07:15:47</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 06:00:56</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 05:30:52</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 05:01:15</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 04:45:44</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-02 01:46:07</td>
-      <td style="text-align: center">6</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-01 22:30:55</td>
-      <td style="text-align: center">5</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-01 08:00:54</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-01 07:46:13</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-12-01 07:15:55</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-29 03:01:11</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-29 02:45:44</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-29 00:30:54</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-29 00:16:09</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-28 23:16:11</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-28 23:01:11</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-28 22:46:30</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-28 22:30:55</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-28 21:15:58</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-28 21:00:55</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-28 18:16:12</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-27 02:16:10</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-27 02:00:55</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-27 01:31:11</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-27 01:15:55</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-27 00:46:11</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-27 00:30:54</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-26 22:45:57</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-26 06:01:12</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-26 05:45:45</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-26 04:01:14</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-26 03:45:44</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-25 21:45:45</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-25 20:45:54</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-25 04:30:55</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">10</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-25 04:15:53</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-25 01:16:09</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-25 01:00:46</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-25 00:45:57</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-25 00:30:52</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-24 23:15:55</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-24 23:00:55</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-24 12:31:07</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-24 12:15:44</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-24 11:30:45</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-24 11:15:46</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-24 09:30:56</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-24 09:15:52</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-23 22:01:31</td>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-23 20:16:10</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-23 19:46:07</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-23 19:30:52</td>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2025-11-23 18:30:54</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">12</td>
-    </tr>
-  </tbody>
-</table>
-
-<hr />
-
-<h2 id="-signal-categories-legend">📋 Signal Categories Legend</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">Column</th>
-      <th style="text-align: left">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><strong>Signal Trigger Time</strong></td>
-      <td style="text-align: left">Timestamp of when the signal was triggered</td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><strong>Event</strong></td>
-      <td style="text-align: left">Market event before and after the signal</td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><strong>Time Until BTC Correction</strong></td>
-      <td style="text-align: left">Time elapsed until price correction with percentage</td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><strong>On-chain Analysis</strong></td>
-      <td style="text-align: left">Blockchain data showing whale movements, exchange flows</td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><strong>Market Sentiment</strong></td>
-      <td style="text-align: left">Fear &amp; Greed index values</td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><strong>Funding-rate (8h)</strong></td>
-      <td style="text-align: left">Perpetual swap funding rates</td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><strong>Flow Analysis</strong></td>
-      <td style="text-align: left">Exchange inflow/outflow patterns</td>
-    </tr>
-  </tbody>
-</table>
-
-<hr />
-
-<h2 id="-key-insights">🔍 Key Insights</h2>
-
-<div class="insight-box">
-    <i class="fas fa-chart-pie"></i>
-    <h3>Statistical Analysis</h3>
-    <ul>
-        <li><strong>Average correction time:</strong> ~8-12 hours from signal trigger</li>
-        <li><strong>Average correction magnitude:</strong> 3-5%</li>
-        <li><strong>Most reliable signals:</strong> Occur during extreme fear/greed extremes</li>
-        <li><strong>Funding rate shifts:</strong> From positive to negative often precede corrections</li>
-        <li><strong>Exchange inflows:</strong> Spike 4-6 hours before major drops</li>
-    </ul>
-</div>
-
-<h3 id="pattern-recognition">Pattern Recognition</h3>
+<h3 id="tại-sao-trung-đông-quan-trọng-với-crypto">Tại Sao Trung Đông Quan Trọng Với Crypto?</h3>
 
 <ol>
-  <li><strong>Pre-Signal Patterns</strong>
-    <ul>
-      <li>Volume divergence 2-4 hours before signal</li>
-      <li>Funding rate peaking then declining</li>
-      <li>Whale movement to exchanges</li>
-    </ul>
-  </li>
-  <li><strong>Signal Characteristics</strong>
-    <ul>
-      <li>Clear catalyst (news/event)</li>
-      <li>Multiple timeframe alignment</li>
-      <li>On-chain confirmation</li>
-    </ul>
-  </li>
-  <li><strong>Post-Signal Behavior</strong>
-    <ul>
-      <li>Initial 2-4% move within 6 hours</li>
-      <li>Extended move to 5%+ within 24 hours</li>
-      <li>Volume confirmation required</li>
-    </ul>
-  </li>
+  <li><strong>Nguồn vốn dầu mỏ khổng lồ</strong> - Các quỹ đầu tư quốc gia đang đa dạng hóa sang crypto</li>
+  <li><strong>Nhu cầu tránh lạm phát</strong> - Đồng tiền địa phương mất giá do bất ổn</li>
+  <li><strong>Công nghệ blockchain</strong> - Chiến lược quốc gia của UAE và Saudi Arabia</li>
+  <li><strong>Kênh tránh trừng phạt</strong> - Iran và Nga sử dụng crypto để lách trừng phạt</li>
 </ol>
 
 <hr />
 
-<h2 id="-trading-implications">🎯 Trading Implications</h2>
+<h2 id="ảnh-hưởng-của-xung-đột-đến-thị-trường-crypto">Ảnh Hưởng Của Xung Đột Đến Thị Trường Crypto</h2>
+
+<h3 id="1-tâm-lý-trú-ẩn-an-toàn-safe-haven">1. <strong>Tâm Lý “Trú Ẩn An Toàn” (Safe Haven)</strong></h3>
+
+<p>Khi xung đột Israel-Hamas bùng phát tháng 10/2023, Bitcoin đã có phản ứng đáng chú ý:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Thời điểm</th>
+      <th>Giá Bitcoin</th>
+      <th>Biến động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Trước xung đột (30/09/2023)</td>
+      <td>$27,000</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>Bùng phát (07/10/2023)</td>
+      <td>$28,500</td>
+      <td>+5.5%</td>
+    </tr>
+    <tr>
+      <td>1 tuần sau (14/10/2023)</td>
+      <td>$35,000</td>
+      <td>+29.6%</td>
+    </tr>
+    <tr>
+      <td>1 tháng sau (07/11/2023)</td>
+      <td>$42,000</td>
+      <td>+55.5%</td>
+    </tr>
+  </tbody>
+</table>
 
 <div class="tip-box">
-    <i class="fas fa-lightbulb"></i>
-    <p><strong>For Traders:</strong> Use this dataset to understand typical signal patterns and improve your entry/exit timing.</p>
+    <i class="fas fa-chart-line"></i>
+    <p><strong>Quan sát:</strong> Bitcoin tăng 55% trong vòng 1 tháng sau khi xung đột bùng phát, cho thấy vai trò "vàng kỹ thuật số" trong thời kỳ bất ổn.</p>
 </div>
 
-<h3 id="best-practices">Best Practices</h3>
+<h3 id="2-biến-động-giá-dầu-và-tương-quan-với-bitcoin">2. <strong>Biến Động Giá Dầu Và Tương Quan Với Bitcoin</strong></h3>
 
-<ol>
-  <li><strong>Wait for confirmation</strong> - Don’t enter on the first signal alone</li>
-  <li><strong>Check multiple timeframes</strong> - Align 15m, 1h, and 4h charts</li>
-  <li><strong>Monitor volume</strong> - Should increase during the move</li>
-  <li><strong>Set proper stops</strong> - 2-3% below/above entry depending on volatility</li>
-  <li><strong>Scale in/out</strong> - Don’t enter full position at once</li>
-</ol>
+<table>
+  <thead>
+    <tr>
+      <th>Sự kiện</th>
+      <th>Giá dầu (WTI)</th>
+      <th>Bitcoin</th>
+      <th>Tương quan</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tấn công cơ sở dầu Saudi (2019)</td>
+      <td>+15%</td>
+      <td>-7%</td>
+      <td>Nghịch chiều</td>
+    </tr>
+    <tr>
+      <td>Xung đột Israel-Hamas (2023)</td>
+      <td>+8%</td>
+      <td>+55%</td>
+      <td>Thuận chiều nhẹ</td>
+    </tr>
+    <tr>
+      <td>Căng thẳng Biển Đỏ (2024)</td>
+      <td>+12%</td>
+      <td>+22%</td>
+      <td>Thuận chiều</td>
+    </tr>
+  </tbody>
+</table>
 
-<hr />
+<h3 id="3-dòng-vốn-từ-các-quỹ-đầu-tư-trung-đông">3. <strong>Dòng Vốn Từ Các Quỹ Đầu Tư Trung Đông</strong></h3>
 
-<h2 id="-related-resources">📚 Related Resources</h2>
+<p>Các quỹ đầu tư quốc gia (SWF) tại Trung Đông đang tích cực mua Bitcoin:</p>
 
 <ul>
-  <li><a href="/learn/2026/02/15/ews-basics.html">EWS Fundamentals</a></li>
-  <li><a href="/learn/2026/02/16/strategy-guide.html">8 Trading Strategies Guide</a></li>
-  <li><a href="/learn/2026/02/18/risk-management.html">Risk Management</a></li>
+  <li><strong>Mubadala (UAE):</strong> Đầu tư 400 triệu USD vào các quỹ Bitcoin ETF</li>
+  <li><strong>QIA (Qatar):</strong> 500 triệu USD vào hạ tầng blockchain</li>
+  <li><strong>PIF (Saudi Arabia):</strong> Hợp tác với các sàn giao dịch crypto</li>
 </ul>
 
 <hr />
 
-<h2 id="️-disclaimer">⚠️ Disclaimer</h2>
+<h2 id="phân-tích-chi-tiết-theo-từng-quốc-gia">Phân Tích Chi Tiết Theo Từng Quốc Gia</h2>
+
+<h3 id="-uae---trung-tâm-crypto-của-trung-đông">🇦🇪 <strong>UAE - Trung Tâm Crypto Của Trung Đông</strong></h3>
+
+<p><strong>Dubai</strong> đang nổi lên như một “Thung lũng Silicon” của thế giới Ả Rập:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Năm</th>
+      <th>Số người dùng crypto</th>
+      <th>Tăng trưởng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2020</td>
+      <td>200,000</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>2022</td>
+      <td>1,200,000</td>
+      <td>500%</td>
+    </tr>
+    <tr>
+      <td>2024</td>
+      <td>3,500,000</td>
+      <td>192%</td>
+    </tr>
+    <tr>
+      <td>2026 (dự báo)</td>
+      <td>8,000,000</td>
+      <td>128%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Các yếu tố thúc đẩy:</strong></p>
+<ul>
+  <li>✅ <strong>VARA</strong> (Cơ quan quản lý tài sản ảo Dubai) - khung pháp lý rõ ràng</li>
+  <li>✅ <strong>Khu tự do DMCC</strong> - thu hút 500+ công ty crypto</li>
+  <li>✅ <strong>Binance, Bybit</strong> đặt trụ sở khu vực tại Dubai</li>
+</ul>
+
+<h3 id="-saudi-arabia---tham-vọng-đa-dạng-hóa-kinh-tế">🇸🇦 <strong>Saudi Arabia - Tham Vọng Đa Dạng Hóa Kinh Tế</strong></h3>
+
+<p><strong>Tầm nhìn 2030</strong> của Saudi Arabia bao gồm:</p>
+
+<div style="display: flex; gap: 20px; margin: 20px 0;">
+    <div style="flex: 1; background: rgba(0,212,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #00d4ff;">
+        <h4 style="color: #00d4ff; margin-top: 0;">Đầu tư</h4>
+        <ul>
+            <li>5 tỷ USD vào blockchain</li>
+            <li>Hợp tác với SoftBank Vision Fund</li>
+            <li>Đầu tư vào các quỹ Bitcoin ETF</li>
+        </ul>
+    </div>
+    <div style="flex: 1; background: rgba(247,147,26,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #f7931a;">
+        <h4 style="color: #f7931a; margin-top: 0;">Hạ tầng</h4>
+        <ul>
+            <li>Smart city NEOM tích hợp blockchain</li>
+            <li>Sandbox cho fintech và crypto</li>
+            <li>Ngân hàng trung ương nghiên cứu CBDC</li>
+        </ul>
+    </div>
+</div>
+
+<h3 id="-iran---crypto-trong-bối-cảnh-trừng-phạt">🇮🇷 <strong>Iran - Crypto Trong Bối Cảnh Trừng Phạt</strong></h3>
+
+<p>Iran là trường hợp đặc biệt khi sử dụng crypto để đối phó với trừng phạt:</p>
+
+<p><strong>Thống kê đáng chú ý:</strong></p>
+<ul>
+  <li><strong>4.5%</strong> hashrate Bitcoin toàn cầu đến từ Iran (2024)</li>
+  <li><strong>1 tỷ USD</strong> giao dịch crypto hàng tháng để nhập khẩu</li>
+  <li><strong>Các mỏ khai thác</strong> sử dụng khí đốt dư thừa giá rẻ</li>
+</ul>
 
 <div class="warning-box">
     <i class="fas fa-exclamation-triangle"></i>
-    <p><strong>Important:</strong> This dataset is for educational and research purposes only. Past performance does not guarantee future results. Always do your own research and never risk more than you can afford to lose.</p>
+    <p><strong>Rủi ro:</strong> Các lệnh trừng phạt mới của Mỹ có thể nhắm vào các sàn giao dịch hợp tác với Iran, gây biến động thị trường.</p>
 </div>
+
+<h3 id="-israel---trung-tâm-công-nghệ-blockchain">🇮🇱 <strong>Israel - Trung Tâm Công Nghệ Blockchain</strong></h3>
+
+<p>Dù đang trong xung đột, Israel vẫn là trung tâm công nghệ:</p>
+
+<ul>
+  <li><strong>500+ startup</strong> blockchain</li>
+  <li><strong>Fundsize</strong> đầu tư crypto đạt 2 tỷ USD (2024)</li>
+  <li><strong>Ngân hàng trung ương</strong> thử nghiệm CBDC (digital shekel)</li>
+</ul>
 
 <hr />
 
-<p><em>Data compiled from BTC Signal Trigger Dataset (English Version)</em>
-<em>Last updated: 2026</em></p>]]></content><author><name>Bitcoin PeakDip Team</name></author><summary type="html"><![CDATA[2. File 2026-02-16-btc-signal-trigger-dataset.md (đã thêm frontmatter và cấu trúc đúng)]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/og-default.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">EWS Signal Snapshot - February 28, 2026</title><link href="http://localhost:4000/learn/2026/02/28/EWS-Signal-Snapshot.html" rel="alternate" type="text/html" title="EWS Signal Snapshot - February 28, 2026" /><published>2026-02-28T00:00:00+07:00</published><updated>2026-02-28T00:00:00+07:00</updated><id>http://localhost:4000/learn/2026/02/28/EWS-Signal-Snapshot</id><content type="html" xml:base="http://localhost:4000/learn/2026/02/28/EWS-Signal-Snapshot.html"><![CDATA[<h1 id="ews-signal-snapshot---february-28-2026">EWS Signal Snapshot - February 28, 2026</h1>
+<h2 id="tác-động-đến-các-chiến-lược-giao-dịch">Tác Động Đến Các Chiến Lược Giao Dịch</h2>
+
+<h3 id="1-chiến-lược-safe-haven-trong-xung-đột">1. <strong>Chiến Lược “Safe Haven” Trong Xung Đột</strong></h3>
+
+<p>Khi căng thẳng Trung Đông leo thang, các nhà đầu tư thường:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mức độ căng thẳng</th>
+      <th>Hành động</th>
+      <th>Phân bổ</th>
+      <th>Stop Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>&gt; 80 (nghiêm trọng)</td>
+      <td>MUA BITCOIN</td>
+      <td>+5-10%</td>
+      <td>-15%</td>
+    </tr>
+    <tr>
+      <td>50-80 (gia tăng)</td>
+      <td>GIỮ / TÍCH LŨY</td>
+      <td>5%</td>
+      <td>-20%</td>
+    </tr>
+    <tr>
+      <td>&lt; 50 (bình thường)</td>
+      <td>THEO DÕI</td>
+      <td>2-3%</td>
+      <td>-25%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="2-tương-quan-với-giá-dầu">2. <strong>Tương Quan Với Giá Dầu</strong></h3>
+
+<p>Phân tích dữ liệu 5 năm qua:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Giai đoạn</th>
+      <th>Tương quan Bitcoin - Dầu</th>
+      <th>Hệ số</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2020-2021</td>
+      <td>Nghịch chiều</td>
+      <td>-0.45</td>
+    </tr>
+    <tr>
+      <td>2022-2023</td>
+      <td>Trung tính</td>
+      <td>+0.12</td>
+    </tr>
+    <tr>
+      <td>2024-2025</td>
+      <td>Thuận chiều nhẹ</td>
+      <td>+0.35</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="3-cơ-hội-từ-dòng-vốn-trung-đông">3. <strong>Cơ Hội Từ Dòng Vốn Trung Đông</strong></h3>
+
+<p>Các quỹ Trung Đông thường đầu tư theo mô hình:</p>
+
+<ul>
+  <li><strong>Thời điểm:</strong> Q4 hàng năm (sau khi chốt ngân sách dầu)</li>
+  <li><strong>Quy mô:</strong> 100-500 triệu USD mỗi đợt</li>
+  <li><strong>Trọng tâm:</strong> Bitcoin ETF, hạ tầng blockchain, startup fintech tại Dubai</li>
+  <li><strong>Tác động:</strong> Thường tạo đáy cục bộ trước khi tăng</li>
+</ul>
+
+<hr />
+
+<h2 id="dự-báo-và-chiến-lược-cho-2026">Dự Báo Và Chiến Lược Cho 2026</h2>
+
+<h3 id="-kịch-bản-có-thể-xảy-ra">🔮 <strong>Kịch Bản Có Thể Xảy Ra</strong></h3>
+
+<div style="display: flex; gap: 20px; margin: 20px 0;">
+    <div style="flex: 1; background: rgba(76,175,80,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #4CAF50;">
+        <h4 style="color: #4CAF50; margin-top: 0;">Kịch bản lạc quan</h4>
+        <ul>
+            <li>Đình chiến Israel-Hamas</li>
+            <li>UAE thu hút thêm 10 tỷ USD vốn crypto</li>
+            <li>Saudi Arabia công bố quỹ Bitcoin ETF quốc gia</li>
+            <li><strong>BTC target:</strong> $150,000+</li>
+        </ul>
+    </div>
+    <div style="flex: 1; background: rgba(244,67,54,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #F44336;">
+        <h4 style="color: #F44336; margin-top: 0;">Kịch bản bi quan</h4>
+        <ul>
+            <li>Xung đột lan rộng ra toàn khu vực</li>
+            <li>Mỹ trừng phạt các sàn giao dịch liên quan Iran</li>
+            <li>Giá dầu tăng &gt;$120/thùng</li>
+            <li><strong>BTC target:</strong> $70,000-85,000</li>
+        </ul>
+    </div>
+</div>
+
+<h3 id="-các-yếu-tố-cần-theo-dõi">📊 <strong>Các Yếu Tố Cần Theo Dõi</strong></h3>
+
+<ol>
+  <li><strong>Chỉ số căng thẳng Trung Đông</strong> (theo dõi hàng ngày)</li>
+  <li><strong>Dòng vốn ETF từ UAE/Saudi</strong> (báo cáo hàng tuần)</li>
+  <li><strong>Giá dầu Brent</strong> (tương quan với Bitcoin)</li>
+  <li><strong>Tuyên bố từ các quỹ đầu tư quốc gia</strong></li>
+  <li><strong>Diễn biến hạt nhân Iran</strong> (đàm phán mới)</li>
+</ol>
+
+<hr />
+
+<h2 id="bài-học-từ-lịch-sử">Bài Học Từ Lịch Sử</h2>
+
+<h3 id="sự-kiện-tháng-102023-bài-học-về-buy-the-dip"><strong>Sự Kiện Tháng 10/2023: Bài Học Về “Buy The Dip”</strong></h3>
+
+<p>Khi xung đột Israel-Hamas bùng phát:</p>
+<ul>
+  <li><strong>Bitcoin giảm 8%</strong> trong 48h đầu (panic sell)</li>
+  <li><strong>Phục hồi 15%</strong> trong tuần tiếp theo</li>
+  <li><strong>Tăng 55%</strong> trong 1 tháng</li>
+</ul>
+
+<div class="tip-box">
+    <i class="fas fa-lightbulb"></i>
+    <p><strong>Bài học:</strong> Xung đột Trung Đông thường tạo cơ hội mua tốt cho nhà đầu tư dài hạn, nhưng cần chờ qua giai đoạn panic đầu tiên.</p>
+</div>
+
+<h3 id="tương-quan-với-các-sự-kiện-lịch-sử"><strong>Tương Quan Với Các Sự Kiện Lịch Sử</strong></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sự kiện</th>
+      <th>Ngày</th>
+      <th>BTC phản ứng</th>
+      <th>Thời gian hồi phục</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tấn công cơ sở dầu Saudi</td>
+      <td>14/09/2019</td>
+      <td>-3%</td>
+      <td>3 ngày</td>
+    </tr>
+    <tr>
+      <td>Bắt giữ tàu Iran</td>
+      <td>10/01/2020</td>
+      <td>-2%</td>
+      <td>2 ngày</td>
+    </tr>
+    <tr>
+      <td>Xung đột Israel-Hamas</td>
+      <td>07/10/2023</td>
+      <td>-8% → +55%</td>
+      <td>2 tuần</td>
+    </tr>
+    <tr>
+      <td>Căng thẳng Biển Đỏ</td>
+      <td>12/2023</td>
+      <td>-5% → +22%</td>
+      <td>1 tuần</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="chiến-lược-giao-dịch-cụ-thể">Chiến Lược Giao Dịch Cụ Thể</h2>
+
+<h3 id="ews-signal-cho-trung-đông"><strong>EWS Signal cho Trung Đông</strong></h3>
+
+<p>Hệ thống Early Warning System của chúng tôi đã phát triển các chỉ báo đặc biệt cho khu vực Trung Đông:</p>
+
+<p><strong>MET Index (Middle East Tension Index)</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Chỉ số</th>
+      <th>Trọng số</th>
+      <th>Nguồn dữ liệu</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Xung đột quân sự</td>
+      <td>40%</td>
+      <td>Tin tức, số liệu thương vong</td>
+    </tr>
+    <tr>
+      <td>Sốc giá dầu</td>
+      <td>30%</td>
+      <td>Biến động giá dầu &gt;5%</td>
+    </tr>
+    <tr>
+      <td>Căng thẳng ngoại giao</td>
+      <td>20%</td>
+      <td>Tuyên bố, trừng phạt mới</td>
+    </tr>
+    <tr>
+      <td>Dòng vốn</td>
+      <td>10%</td>
+      <td>ETF flows, đầu tư SWF</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Ngưỡng hành động:</strong></p>
+<ul>
+  <li><strong>70-100 điểm:</strong> BÁN (peak zone)</li>
+  <li><strong>50-69 điểm:</strong> THẬN TRỌNG</li>
+  <li><strong>30-49 điểm:</strong> TÍCH LŨY</li>
+  <li><strong>0-29 điểm:</strong> MUA (dip zone)</li>
+</ul>
+
+<h3 id="chiến-lược-đề-xuất"><strong>Chiến Lược Đề Xuất</strong></h3>
+
+<h4 id="khi-met-index--70">Khi MET Index &gt; 70:</h4>
+<ul>
+  <li>Chốt lời một phần (30-50% vị thế)</li>
+  <li>Tăng tỷ trọng stablecoin lên 20-30%</li>
+  <li>Đặt lệnh mua thấp hơn 15-20% để đón dip</li>
+  <li>Chờ mua lại khi index &lt; 50</li>
+</ul>
+
+<h4 id="khi-met-index-50-70">Khi MET Index 50-70:</h4>
+<ul>
+  <li>Duy trì tỷ trọng 5-10% Bitcoin</li>
+  <li>Đặt stop-loss rộng hơn bình thường (15-20%)</li>
+  <li>Theo dõi sát dòng vốn từ quỹ Trung Đông</li>
+  <li>Cân nhắc hedging bằng vàng hoặc dầu</li>
+</ul>
+
+<h4 id="khi-met-index--50">Khi MET Index &lt; 50:</h4>
+<ul>
+  <li>Tích lũy dần bằng DCA hàng tuần</li>
+  <li>Tập trung vào Bitcoin và Ethereum (ưu tiên thanh khoản)</li>
+  <li>Theo dõi các đồng có adoption tại UAE/Saudi (ADA, XRP, SOL)</li>
+</ul>
+
+<hr />
+
+<h2 id="kết-luận">Kết Luận</h2>
+
+<p>Khu vực Trung Đông đang đóng vai trò ngày càng quan trọng trong thị trường tiền điện tử, từ nguồn cung hashrate đến dòng vốn đầu tư và khung pháp lý.</p>
+
+<h3 id="takeaways-chính"><strong>Takeaways Chính:</strong></h3>
+
+<div class="success-box" style="background: rgba(76,175,80,0.1); border-left: 4px solid #4CAF50; padding: 20px; margin: 20px 0; border-radius: 0 10px 10px 0;">
+    <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 1.5em; margin-right: 15px;"></i>
+    <strong>3 điểm cần nhớ:</strong>
+    <ol style="margin-top: 10px; margin-bottom: 0;">
+        <li>Xung đột Trung Đông tạo biến động ngắn hạn nhưng cơ hội dài hạn</li>
+        <li>Dòng vốn từ quỹ đầu tư quốc gia (UAE, Saudi) là động lực tăng giá bền vững</li>
+        <li>Theo dõi MET Index để có chiến lược phù hợp</li>
+    </ol>
+</div>
+
+<h3 id="dự-báo-cuối-năm-2026"><strong>Dự Báo Cuối Năm 2026:</strong></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kịch bản</th>
+      <th>Giá BTC</th>
+      <th>Xác suất</th>
+      <th>Yếu tố then chốt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cơ sở</td>
+      <td>$120,000 - $150,000</td>
+      <td>60%</td>
+      <td>Hòa bình tại Gaza, dòng vốn Saudi</td>
+    </tr>
+    <tr>
+      <td>Lạc quan</td>
+      <td>$180,000+</td>
+      <td>25%</td>
+      <td>UAE dẫn đầu, ETF mới từ Trung Đông</td>
+    </tr>
+    <tr>
+      <td>Bi quan</td>
+      <td>$70,000 - $85,000</td>
+      <td>15%</td>
+      <td>Xung đột lan rộng, trừng phạt mới</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="tài-liệu-tham-khảo">Tài Liệu Tham Khảo</h2>
+
+<ul>
+  <li><a href="/learn/2026/02/15/ews-basics.html">EWS Fundamentals: Cách Hệ Thống Hoạt Động</a></li>
+  <li><a href="/learn/2026/02/16/strategy-guide.html">8 Chiến Lược Giao Dịch</a></li>
+  <li><a href="/learn/2026/02/16/btc-signal-trigger-dataset.html">BTC Signal Trigger Dataset</a></li>
+  <li><a href="/learn/2026/02/16/BTC_Market_Cycles.html">Phân Tích Chu Kỳ Bitcoin</a></li>
+</ul>
+
+<hr />
+
+<h2 id="kết-nối-với-chúng-tôi">Kết Nối Với Chúng Tôi</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Platform</th>
+      <th style="text-align: left">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>Telegram</strong></td>
+      <td style="text-align: left"><a href="https://t.me/bitcoinpeakdip">@bitcoinpeakdip</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Discord</strong></td>
+      <td style="text-align: left"><a href="https://discord.gg/58akuxegwK">Bitcoin PeakDip Community</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>X (Twitter)</strong></td>
+      <td style="text-align: left"><a href="https://x.com/bitcoinpeakdip">@bitcoinpeakdip</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Email</strong></td>
+      <td style="text-align: left">contact@bitcoinpeakdip.com</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p><em>Bài viết thuộc series “Phân Tích Thị Trường” của Bitcoin PeakDip</em>
+<em>Cập nhật lần cuối: 02/03/2026</em></p>
+
+<div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <p style="color: rgba(255,255,255,0.5); font-size: 0.9em;">
+        © 2021 - 2026 Nguyen Duc Hai Technologies<br />
+        A Specialized Bitcoin Quantitative Research &amp; Early Warning System Provider<br />
+        All rights reserved
+    </p>
+</div>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="Market Analysis" /><category term="middle-east" /><category term="geopolitics" /><category term="bitcoin" /><category term="analysis" /><category term="oil" /><summary type="html"><![CDATA[Phân tích chuyên sâu về tác động của địa chính trị Trung Đông lên thị trường tiền điện tử, bao gồm xung đột, dòng vốn và chiến lược giao dịch.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" /><media:content medium="image" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">EWS Signal Snapshot - February 28, 2026</title><link href="https://bitcoin-peak-dip.com/learn/2026/03/02/EWS-Signal-Snapshot.html" rel="alternate" type="text/html" title="EWS Signal Snapshot - February 28, 2026" /><published>2026-03-02T00:00:00+07:00</published><updated>2026-03-02T00:00:00+07:00</updated><id>https://bitcoin-peak-dip.com/learn/2026/03/02/EWS-Signal-Snapshot</id><content type="html" xml:base="https://bitcoin-peak-dip.com/learn/2026/03/02/EWS-Signal-Snapshot.html"><![CDATA[<h1 id="ews-signal-snapshot---february-28-2026">EWS Signal Snapshot - February 28, 2026</h1>
 <h2 id="local-top-signal--whale-advance">Local Top Signal · Whale Advance</h2>
 
 <hr />
@@ -1282,7 +1061,7 @@ All rights reserved</p>
 
 <hr />
 
-<p><em>End of Signal Snapshot</em></p>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="signals" /><category term="signal" /><category term="snapshot" /><category term="trading" /><summary type="html"><![CDATA[Local Top Signal detection with whale advance analysis]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/og-default.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Bitcoin Market Cycles Through ATH History</title><link href="http://localhost:4000/learn/2026/02/28/BTC_Market_Cycles.html" rel="alternate" type="text/html" title="Bitcoin Market Cycles Through ATH History" /><published>2026-02-28T00:00:00+07:00</published><updated>2026-02-28T00:00:00+07:00</updated><id>http://localhost:4000/learn/2026/02/28/BTC_Market_Cycles</id><content type="html" xml:base="http://localhost:4000/learn/2026/02/28/BTC_Market_Cycles.html"><![CDATA[<h1 id="tóm-tắt-hành-trình-các-ath-của-bitcoin-qua-các-chu-kỳ">Tóm Tắt: Hành Trình Các ATH Của Bitcoin Qua Các Chu Kỳ</h1>
+<p><em>End of Signal Snapshot</em></p>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="signals" /><category term="signal" /><category term="snapshot" /><category term="trading" /><summary type="html"><![CDATA[Local Top Signal detection with whale advance analysis]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" /><media:content medium="image" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Bitcoin Market Cycles Through ATH History</title><link href="https://bitcoin-peak-dip.com/learn/2026/02/28/BTC_Market_Cycles.html" rel="alternate" type="text/html" title="Bitcoin Market Cycles Through ATH History" /><published>2026-02-28T00:00:00+07:00</published><updated>2026-02-28T00:00:00+07:00</updated><id>https://bitcoin-peak-dip.com/learn/2026/02/28/BTC_Market_Cycles</id><content type="html" xml:base="https://bitcoin-peak-dip.com/learn/2026/02/28/BTC_Market_Cycles.html"><![CDATA[<h1 id="tóm-tắt-hành-trình-các-ath-của-bitcoin-qua-các-chu-kỳ">Tóm Tắt: Hành Trình Các ATH Của Bitcoin Qua Các Chu Kỳ</h1>
 
 <h2 id="tổng-quan">Tổng Quan</h2>
 
@@ -1736,38 +1515,7 @@ xychart-beta
         A Specialized Bitcoin Quantitative Research &amp; Early Warning System Provider<br />
         All rights reserved
     </p>
-</div>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="Market Analysis" /><category term="market cycles" /><category term="ATH" /><category term="halving" /><category term="history" /><category term="bitcoin" /><summary type="html"><![CDATA[Comprehensive analysis of Bitcoin's ATH milestones across different market cycles from 2013 to 2025, with insights on halving events and institutional adoption]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/og-default.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">EWS Fundamentals: How Our Early Warning System Works</title><link href="http://localhost:4000/learn/2026/02/26/ews-basics.html" rel="alternate" type="text/html" title="EWS Fundamentals: How Our Early Warning System Works" /><published>2026-02-26T00:00:00+07:00</published><updated>2026-02-26T00:00:00+07:00</updated><id>http://localhost:4000/learn/2026/02/26/ews-basics</id><content type="html" xml:base="http://localhost:4000/learn/2026/02/26/ews-basics.html"><![CDATA[<h2 id="what-is-an-early-warning-system">What is an Early Warning System?</h2>
-
-<p>Similar to earthquake detection systems that sense seismic activity before major tremors, Bitcoin PeakDip’s Early Warning System (EWS) monitors market data to identify potential local peaks and dips before they occur.</p>
-
-<div class="info-box">
-    <i class="fas fa-lightbulb"></i>
-    <p><strong>Key Concept:</strong> The EWS doesn't predict the future - it detects patterns that historically precede significant price movements.</p>
-</div>
-
-<h2 id="the-4-layer-architecture">The 4-Layer Architecture</h2>
-
-<h3 id="layer-1-sensor-network">Layer 1: Sensor Network</h3>
-<p>Multiple algorithms act as sensors monitoring:</p>
-
-<ul>
-  <li>Real-time price movements from multiple exchanges</li>
-  <li>Trading volume patterns and anomalies</li>
-  <li>Order book dynamics and liquidity</li>
-  <li>Derivatives data (futures, funding rates, open interest)</li>
-</ul>
-
-<h3 id="layer-2-ai-noise-filtering">Layer 2: AI Noise Filtering</h3>
-<p>Just as earthquake sensors filter out background noise, our AI algorithms:</p>
-
-<ul>
-  <li>Remove random price fluctuations (market noise)</li>
-  <li>Extract meaningful patterns</li>
-  <li>Identify statistical anomalies</li>
-  <li>Calculate confidence scores</li>
-</ul>
-
-<p>[Continue with full content…]</p>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="fundamentals" /><category term="beginner" /><category term="ews" /><category term="basics" /><summary type="html"><![CDATA[Learn how our Early Warning System detects Bitcoin peaks and dips using advanced AI algorithms.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/og-default.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">8 Trading Strategies Explained</title><link href="http://localhost:4000/learn/2026/02/26/strategy-guide-check.html" rel="alternate" type="text/html" title="8 Trading Strategies Explained" /><published>2026-02-26T00:00:00+07:00</published><updated>2026-02-26T00:00:00+07:00</updated><id>http://localhost:4000/learn/2026/02/26/strategy-guide-check</id><content type="html" xml:base="http://localhost:4000/learn/2026/02/26/strategy-guide-check.html"><![CDATA[<h2 id="overview">Overview</h2>
+</div>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="Market Analysis" /><category term="market cycles" /><category term="ATH" /><category term="halving" /><category term="history" /><category term="bitcoin" /><summary type="html"><![CDATA[Comprehensive analysis of Bitcoin's ATH milestones across different market cycles from 2013 to 2025, with insights on halving events and institutional adoption]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" /><media:content medium="image" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">8 Trading Strategies Explained</title><link href="https://bitcoin-peak-dip.com/learn/2026/02/27/strategy-guide-check.html" rel="alternate" type="text/html" title="8 Trading Strategies Explained" /><published>2026-02-27T00:00:00+07:00</published><updated>2026-02-27T00:00:00+07:00</updated><id>https://bitcoin-peak-dip.com/learn/2026/02/27/strategy-guide-check</id><content type="html" xml:base="https://bitcoin-peak-dip.com/learn/2026/02/27/strategy-guide-check.html"><![CDATA[<h2 id="overview">Overview</h2>
 
 <p>The Bitcoin PeakDip system activates 8 sophisticated trading strategies based on real-time pattern detection. Each strategy is designed for specific market conditions.</p>
 
@@ -1786,7 +1534,7 @@ xychart-beta
   <li>Volume confirmation on the breakdown</li>
 </ul>
 
-<p>[Continue with full content…]</p>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="strategies" /><category term="strategies" /><category term="trading" /><category term="advanced" /><summary type="html"><![CDATA[Deep dive into all trading strategies: RECLAIM_FAILURE, MOMENTUM_BREAKDOWN, and more.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/og-default.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">8 Trading Strategies Explained</title><link href="http://localhost:4000/learn/2026/02/25/strategy-guide.html" rel="alternate" type="text/html" title="8 Trading Strategies Explained" /><published>2026-02-25T00:00:00+07:00</published><updated>2026-02-25T00:00:00+07:00</updated><id>http://localhost:4000/learn/2026/02/25/strategy-guide</id><content type="html" xml:base="http://localhost:4000/learn/2026/02/25/strategy-guide.html"><![CDATA[<h2 id="overview">Overview</h2>
+<p>[Continue with full content…]</p>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="strategies" /><category term="strategies" /><category term="trading" /><category term="advanced" /><summary type="html"><![CDATA[Deep dive into all trading strategies: RECLAIM_FAILURE, MOMENTUM_BREAKDOWN, and more.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" /><media:content medium="image" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">8 Trading Strategies Explained</title><link href="https://bitcoin-peak-dip.com/learn/2026/02/25/strategy-guide.html" rel="alternate" type="text/html" title="8 Trading Strategies Explained" /><published>2026-02-25T00:00:00+07:00</published><updated>2026-02-25T00:00:00+07:00</updated><id>https://bitcoin-peak-dip.com/learn/2026/02/25/strategy-guide</id><content type="html" xml:base="https://bitcoin-peak-dip.com/learn/2026/02/25/strategy-guide.html"><![CDATA[<h2 id="overview">Overview</h2>
 
 <p>The Bitcoin PeakDip system activates 8 sophisticated trading strategies based on real-time pattern detection. Each strategy is designed for specific market conditions.</p>
 
@@ -1805,4 +1553,82 @@ xychart-beta
   <li>Volume confirmation on the breakdown</li>
 </ul>
 
-<p>[Continue with full content…]</p>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="strategies" /><category term="strategies" /><category term="trading" /><category term="advanced" /><summary type="html"><![CDATA[Deep dive into all trading strategies: RECLAIM_FAILURE, MOMENTUM_BREAKDOWN, and more.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/og-default.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+<p>[Continue with full content…]</p>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="strategies" /><category term="strategies" /><category term="trading" /><category term="advanced" /><summary type="html"><![CDATA[Deep dive into all trading strategies: RECLAIM_FAILURE, MOMENTUM_BREAKDOWN, and more.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" /><media:content medium="image" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Cảnh báo kích hoạt vùng đỉnh (Peak Area) - Tín hiệu từ Shark và Whale</title><link href="https://bitcoin-peak-dip.com/learn/2026/02/16/SignalActivation.html" rel="alternate" type="text/html" title="Cảnh báo kích hoạt vùng đỉnh (Peak Area) - Tín hiệu từ Shark và Whale" /><published>2026-02-16T20:15:00+07:00</published><updated>2026-02-16T20:15:00+07:00</updated><id>https://bitcoin-peak-dip.com/learn/2026/02/16/SignalActivation</id><content type="html" xml:base="https://bitcoin-peak-dip.com/learn/2026/02/16/SignalActivation.html"><![CDATA[<h2 id="-cảnh-báo-kích-hoạt-vùng-đỉnh-peak-area">📡 <strong>CẢNH BÁO KÍCH HOẠT VÙNG ĐỈNH (PEAK AREA)</strong></h2>
+
+<p>Hệ thống Early Warning System (EWS) đã phát hiện tín hiệu kích hoạt vùng đỉnh từ các nguồn tín hiệu lớn.</p>
+
+<h3 id="-tín-hiệu-từ-shark">🦈 <strong>Tín hiệu từ Shark</strong></h3>
+<h2 id="-phân-tích-tín-hiệu">📊 <strong>Phân tích tín hiệu</strong></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Thông số</strong></th>
+      <th><strong>Chi tiết</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Thời gian kích hoạt</strong></td>
+      <td>20:15, 16/02/2026</td>
+    </tr>
+    <tr>
+      <td><strong>Loại tín hiệu</strong></td>
+      <td>Peak Area Warning</td>
+    </tr>
+    <tr>
+      <td><strong>Hiệu lực</strong></td>
+      <td>7 ngày (đến 23/02/2026)</td>
+    </tr>
+    <tr>
+      <td><strong>Nguồn tín hiệu</strong></td>
+      <td>Shark, Whale</td>
+    </tr>
+    <tr>
+      <td><strong>Thành viên nhận DM</strong></td>
+      <td>5 thành viên</td>
+    </tr>
+    <tr>
+      <td><strong>Trạng thái</strong></td>
+      <td>✅ Thành công</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="-ý-nghĩa-tín-hiệu">🎯 <strong>Ý nghĩa tín hiệu</strong></h2>
+
+<h3 id="1-tín-hiệu-kích-hoạt---mức-độ-1"><strong>[1] Tín hiệu kích hoạt - Mức độ 1</strong></h3>
+<ul>
+  <li>Báo hiệu vùng đỉnh tiềm năng đang hình thành</li>
+  <li>Giá BTC dự kiến biến động mạnh</li>
+  <li><strong>HIỆU LỰC: 7 NGÀY</strong></li>
+</ul>
+
+<h3 id="2-tín-hiệu-xác-nhận---mức-độ-2-chờ"><strong>[2] Tín hiệu xác nhận - Mức độ 2 (Chờ)</strong></h3>
+<ul>
+  <li>Cần chờ tín hiệu số [2] để xác nhận vùng đỉnh</li>
+  <li>Tín hiệu [2] sẽ xác nhận peak area đã chính thức được xác lập</li>
+  <li>Thời điểm thích hợp để vào lệnh</li>
+</ul>
+
+<h2 id="️-lưu-ý-giao-dịch">⚠️ <strong>Lưu ý giao dịch</strong></h2>
+
+<ol>
+  <li><strong>KHÔNG</strong> vào lệnh ngay khi chỉ có tín hiệu [1]</li>
+  <li><strong>CHỜ</strong> tín hiệu xác nhận [2] từ hệ thống</li>
+  <li><strong>QUAN SÁT</strong> biến động giá trong 7 ngày tới</li>
+  <li><strong>QUẢN LÝ VỐN</strong> - Chỉ risk 1-2% tài khoản</li>
+</ol>
+
+<h2 id="-chiến-lược-đề-xuất">📈 <strong>Chiến lược đề xuất</strong></h2>
+
+<p>```javascript
+// Chiến lược chờ tín hiệu [2]
+if (signalLevel === 1) {
+    console.log(‘⚠️ Peak area detected - Waiting for confirmation [2]’);
+    // Không vào lệnh, chờ tín hiệu xác nhận
+} else if (signalLevel === 2) {
+    console.log(‘✅ Peak area confirmed - Ready to trade’);
+    // Áp dụng chiến lược short
+    applyStrategy(‘RECLAIM_FAILURE’);
+}</p>]]></content><author><name>Bitcoin PeakDip Team</name></author><category term="signals" /><category term="warning" /><category term="peak-area" /><category term="shark-signal" /><category term="whale-signal" /><category term="btc-volatility" /><summary type="html"><![CDATA[Cảnh báo kích hoạt vùng đỉnh Bitcoin từ các tín hiệu Shark và Whale. Hiệu lực trong 7 ngày, chờ tín hiệu xác nhận [2] để giao dịch.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" /><media:content medium="image" url="https://bitcoin-peak-dip.com/assets/images/og-default.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

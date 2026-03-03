@@ -1,9 +1,9 @@
 // Bitcoin PeakDip Service Worker
-// Version: 1.12.21 - BADGE HANDLING & PUSH NOTIFICATION
+// Version: 1.12.30 - BADGE HANDLING & PUSH NOTIFICATION
 // Đồng bộ với build system
 
-const CACHE_NAME = 'bitcoin-peakdip-v1.12.21';
-const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.21';
+const CACHE_NAME = 'bitcoin-peakdip-v1.12.30';
+const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.30';
 const ARTICLE_CACHE = 'article-cache-v1';
 
 // Local assets - có thể cache
