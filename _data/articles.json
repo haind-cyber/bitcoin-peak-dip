@@ -100,12 +100,12 @@
     }
   ],
   "metadata": {
-    "last_updated": "2026-03-03T20:41:57+07:00",
+    "last_updated": "2026-03-03T21:12:21+07:00",
     "total": 7,
-    "version": "1.12.21",
-    "build_timestamp": 1772545317050,
+    "version": "1.12.22",
+    "build_timestamp": 1772547141011,
     "build_date": "2026-03-03",
-    "build_time": "20:41:57"
+    "build_time": "21:12:21"
   },
   "stats": {
     "new_articles_count": 6,
