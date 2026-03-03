@@ -1,4 +1,5 @@
-# generate_local.rb - Version 2.0.0
+# generate_local.rb - Version 3.0.0
+# Tương thích với cấu trúc articles.json mới (metadata + stats)
 require 'yaml'
 require 'json'
 require 'date'
@@ -9,13 +10,17 @@ require 'fileutils'
 YAML::DEFAULT_OPTION = { permitted_classes: [Date, Time, Symbol] }
 
 def generate_articles_json
-  puts "🔍 Starting article generation..."
+  puts "🔍 Starting article generation v3.0.0..."
   puts "=" * 50
   
   articles = []
   posts_dir = '_posts'
   
-  # Đường dẫn ĐÚNG - ghi vào thư mục gốc
+  # Đọc version từ _config.yml
+  config = YAML.load_file('_config.yml')
+  current_version = config['version'] || '1.12.15'
+  
+  # Đường dẫn - ghi vào thư mục gốc
   root_data_dir = '_data'
   root_assets_dir = 'assets/data'
   
@@ -43,7 +48,7 @@ def generate_articles_json
   
   if md_files.empty?
     puts "⚠️ No markdown files found"
-    create_empty_files(root_data_dir, root_assets_dir, site_data_dir, site_assets_dir)
+    create_empty_files(root_data_dir, root_assets_dir, site_data_dir, site_assets_dir, current_version)
     return true
   end
   
@@ -84,18 +89,19 @@ def generate_articles_json
         # Xử lý ngày tháng
         date_str = extract_date(file, frontmatter, filename_without_ext)
         
-        # Lấy description
+        # Lấy description và excerpt
         description = extract_description(frontmatter, content)
+        excerpt = extract_excerpt(content)
         
         # Tạo URL
         url = "/learn/#{date_str.gsub('-', '/')}/#{slug}.html"
         
         article = {
           'id' => slug,
-          'slug' => slug,
-          'url' => url,
           'title' => frontmatter['title'].to_s.strip,
           'description' => description,
+          'excerpt' => excerpt,
+          'url' => url,
           'date' => date_str,
           'author' => frontmatter['author'].to_s.empty? ? 'Bitcoin PeakDip Team' : frontmatter['author'].to_s.strip,
           'category' => frontmatter['category'].to_s.empty? ? 'General' : frontmatter['category'].to_s.strip,
@@ -119,22 +125,67 @@ def generate_articles_json
   
   if articles.empty?
     puts "❌ No articles found!"
-    create_empty_files(root_data_dir, root_assets_dir, site_data_dir, site_assets_dir)
+    create_empty_files(root_data_dir, root_assets_dir, site_data_dir, site_assets_dir, current_version)
     return false
   end
   
   # Sắp xếp theo ngày (mới nhất lên đầu)
   articles.sort_by! { |a| a['date'] }.reverse!
   
+  # Tính toán thống kê
+  seven_days_ago = Date.today - 7
+  new_articles = articles.select { |a| Date.parse(a['date']) >= seven_days_ago }
+  
+  # Thống kê theo category
+  categories = {}
+  articles.each do |a|
+    cat = a['category']
+    categories[cat] = (categories[cat] || 0) + 1
+  end
+  
+  # Thống kê theo level
+  levels = {
+    'Beginner' => 0,
+    'Intermediate' => 0,
+    'Advanced' => 0
+  }
+  articles.each do |a|
+    level = a['level']
+    levels[level] = (levels[level] || 0) + 1
+  end
+  
+  # Tạo output với cấu trúc mới
   output = {
     'articles' => articles,
-    'last_updated' => Time.now.iso8601,
-    'total' => articles.length
+    'metadata' => {
+      'last_updated' => Time.now.iso8601,
+      'total' => articles.length,
+      'version' => current_version,
+      'build_timestamp' => (Time.now.to_f * 1000).to_i,
+      'build_date' => Date.today.to_s,
+      'build_time' => Time.now.strftime('%H:%M:%S')
+    },
+    'stats' => {
+      'new_articles_count' => new_articles.length,
+      'new_articles' => new_articles.map { |a| 
+        {
+          'id' => a['id'],
+          'title' => a['title'],
+          'url' => a['url'],
+          'date' => a['date'],
+          'reading_time' => a['reading_time'],
+          'level' => a['level']
+        }
+      },
+      'categories' => categories,
+      'levels' => levels,
+      'featured_count' => articles.count { |a| a['featured'] }
+    }
   }
   
   json_output = JSON.pretty_generate(output)
   
-  # GHI VÀO THƯ MỤC GỐC - Website đọc từ đây
+  # GHI VÀO THƯ MỤC GỐC
   root_data_file = File.join(root_data_dir, 'articles.json')
   File.write(root_data_file, json_output)
   puts "✅ Wrote to #{root_data_file} (#{articles.length} articles)"
@@ -143,7 +194,7 @@ def generate_articles_json
   File.write(root_assets_file, json_output)
   puts "✅ Wrote to #{root_assets_file} (#{articles.length} articles)"
   
-  # GHI VÀO _site NẾU TỒN TẠI (cho production)
+  # GHI VÀO _site NẾU TỒN TẠI
   if Dir.exist?('_site')
     FileUtils.mkdir_p(site_data_dir)
     FileUtils.mkdir_p(site_assets_dir)
@@ -161,15 +212,33 @@ def generate_articles_json
   
   puts "=" * 50
   puts "🎉 Success! Generated #{articles.length} articles"
-  puts "📅 Last updated: #{output['last_updated']}"
-  
-  # Hiển thị danh sách articles đã generate
-  puts "\n📋 Articles list:"
-  articles.each_with_index do |a, i|
-    puts "  #{i+1}. #{a['date']} - #{a['title']} (ID: #{a['id']})"
-  end
+  puts "📅 Last updated: #{output['metadata']['last_updated']}"
+  puts "📊 New articles (7 days): #{new_articles.length}"
+  puts "📊 Categories: #{categories.keys.length}"
+  puts "📊 Featured: #{output['stats']['featured_count']}"
   
   return true
+end
+
+def extract_excerpt(content, max_length = 200)
+  # Lấy phần content sau frontmatter
+  main_content = content.sub(/^---\s*\n.*?\n---\s*\n/m, '').strip
+  
+  # Xóa HTML tags nếu có
+  plain_text = main_content.gsub(/<[^>]*>/, '')
+  
+  # Xóa markdown links
+  plain_text = plain_text.gsub(/\[([^\]]+)\]\([^\)]+\)/, '\1')
+  
+  # Lấy đoạn đầu tiên
+  excerpt = plain_text.split("\n\n")[0] || plain_text
+  
+  # Cắt độ dài
+  if excerpt.length > max_length
+    excerpt = excerpt[0...max_length].gsub(/\s+\S*$/, '...')
+  end
+  
+  excerpt.strip
 end
 
 def extract_date(file, frontmatter, filename)
@@ -204,11 +273,28 @@ def extract_description(frontmatter, content)
   description
 end
 
-def create_empty_files(root_data_dir, root_assets_dir, site_data_dir, site_assets_dir)
+def create_empty_files(root_data_dir, root_assets_dir, site_data_dir, site_assets_dir, version)
   empty_output = {
     'articles' => [],
-    'last_updated' => Time.now.iso8601,
-    'total' => 0
+    'metadata' => {
+      'last_updated' => Time.now.iso8601,
+      'total' => 0,
+      'version' => version,
+      'build_timestamp' => (Time.now.to_f * 1000).to_i,
+      'build_date' => Date.today.to_s,
+      'build_time' => Time.now.strftime('%H:%M:%S')
+    },
+    'stats' => {
+      'new_articles_count' => 0,
+      'new_articles' => [],
+      'categories' => {},
+      'levels' => {
+        'Beginner' => 0,
+        'Intermediate' => 0,
+        'Advanced' => 0
+      },
+      'featured_count' => 0
+    }
   }
   json_output = JSON.pretty_generate(empty_output)
   
@@ -224,12 +310,12 @@ def create_empty_files(root_data_dir, root_assets_dir, site_data_dir, site_asset
     File.write(File.join(site_assets_dir, 'articles.json'), json_output)
   end
   
-  puts "✅ Created empty articles.json files"
+  puts "✅ Created empty articles.json files with metadata"
 end
 
 # ===== MAIN =====
 puts "\n" + "=" * 50
-puts "📄 ARTICLE GENERATOR v2.0.0"
+puts "📄 ARTICLE GENERATOR v3.0.0"
 puts "=" * 50
 
 if generate_articles_json

@@ -1,13 +1,16 @@
 {
-  "name": "Bitcoin PeakDip",
-  "short_name": "Bitcoin PeakDip",
-  "description": "Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered",
+  "name": "Bitcoin PeakDip - Early Warning System",
+  "short_name": "PeakDip",
+  "description": "Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered Real-time Detection",
   "start_url": "/?v={{ site.version }}&utm_source=pwa",
   "display": "standalone",
   "background_color": "#050811",
   "theme_color": "#00d4ff",
   "orientation": "portrait",
   "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  
   "icons": [
     {
       "src": "/assets/icons/icon-72x72.png?v={{ site.version }}",
@@ -58,11 +61,12 @@
       "purpose": "any maskable"
     }
   ],
+  
   "shortcuts": [
     {
       "name": "EWS Signals",
       "short_name": "Signals",
-      "description": "View real-time Bitcoin signals",
+      "description": "View real-time Bitcoin peak and dip signals",
       "url": "/signals.html?v={{ site.version }}",
       "icons": [
         {
@@ -74,57 +78,114 @@
     {
       "name": "Product Suite",
       "short_name": "Products",
-      "description": "Explore trading strategies",
-      "url": "/product.html?v={{ site.version }}"
+      "description": "Explore 8 advanced trading strategies",
+      "url": "/product.html?v={{ site.version }}",
+      "icons": [
+        {
+          "src": "/assets/icons/product-icon-192x192.png?v={{ site.version }}",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
-      "name": "About System",
-      "short_name": "About",
-      "description": "Learn how EWS works",
-      "url": "/about.html?v={{ site.version }}"
+      "name": "Knowledge Base",
+      "short_name": "Learn",
+      "description": "Master Bitcoin trading with EWS",
+      "url": "/learn.html?v={{ site.version }}",
+      "icons": [
+        {
+          "src": "/assets/icons/learn-icon-192x192.png?v={{ site.version }}",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Reading List",
+      "short_name": "Reading",
+      "description": "Articles saved for later",
+      "url": "/reading-list.html?v={{ site.version }}",
+      "icons": [
+        {
+          "src": "/assets/icons/reading-icon-192x192.png?v={{ site.version }}",
+          "sizes": "192x192"
+        }
+      ]
     }
   ],
+  
   "categories": [
     "finance",
     "cryptocurrency",
-    "trading"
+    "trading",
+    "productivity"
   ],
+  
   "screenshots": [
     {
       "src": "/screenshots/home.jpg?v={{ site.version }}",
       "sizes": "1280x720",
       "type": "image/jpeg",
       "platform": "wide",
-      "label": "Bitcoin PeakDip Home Screen"
+      "label": "Bitcoin PeakDip Home Screen - Early Warning System"
     },
     {
       "src": "/screenshots/signals.jpg?v={{ site.version }}",
       "sizes": "1280x720",
       "type": "image/jpeg",
       "platform": "wide",
-      "label": "EWS Signals Dashboard"
+      "label": "EWS Signals Dashboard - Real-time Peak/Dip Detection"
     },
     {
       "src": "/screenshots/learn.jpg?v={{ site.version }}",
       "sizes": "1280x720",
       "type": "image/jpeg",
       "platform": "wide",
-      "label": "Knowledge Base"
+      "label": "Knowledge Base - Trading Strategies"
     },
     {
-      "src": "/screenshots/article.jpg?v={{ site.version }}",
+      "src": "/screenshots/product.jpg?v={{ site.version }}",
       "sizes": "1280x720",
       "type": "image/jpeg",
       "platform": "wide",
-      "label": "Article View"
+      "label": "Product Suite - 8 Advanced Strategies"
     }
   ],
+  
   "related_applications": [],
   "prefer_related_applications": false,
-  "lang": "en",
-  "dir": "ltr",
+  
   "display_override": [
     "standalone",
-    "fullscreen"
-  ]
+    "fullscreen",
+    "minimal-ui"
+  ],
+  
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  
+  "launch_handler": {
+    "client_mode": ["focus-existing", "navigate-existing"]
+  },
+  
+  "protocol_handlers": [
+    {
+      "protocol": "web+bitcoinpeakdip",
+      "url": "/%s"
+    }
+  ],
+  
+  "handle_links": "preferred",
+  
+  "prefer_related_applications": false,
+  
+  "share_target": {
+    "action": "/share-target/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }
