@@ -127,7 +127,7 @@ exclude:
   - .git/
 
 # ===== CUSTOM VARIABLES =====
-version: "1.12.19"
+version: "1.12.21"
 build_date: "2026-03-03"
 google_analytics: "G-HR78BDQYJJ"
 
