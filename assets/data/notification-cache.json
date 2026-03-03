@@ -1,7 +1,15 @@
 {
-  "version": "1.12.17",
-  "last_checked": "2026-03-03T02:47:35.199Z",
+  "version": "1.12.18",
+  "last_checked": "2026-03-03T09:12:43.707Z",
   "articles": [
+    {
+      "id": "Market-Analysis-bitcoin-2026",
+      "title": "Phân Tích Chu Kỳ & Trạng Thái Thị Trường Bitcoin (2025-2026)",
+      "url": "/learn/2026/03/03/Market-Analysis-bitcoin-2026.html",
+      "date": "2026-03-03",
+      "reading_time": 15,
+      "level": "Advanced"
+    },
     {
       "id": "SignalActivation",
       "title": "Cảnh Báo Kích Hoạt Vùng Đỉnh (Peak Area) - Tín Hiệu Từ Shark Và Whale",
@@ -53,6 +61,14 @@
   ],
   "new_articles": [
     {
+      "id": "Market-Analysis-bitcoin-2026",
+      "title": "Phân Tích Chu Kỳ & Trạng Thái Thị Trường Bitcoin (2025-2026)",
+      "url": "/learn/2026/03/03/Market-Analysis-bitcoin-2026.html",
+      "date": "2026-03-03",
+      "reading_time": 15,
+      "level": "Advanced"
+    },
+    {
       "id": "SignalActivation",
       "title": "Cảnh Báo Kích Hoạt Vùng Đỉnh (Peak Area) - Tín Hiệu Từ Shark Và Whale",
       "url": "/learn/2026/03/03/SignalActivation.html",
@@ -101,5 +117,5 @@
       "level": "Intermediate"
     }
   ],
-  "new_count": 6
+  "new_count": 7
 }
