@@ -11,8 +11,8 @@ window.APP_VERSION = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 window.BUILD_INFO = {
     version: '1.12.20',
     date: '2026-03-03',
-    time: '19:21:52',
-    timestamp: 1772540512146
+    time: '20:37:31',
+    timestamp: 1772545051584
 };
 
 console.log('🏗️  Build:', window.BUILD_INFO);
