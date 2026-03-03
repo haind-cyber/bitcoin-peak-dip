@@ -3,40 +3,87 @@
 // Version: 1.12.2 - UPDATED - Signal Details Floating & Layout
 // ============================================
 
-// ========== FORCE DESKTOP VIEW ON MOBILE ==========
+// ========== FORCE DESKTOP VIEW - KÍCH HOẠT DESKTOP MODE KHI VÀO TRANG ==========
 (function() {
     // Hàm kích hoạt desktop mode
     function activateDesktopMode() {
         // Thêm class vào body
-        document.body.classList.add('force-desktop-view');
+        if (document.body) {
+            document.body.classList.add('force-desktop-view');
+        }
+        
+        // Thêm class vào html để đảm bảo
+        if (document.documentElement) {
+            document.documentElement.classList.add('force-desktop-view-mode');
+        }
         
         // Đóng menu mobile nếu đang mở
         const navMenu = document.getElementById('navMenu');
         const mobileBtn = document.getElementById('mobileMenuBtn');
         
-        if (navMenu) navMenu.classList.remove('active');
+        if (navMenu) {
+            navMenu.classList.remove('active');
+        }
+        
         if (mobileBtn) {
             const icon = mobileBtn.querySelector('i');
-            if (icon) icon.className = 'fas fa-bars';
+            if (icon) {
+                icon.className = 'fas fa-bars';
+            }
         }
         
         // Lưu vào localStorage để nhớ lần sau
         localStorage.setItem('signals_view_mode', 'desktop');
         
-        console.log('🖥️ Desktop Mode activated - Menu ngang hiển thị');
+        // Force style inline để đảm bảo (dự phòng)
+        const style = document.createElement('style');
+        style.id = 'force-desktop-inline';
+        style.textContent = `
+            /* Force ẩn nút hamburger */
+            body.force-desktop-view .mobile-menu-btn,
+            html body.force-desktop-view .mobile-menu-btn {
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+            }
+            
+            /* Force hiện menu ngang */
+            body.force-desktop-view .nav-menu,
+            html body.force-desktop-view .nav-menu {
+                display: flex !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                position: static !important;
+                transform: none !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                flex-direction: row !important;
+            }
+        `;
+        
+        // Chỉ thêm style nếu chưa có
+        if (!document.getElementById('force-desktop-inline')) {
+            document.head.appendChild(style);
+        }
+        
+        console.log('🖥️ DESKTOP MODE ACTIVATED - Menu ngang hiển thị, giao diện desktop');
     }
     
-    // Kích hoạt ngay lập tức
+    // Kích hoạt ngay lập tức nếu body đã sẵn sàng
     if (document.body) {
         activateDesktopMode();
     } else {
+        // Nếu chưa, đợi DOMContentLoaded
         document.addEventListener('DOMContentLoaded', activateDesktopMode);
     }
 })();
 // ==================================================
+
 // ========== APP CONFIGURATION ==========
 const APP_CONFIG = {
-    version: '1.5.2', // Tăng version
+    version: '1.5.2',
     itemsPerPage: 15,
     versionKey: 'peakdip_version',
     dataPaths: {
@@ -1917,4 +1964,4 @@ function addDynamicStyles() {
 if (window.realCsvData) parseSignalsData(window.realCsvData);
 if (window.bitcoinPriceData) parseBitcoinData(window.bitcoinPriceData);
 
-console.log('✅ signals.js v1.5.2 - UPDATED: Floating details, layout fixed');
+console.log('✅ signals.js v1.5.2 - UPDATED: Floating details, layout fixed, Desktop Mode enabled');

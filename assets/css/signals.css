@@ -1163,8 +1163,6 @@ body.slider-active { overflow: hidden; position: fixed; width: 100%; height: 100
 }
 @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* Thêm vào cuối file signals.css */
-
 /* Validation PASS style */
 .validation-pass {
     background: rgba(76, 175, 80, 0.15);
@@ -1212,18 +1210,24 @@ body.slider-active { overflow: hidden; position: fixed; width: 100%; height: 100
     color: #ff2e63;
 }
 
-/* ===== FORCE DESKTOP VIEW - MENU NGANG ===== */
+/* ===== FORCE DESKTOP VIEW - MENU NGANG & TOÀN BỘ GIAO DIỆN DESKTOP ===== */
 .force-desktop-view .mobile-menu-btn {
-    display: none !important; /* Ẩn nút hamburger */
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    z-index: -9999 !important;
 }
 
 .force-desktop-view .nav-menu {
-    display: flex !important; /* Hiện menu ngang */
-    position: static !important;
-    width: auto !important;
-    transform: none !important;
+    display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
+    position: static !important;
+    transform: none !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -1232,6 +1236,8 @@ body.slider-active { overflow: hidden; position: fixed; width: 100%; height: 100
     gap: 20px !important;
     overflow: visible !important;
     max-height: none !important;
+    width: auto !important;
+    pointer-events: auto !important;
 }
 
 .force-desktop-view .nav-menu .nav-item {
@@ -1246,6 +1252,9 @@ body.slider-active { overflow: hidden; position: fixed; width: 100%; height: 100
     color: var(--text-glow) !important;
     font-size: 1em !important;
     white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
 }
 
 .force-desktop-view .nav-menu .nav-link i {
@@ -1288,6 +1297,45 @@ body.slider-active { overflow: hidden; position: fixed; width: 100%; height: 100
     display: none !important;
 }
 
+/* Đảm bảo table hiển thị đầy đủ như desktop */
+.force-desktop-view .signals-table {
+    min-width: auto !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+.force-desktop-view .signals-table td,
+.force-desktop-view .signals-table th {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+}
+
+/* Chart container đủ lớn */
+.force-desktop-view .chart-container {
+    height: 400px !important;
+}
+
+/* Analysis grid đúng layout desktop */
+.force-desktop-view .analysis-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+}
+
+/* Content container rộng như desktop */
+.force-desktop-view .content-container {
+    max-width: 1400px !important;
+    padding: 40px 20px !important;
+}
+
+/* Controls hiển thị đầy đủ */
+.force-desktop-view .chart-controls {
+    flex-wrap: wrap !important;
+}
+
+.force-desktop-view .control-btn {
+    padding: 8px 15px !important;
+    font-size: 0.95em !important;
+}
+
 /* Fix responsive cho màn hình nhỏ */
 @media (max-width: 992px) {
     .force-desktop-view .nav-menu {
@@ -1314,7 +1362,7 @@ body.slider-active { overflow: hidden; position: fixed; width: 100%; height: 100
     }
     
     .force-desktop-view .nav-link span {
-        display: inline !important; /* Giữ text, không ẩn */
+        display: inline !important;
     }
 }
 

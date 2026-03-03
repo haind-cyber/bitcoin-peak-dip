@@ -1,11 +1,11 @@
 {
-  "version": "1.12.25",
+  "version": "1.12.26",
   "build_date": "2026-03-03",
   "changelog": [
     "Auto build system update",
     "Performance improvements",
     "Bug fixes"
   ],
-  "build_time": "22:05:16",
-  "build_timestamp": 1772550316093
+  "build_time": "22:27:17",
+  "build_timestamp": 1772551637654
 }
