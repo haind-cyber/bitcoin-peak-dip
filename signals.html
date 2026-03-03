@@ -619,8 +619,8 @@
     <script>
         // Load cả hai file CSV: signals và Bitcoin price data
         Promise.all([
-            fetch('data/signals.csv').catch(() => fetch('signals.csv')),
-            fetch('data/Binance_BTCUSDT_d.csv').catch(() => fetch('Binance_BTCUSDT_d.csv'))
+            fetch('assets/data/signals.csv').catch(() => fetch('signals.csv')),
+            fetch('assets/data/Binance_BTCUSDT_d.csv').catch(() => fetch('Binance_BTCUSDT_d.csv'))
         ])
         .then(async ([signalsResponse, bitcoinResponse]) => {
             // Xử lý signals CSV
