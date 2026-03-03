@@ -3,18 +3,37 @@
 // Version: 1.12.2 - UPDATED - Signal Details Floating & Layout
 // ============================================
 
-// ========== FORCE DESKTOP VIEW ==========
-// Kích hoạt Desktop View ngay khi script load
-if (document.body) {
-    document.body.classList.add('force-desktop-view');
-    localStorage.setItem('signals_view_mode', 'desktop');
-} else {
-    document.addEventListener('DOMContentLoaded', function() {
+// ========== FORCE DESKTOP VIEW ON MOBILE ==========
+(function() {
+    // Hàm kích hoạt desktop mode
+    function activateDesktopMode() {
+        // Thêm class vào body
         document.body.classList.add('force-desktop-view');
+        
+        // Đóng menu mobile nếu đang mở
+        const navMenu = document.getElementById('navMenu');
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        
+        if (navMenu) navMenu.classList.remove('active');
+        if (mobileBtn) {
+            const icon = mobileBtn.querySelector('i');
+            if (icon) icon.className = 'fas fa-bars';
+        }
+        
+        // Lưu vào localStorage để nhớ lần sau
         localStorage.setItem('signals_view_mode', 'desktop');
-    });
-}
-// ========================================
+        
+        console.log('🖥️ Desktop Mode activated - Menu ngang hiển thị');
+    }
+    
+    // Kích hoạt ngay lập tức
+    if (document.body) {
+        activateDesktopMode();
+    } else {
+        document.addEventListener('DOMContentLoaded', activateDesktopMode);
+    }
+})();
+// ==================================================
 // ========== APP CONFIGURATION ==========
 const APP_CONFIG = {
     version: '1.5.2', // Tăng version

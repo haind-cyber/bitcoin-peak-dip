@@ -1211,3 +1211,134 @@ body.slider-active { overflow: hidden; position: fixed; width: 100%; height: 100
 .error-message {
     color: #ff2e63;
 }
+
+/* ===== FORCE DESKTOP VIEW - MENU NGANG ===== */
+.force-desktop-view .mobile-menu-btn {
+    display: none !important; /* Ẩn nút hamburger */
+}
+
+.force-desktop-view .nav-menu {
+    display: flex !important; /* Hiện menu ngang */
+    position: static !important;
+    width: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    flex-direction: row !important;
+    gap: 20px !important;
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.force-desktop-view .nav-menu .nav-item {
+    margin: 0 !important;
+    width: auto !important;
+}
+
+.force-desktop-view .nav-menu .nav-link {
+    padding: 10px 0 !important;
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-glow) !important;
+    font-size: 1em !important;
+    white-space: nowrap !important;
+}
+
+.force-desktop-view .nav-menu .nav-link i {
+    margin-right: 5px !important;
+    font-size: 1em !important;
+    width: auto !important;
+}
+
+.force-desktop-view .nav-menu .nav-link:hover {
+    color: var(--wave-trough) !important;
+    background: transparent !important;
+    transform: none !important;
+}
+
+.force-desktop-view .nav-menu .nav-link.active {
+    color: var(--wave-trough) !important;
+    background: transparent !important;
+    border-bottom: 2px solid var(--wave-trough) !important;
+}
+
+/* Điều chỉnh layout container */
+.force-desktop-view .nav-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+}
+
+.force-desktop-view .nav-logo {
+    font-size: 1.5em !important;
+    white-space: nowrap !important;
+    margin-right: 20px !important;
+}
+
+/* Ẩn tất cả thành phần mobile */
+.force-desktop-view .mobile-scroll-hint,
+.force-desktop-view .mobile-slider-hint,
+.force-desktop-view .pan-mode-hint,
+.force-desktop-view .hint-sub {
+    display: none !important;
+}
+
+/* Fix responsive cho màn hình nhỏ */
+@media (max-width: 992px) {
+    .force-desktop-view .nav-menu {
+        gap: 10px !important;
+    }
+    
+    .force-desktop-view .nav-link {
+        font-size: 0.9em !important;
+        padding: 8px 0 !important;
+    }
+    
+    .force-desktop-view .nav-link i {
+        margin-right: 3px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .force-desktop-view .nav-menu {
+        gap: 8px !important;
+    }
+    
+    .force-desktop-view .nav-link {
+        font-size: 0.85em !important;
+    }
+    
+    .force-desktop-view .nav-link span {
+        display: inline !important; /* Giữ text, không ẩn */
+    }
+}
+
+/* Badge cho desktop mode (tùy chọn) */
+.force-desktop-view::after {
+    content: '💻 DESKTOP MODE';
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #00d4ff;
+    padding: 6px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 9999;
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    pointer-events: none;
+    letter-spacing: 1px;
+    animation: desktopBadgePulse 2s infinite;
+}
+
+@keyframes desktopBadgePulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; box-shadow: 0 0 30px rgba(0, 212, 255, 0.8); }
+}
