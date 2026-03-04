@@ -853,6 +853,7 @@ class ArticleNotificationSystem {
                 this.isFirstTimeEnable = false;
                 
                 this.showToast('✅ Đã bật thông báo thành công!', 'success');
+                this.updateStatusForNotification('permission-granted'); // THÊM DÒNG NÀY
                 return true;
                 
             } else if (permission === 'denied') {
@@ -861,6 +862,7 @@ class ArticleNotificationSystem {
                 localStorage.setItem(NOTIFICATION_CONFIG.permissionPromptedKey, 'true');
                 this.addNotificationButton();
                 this.showToast('❌ Bạn đã từ chối thông báo', 'warning');
+                this.updateStatusForNotification('permission-denied'); // THÊM DÒNG NÀY
                 return false;
                 
             } else {
@@ -1252,6 +1254,40 @@ class ArticleNotificationSystem {
         await this.loadArticles(true);
         return this.articles;
     }
+
+    // Thêm method này vào trong class
+    updateStatusForNotification(type) {
+        const statusText = document.getElementById('statusText');
+        if (!statusText || !window.appStates || !window.updateAllStates) return;
+        
+        switch(type) {
+            case 'new-article':
+                window.updateAllStates({
+                    type: 'signal',
+                    message: 'NEW ARTICLE AVAILABLE',
+                    badgeMessage: 'NEW CONTENT',
+                    color: '#9c27b0'
+                }, 1);
+                break;
+            case 'permission-granted':
+                window.updateAllStates(window.appStates.success, 1);
+                break;
+            case 'permission-denied':
+                window.updateAllStates(window.appStates.warning, 1);
+                break;
+            case 'offline':
+                window.updateAllStates(window.appStates.offline, 1);
+                break;
+            case 'online':
+                window.updateAllStates(window.appStates.analysing, 1);
+                break;
+        }
+        
+        // Tự động trở về trạng thái analysing sau 3 giây
+        setTimeout(() => {
+            window.updateAllStates?.(window.appStates.analysing, 1);
+        }, 3000);
+    }    
 }
 
 // ===== CSS CHO NOTIFICATION SYSTEM (GIỮ NGUYÊN) =====

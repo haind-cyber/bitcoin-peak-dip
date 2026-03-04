@@ -223,6 +223,7 @@ class UpdateNotifier {
 
     // ===== HIỂN THỊ BANNER CẬP NHẬT =====
     showUpdateBanner(version, changelog = []) {
+        this.showUpdateState(version); // THÊM DÒNG NÀY
         // Xóa banner cũ nếu có
         this.removeUpdateBanner();
 
@@ -403,6 +404,22 @@ class UpdateNotifier {
             }, duration);
         }, 0);
     }
+
+    showUpdateState(version) {
+        if (window.updateAllStates && window.appStates) {
+            window.updateAllStates({
+                type: 'signal',
+                message: `UPDATE v${version} AVAILABLE`,
+                badgeMessage: 'UPDATE READY',
+                color: '#9c27b0'
+            }, 1);
+            
+            // Tự động trở về analysing sau 5 giây
+            setTimeout(() => {
+                window.updateAllStates?.(window.appStates.analysing, 1);
+            }, 5000);
+        }
+    }    
 }
 
 // ===== CSS CHO UPDATE NOTIFIER =====
