@@ -1,9 +1,9 @@
 // Bitcoin PeakDip Service Worker
-// Version: 1.12.34 - BADGE HANDLING & PUSH NOTIFICATION
+// Version: 1.12.36 - BADGE HANDLING & PUSH NOTIFICATION
 // Đồng bộ với build system
 
-const CACHE_NAME = 'bitcoin-peakdip-v1.12.34';
-const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.34';
+const CACHE_NAME = 'bitcoin-peakdip-v1.12.36';
+const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.36';
 const ARTICLE_CACHE = 'article-cache-v1';
 
 // Local assets - có thể cache
@@ -508,48 +508,6 @@ async function handleSaveForLater(data) {
   }
 }
 
-// ========== PUSH NOTIFICATION HANDLER ==========
-self.addEventListener('push', event => {
-  console.log('📨 Push notification received', event);
-  
-  let data = {
-    title: 'Bitcoin PeakDip',
-    body: 'New article available!',
-    icon: '/assets/icons/icon-192x192.png',
-    badge: '/assets/icons/icon-72x72.png',
-    vibrate: [200, 100, 200],
-    data: {
-      url: '/learn/',
-      type: 'new-articles',
-      timestamp: Date.now()
-    }
-  };
-  
-  if (event.data) {
-    try {
-      const parsed = event.data.json();
-      data = { ...data, ...parsed };
-    } catch (e) {
-      data.body = event.data.text();
-    }
-  }
-  
-  event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: data.icon,
-      badge: data.badge,
-      vibrate: data.vibrate || [200, 100, 200],
-      data: data.data,
-      actions: data.actions || [
-        { action: 'view', title: '📖 View Articles' }
-      ],
-      tag: data.tag || 'push-notification',
-      renotify: true,
-      requireInteraction: true
-    })
-  );
-});
 
 // ========== PERIODIC SYNC ==========
 self.addEventListener('periodicsync', event => {
@@ -801,4 +759,101 @@ function staleWhileRevalidate(request) {
   });
 }
 
+// ===== THÊM VÀO service-worker.js =====
+
+// Handle push events từ FCM
+self.addEventListener('push', function(event) {
+  console.log('📨 Push received:', event);
+  
+  let data = {
+    title: 'Bitcoin PeakDip',
+    body: 'New update available',
+    icon: '/assets/icons/icon-192x192.png',
+    badge: '/assets/icons/icon-72x72.png',
+    data: {
+      url: '/learn/',
+      type: 'push'
+    }
+  };
+  
+  if (event.data) {
+    try {
+      const parsed = event.data.json();
+      data = { ...data, ...parsed };
+    } catch (e) {
+      data.body = event.data.text();
+    }
+  }
+  
+  // Thông báo cho clients
+  self.clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'PUSH_RECEIVED',
+        payload: data
+      });
+    });
+  });
+  
+  // Hiển thị notification
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: data.icon,
+      badge: data.badge,
+      vibrate: data.vibrate || [200, 100, 200],
+      data: data.data,
+      actions: data.actions || [
+        { action: 'read', title: '📖 Read' }
+      ],
+      tag: data.tag || 'push',
+      renotify: true,
+      requireInteraction: true
+    })
+  );
+});
+
+// Handle notification click
+self.addEventListener('notificationclick', function(event) {
+  console.log('🔔 Notification clicked:', event.action);
+  event.notification.close();
+  
+  const urlToOpen = event.notification.data?.url || '/';
+  
+  event.waitUntil(
+    clients.matchAll({ type: 'window' }).then(function(clientList) {
+      // Check if there's already a window open
+      for (let i = 0; i < clientList.length; i++) {
+        let client = clientList[i];
+        if (client.url === urlToOpen && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // If not, open a new window
+      return clients.openWindow(urlToOpen);
+    })
+  );
+});
+
+// Handle subscription change
+self.addEventListener('pushsubscriptionchange', function(event) {
+  console.log('🔄 Push subscription changed');
+  
+  event.waitUntil(
+    self.registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: event.oldSubscription?.options.applicationServerKey
+    }).then(function(newSubscription) {
+      // Thông báo cho client
+      return self.clients.matchAll().then(clients => {
+        clients.forEach(client => {
+          client.postMessage({
+            type: 'SUBSCRIPTION_UPDATED',
+            subscription: newSubscription
+          });
+        });
+      });
+    })
+  );
+});
 console.log('✅ Service Worker v1.12.15 loaded successfully with Badge Handling');

@@ -1,0 +1,72 @@
+name: 📢 Bitcoin PeakDip - Article Notification System
+
+on:
+  push:
+    paths:
+      - '_posts/**/*.md'           # Chỉ chạy khi có thay đổi trong _posts
+    branches:
+      - main
+      - master
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    # Tránh chạy nhiều lần cùng lúc
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Cần để biết file nào thay đổi
+      
+      # PHÁT HIỆN FILE THAY ĐỔI - CHỈ LẤY FILE MỚI (ADDED)
+      - name: 🔍 Get new files
+        id: files
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            _posts/**/*.md
+          separator: " "
+      
+      # DEBUG: In ra thông tin chi tiết
+      - name: 📋 Debug file changes
+        run: |
+          echo "➕ ADDED FILES (NEW):"
+          echo "${{ steps.files.outputs.added_files }}" | tr ' ' '\n' | sed 's/^/   - /'
+          echo ""
+          echo "✏️ MODIFIED FILES (SKIPPED):"
+          echo "${{ steps.files.outputs.modified_files }}" | tr ' ' '\n' | sed 's/^/   - /'
+      
+      - name: ⏹️ Skip if no new files
+        if: steps.files.outputs.added_files == ''
+        run: echo "⏹️ No new files added, skipping notifications..."
+      
+      - name: ⚙️ Setup Node.js
+        if: steps.files.outputs.added_files != ''
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: 📦 Install dependencies
+        if: steps.files.outputs.added_files != ''
+        run: |
+          npm init -y
+          npm install firebase-admin@11 axios@1.5
+      
+      - name: 📨 Send notifications for NEW articles
+        if: steps.files.outputs.added_files != ''
+        env:
+          # CHỈ gửi file mới (added)
+          ADDED_FILES: ${{ steps.files.outputs.added_files }}
+          # Credentials từ GitHub Secrets
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          DISCORD_PUBLIC_WEBHOOK: ${{ secrets.DISCORD_PUBLIC_WEBHOOK }}
+          DISCORD_PRIVATE_WEBHOOK: ${{ secrets.DISCORD_PRIVATE_WEBHOOK }}
+        run: node scripts/send-notification.js
+      
+      - name: ✅ Done
+        if: steps.files.outputs.added_files != ''
+        run: echo "✅ Notifications sent successfully"

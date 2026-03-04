@@ -1,5 +1,5 @@
 // notifications.js - Hệ thống thông báo bài viết mới
-// Version: 4.2.0 - PRODUCTION READY - Tối ưu cho mobile/desktop
+// Version: 5.0.0 - ADDED FCM SUPPORT (No server required)
 // Tương thích với service-worker.js v1.12.19+
 // Optimized for parallel execution and battery life
 
@@ -37,7 +37,15 @@ const NOTIFICATION_CONFIG = {
     
     // Idle detection
     idleThreshold: 30 * 60 * 1000, // 30 phút
-    idleCheckInterval: 60 * 1000    // 1 phút kiểm tra 1 lần
+    idleCheckInterval: 60 * 1000,    // 1 phút kiểm tra 1 lần
+
+    // ===== [MỚI] FCM Configuration - KHÔNG CẦN SERVER =====
+    fcm: {
+        vapidKey: 'BBejP_DJ8kfSGg3lLa2WJOEFmjPuheqWlcOsg6cGXk_VvUItKx3PELEXwlqIJAL0T-nA541qb3myX5fmz9XORpE',
+        serverUrl: '',  // 👈 Để trống - không cần server
+        registerEndpoint: '',
+        unregisterEndpoint: ''
+    }
 };
 
 class ArticleNotificationSystem {
@@ -62,6 +70,11 @@ class ArticleNotificationSystem {
         this.tooltipShown = false;
         this.newBadgeShown = false;
         
+        // ===== [MỚI] FCM Properties =====
+        this.fcmToken = null;
+        this.fcmInitialized = false;
+        this.userId = this._generateFCMUserId();
+        
         // Mobile optimization flags
         this.isMobile = typeof window !== 'undefined' && (
             window.IS_MOBILE || 
@@ -74,6 +87,17 @@ class ArticleNotificationSystem {
         this.idleMode = false;
         this.tabHidden = false;
         this.pendingCheck = false;
+    }
+
+    // ===== [MỚI] Generate user ID cho FCM =====
+    _generateFCMUserId() {
+        let userId = localStorage.getItem('fcm_user_id');
+        if (!userId) {
+            userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('fcm_user_id', userId);
+            console.log('🆕 Generated FCM user ID:', userId);
+        }
+        return userId;
     }
 
     // ===== IDLE DETECTION =====
@@ -160,6 +184,14 @@ class ArticleNotificationSystem {
                 await this.registerServiceWorker();
             }
 
+            // ===== [MỚI] Request FCM token nếu đã có permission =====
+            if (permission === 'granted' && this.swRegistration) {
+                // Đợi 3 giây để service worker ổn định
+                setTimeout(() => {
+                    this.requestFCMToken();
+                }, 3000);
+            }
+
             // Thêm nút notification (QUAN TRỌNG: luôn thêm nút)
             this.addNotificationButton();
 
@@ -181,7 +213,7 @@ class ArticleNotificationSystem {
             // Fetch trong background
             setTimeout(() => {
                 this.loadArticlesWithRetry(false, true);
-            }, this.isMobile ? 10000 : 2000); // Mobile delay lâu hơn
+            }, this.isMobile ? 10000 : 2000);
 
             // Tự động start polling nếu đã được cấp quyền và enabled
             if (permission === 'granted' && this.isEnabled) {
@@ -195,6 +227,8 @@ class ArticleNotificationSystem {
 
             this.initialized = true;
             console.log(`✅ Notification system v${NOTIFICATION_CONFIG.version} initialized successfully`);
+            console.log('📱 FCM Status:', this.fcmInitialized ? '✅ Ready' : '⏳ Pending');
+            
             resolve(this);
         });
 
@@ -421,6 +455,68 @@ class ArticleNotificationSystem {
         this.addNotificationButton();
     }
 
+    // ===== [MỚI] Request FCM Token =====
+    async requestFCMToken() {
+        console.log('🔑 Requesting FCM token...');
+        
+        // Kiểm tra điều kiện
+        if (!('Notification' in window) || Notification.permission !== 'granted') {
+            console.log('❌ Notification permission not granted');
+            return null;
+        }
+
+        if (!('serviceWorker' in navigator) || !this.swRegistration) {
+            console.log('❌ Service Worker not ready');
+            return null;
+        }
+
+        try {
+            // Kiểm tra subscription hiện tại
+            let subscription = await this.swRegistration.pushManager.getSubscription();
+            
+            // Nếu đã có subscription, dùng lại
+            if (subscription) {
+                console.log('✅ Using existing push subscription');
+                this.fcmToken = subscription;
+                this.fcmInitialized = true;
+                return subscription;
+            }
+            
+            // Tạo subscription mới
+            console.log('📡 Creating new push subscription...');
+            subscription = await this.swRegistration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: this._urlBase64ToUint8Array(NOTIFICATION_CONFIG.fcm.vapidKey)
+            });
+            
+            this.fcmToken = subscription;
+            this.fcmInitialized = true;
+            
+            // Lưu endpoint để debug
+            localStorage.setItem('fcm_endpoint', subscription.endpoint);
+            console.log('✅ FCM token obtained:', subscription.endpoint);
+            
+            // KHÔNG gửi lên server - chỉ dùng local
+            this.showToast('✅ Push notifications enabled', 'success');
+            
+            return subscription;
+            
+        } catch (error) {
+            console.error('❌ FCM token request failed:', error.message);
+            
+            // Xử lý lỗi cụ thể
+            if (error.code === 20) {
+                this.showToast('⚠️ Push service not supported', 'warning');
+            } else if (error.code === 5) {
+                this.showToast('⚠️ Invalid VAPID key', 'warning');
+            } else {
+                this.showToast('❌ Failed to enable push', 'error');
+            }
+            
+            return null;
+        }
+    }
+
     // ===== ĐĂNG KÝ SERVICE WORKER =====
     async registerServiceWorker() {
         try {
@@ -521,9 +617,13 @@ class ArticleNotificationSystem {
     }
 
     // ===== CẬP NHẬT APP BADGE =====
-    async updateAppBadge() {
-        const unreadCount = this.getUnreadCount();
+    async updateAppBadge(count) {
+        // Nếu không truyền count, lấy từ unread
+        const unreadCount = count !== undefined ? count : this.getUnreadCount();
         
+        console.log('📊 Updating app badge to:', unreadCount);
+        
+        // 1. Cập nhật PWA badge
         if (navigator.setAppBadge) {
             try {
                 if (unreadCount > 0) {
@@ -536,13 +636,19 @@ class ArticleNotificationSystem {
             }
         }
         
-        // Chỉ update favicon badge trên desktop
+        // 2. Cập nhật favicon badge (desktop)
         if (!this.isMobile) {
-            this.updateFaviconBadge(unreadCount);
+            this._updateFaviconBadge(unreadCount);
         }
         
+        // 3. Cập nhật reading list badge
         this.updateReadingListBadge();
         
+        // 4. Cập nhật document title
+        const originalTitle = document.title.replace(/^\(\d+\)\s*/, '');
+        document.title = unreadCount > 0 ? `(${unreadCount}) ${originalTitle}` : originalTitle;
+        
+        // 5. Gửi message đến service worker
         if (this.swRegistration && this.swRegistration.active) {
             try {
                 this.swRegistration.active.postMessage({
@@ -553,6 +659,60 @@ class ArticleNotificationSystem {
                 console.log('Failed to sync badge with SW:', error);
             }
         }
+    }
+
+    // ===== [MỚI] Cập nhật favicon với badge =====
+    _updateFaviconBadge(count) {
+        if (count === 0) {
+            document.querySelectorAll('.favicon-badge').forEach(el => el.remove());
+            const originalFavicon = document.querySelector('link[rel="icon"]:not(.favicon-badge)');
+            if (originalFavicon) {
+                originalFavicon.removeAttribute('disabled');
+            }
+            return;
+        }
+        
+        // Không tạo mới nếu đã có
+        if (document.querySelector('.favicon-badge')) return;
+        
+        const originalFavicon = document.querySelector('link[rel="icon"]');
+        if (originalFavicon) {
+            originalFavicon.setAttribute('disabled', 'disabled');
+        }
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        
+        // Vẽ icon Bitcoin
+        ctx.fillStyle = '#00d4ff';
+        ctx.beginPath();
+        ctx.arc(32, 32, 30, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 28px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('₿', 32, 32);
+        
+        // Vẽ badge số
+        ctx.fillStyle = '#ff2e63';
+        ctx.beginPath();
+        ctx.arc(48, 16, 12, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText(count > 9 ? '9+' : count, 48, 16);
+        
+        const newFavicon = document.createElement('link');
+        newFavicon.rel = 'icon';
+        newFavicon.href = canvas.toDataURL('image/png');
+        newFavicon.classList.add('favicon-badge');
+        
+        document.head.appendChild(newFavicon);
     }
 
     // ===== CẬP NHẬT FAVICON BADGE (CHỈ DESKTOP) =====
@@ -849,11 +1009,16 @@ class ArticleNotificationSystem {
                 this.showTestNotification();
                 this.addNotificationButton();
                 
+                // ===== [MỚI] Request FCM token =====
+                setTimeout(() => {
+                    this.requestFCMToken();
+                }, 1000);
+                
                 await this.loadArticles(true, true);
                 this.isFirstTimeEnable = false;
                 
                 this.showToast('✅ Đã bật thông báo thành công!', 'success');
-                this.updateStatusForNotification('permission-granted'); // THÊM DÒNG NÀY
+                this.updateStatusForNotification('permission-granted');
                 return true;
                 
             } else if (permission === 'denied') {
@@ -862,7 +1027,7 @@ class ArticleNotificationSystem {
                 localStorage.setItem(NOTIFICATION_CONFIG.permissionPromptedKey, 'true');
                 this.addNotificationButton();
                 this.showToast('❌ Bạn đã từ chối thông báo', 'warning');
-                this.updateStatusForNotification('permission-denied'); // THÊM DÒNG NÀY
+                this.updateStatusForNotification('permission-denied');
                 return false;
                 
             } else {
@@ -888,6 +1053,12 @@ class ArticleNotificationSystem {
         this.setNotificationStatus(true);
         this.setupBackgroundSync();
         this.startPolling();
+        
+        // ===== [MỚI] Request FCM token =====
+        setTimeout(() => {
+            this.requestFCMToken();
+        }, 1000);
+        
         this.addNotificationButton();
         
         console.log('✅ Đã bật thông báo bài viết mới');
@@ -943,6 +1114,36 @@ class ArticleNotificationSystem {
                 this.showToast('✅ Cache cleared, reloading...', 'success');
                 setTimeout(() => window.location.reload(), 1500);
                 break;
+        }
+        
+        // ===== [MỚI] Xử lý push messages =====
+        if (data.type === 'PUSH_RECEIVED') {
+            const { title, body, payloadData } = data;
+            console.log('📬 Push received:', { title, body, payloadData });
+            
+            // Hiển thị toast
+            this.showToast(`${title}: ${body}`, 'info', 5000);
+            
+            // Cập nhật badge
+            if (payloadData?.badge) {
+                this.updateAppBadge(payloadData.badge);
+            }
+            
+            // Xử lý badge update riêng
+            if (payloadData?.type === 'UPDATE_BADGE' && payloadData?.count !== undefined) {
+                this.updateAppBadge(parseInt(payloadData.count));
+            }
+            
+            // Reload articles khi có bài mới
+            if (payloadData?.type === 'NEW_ARTICLE' && payloadData?.articleId) {
+                this.loadArticles(true, false);
+            }
+        }
+        
+        // ===== [MỚI] Xử lý badge update =====
+        if (data.type === 'UPDATE_BADGE' && data.count !== undefined) {
+            console.log('📊 Badge update:', data.count);
+            this.updateAppBadge(parseInt(data.count));
         }
     }
 
@@ -1068,6 +1269,20 @@ class ArticleNotificationSystem {
                 icon: '/assets/icons/icon-192x192.png'
             });
         }
+    }
+
+    // ===== [MỚI] Lấy trạng thái FCM =====
+    getFCMStatus() {
+        return {
+            initialized: this.fcmInitialized,
+            hasToken: !!this.fcmToken,
+            userId: this.userId,
+            permission: Notification.permission,
+            pushSupported: 'PushManager' in window,
+            serviceWorkerReady: !!this.swRegistration,
+            endpoint: this.fcmToken?.endpoint || null,
+            vapidKeyConfigured: !!NOTIFICATION_CONFIG.fcm.vapidKey
+        };
     }
 
     // ===== HELPER FUNCTIONS =====
@@ -1502,6 +1717,13 @@ if (document.readyState === 'complete' && !window.articleNotifications) {
         }
     }, 100);
 }
+
+// ===== [MỚI] Export FCM functions =====
+window.fcm = {
+    requestToken: () => window.articleNotifications?.requestFCMToken(),
+    getStatus: () => window.articleNotifications?.getFCMStatus(),
+    updateBadge: (count) => window.articleNotifications?.updateAppBadge(count)
+};
 
 // Export
 window.ArticleNotificationSystem = ArticleNotificationSystem;
