@@ -1,16 +1,16 @@
 // ============================================
 // Bitcoin PeakDip Early Warning System - Signals
-// Version: 1.12.2 - UPDATED - Signal Details Floating & Layout
+// Version: 1.12.3 - ADDED TRANSIT SIGNALS
 // ============================================
 
 // ========== APP CONFIGURATION ==========
 const APP_CONFIG = {
-    version: '1.5.2', // Tăng version
+    version: '1.5.3', // Tăng version
     itemsPerPage: 15,
     versionKey: 'peakdip_version',
     dataPaths: {
-        signals: ['assets/data/signals.csv', './data/signals.csv', 'signals.csv'],
-        bitcoin: ['assets/data/Binance_BTCUSDT_d.csv', './data/Binance_BTCUSDT_d.csv', 'Binance_BTCUSDT_d.csv']
+        signals: ['assets/data/signals.csv', './assets/data/signals.csv', 'signals.csv'],
+        bitcoin: ['assets/data/Binance_BTCUSDT_d.csv', './assets/data/Binance_BTCUSDT_d.csv', 'Binance_BTCUSDT_d.csv']
     }
 };
 
@@ -69,7 +69,7 @@ const state = {
         }
     }
     
-    console.log(`🚀 Bitcoin PeakDip EWS v${APP_CONFIG.version} - UPDATED LAYOUT`);
+    console.log(`🚀 Bitcoin PeakDip EWS v${APP_CONFIG.version} - ADDED TRANSIT SIGNALS`);
 })();
 
 // ========== DOM ELEMENTS CACHE ==========
@@ -203,6 +203,8 @@ function showFloatingSignalDetail(signal, row, mouseX, mouseY) {
     const confClass = getConfidenceClass(signal.confidence);
     const confColor = confClass === 'high' ? '#4CAF50' : confClass === 'medium' ? '#FFC107' : '#F44336';
     const daysAgo = Math.floor((new Date() - signal.timestamp) / 86400000);
+    const signalTypeClass = signal.signal_type.toLowerCase();
+    const signalTypeColor = signal.signal_type === 'PEAK' ? '#ff2e63' : signal.signal_type === 'DIP' ? '#00d4ff' : '#9c27b0';
     
     floating.innerHTML = `
         <div class="floating-header">
@@ -214,7 +216,7 @@ function showFloatingSignalDetail(signal, row, mouseX, mouseY) {
         <div class="floating-body">
             <div class="floating-row">
                 <span class="floating-label"><i class="fas fa-bullseye"></i> Type:</span>
-                <span class="floating-value signal-type ${signal.signal_type.toLowerCase()}">${signal.signal_type}</span>
+                <span class="floating-value signal-type ${signalTypeClass}" style="color:${signalTypeColor}">${signal.signal_type}</span>
             </div>
             <div class="floating-row">
                 <span class="floating-label"><i class="fas fa-calendar"></i> Date:</span>
@@ -306,15 +308,18 @@ function updateTableHeaders() {
     }
 }
 
-// ========== CẬP NHẬT LẠI ANALYSIS SECTION - LOẠI BỎ TIME DISTRIBUTION ==========
+// ========== CẬP NHẬT LẠI ANALYSIS SECTION ==========
 function updateAnalysisSectionLayout() {
     const analysisGrid = document.querySelector('.analysis-grid');
     if (analysisGrid) {
-        // Giữ lại chỉ 2 card: Distribution by Type và Confidence Levels
+        // Cập nhật để hiển thị đúng 3 loại tín hiệu
         const cards = analysisGrid.querySelectorAll('.analysis-card');
         if (cards.length >= 3) {
-            // Ẩn card Time Distribution
-            cards[2].style.display = 'none';
+            // Cập nhật title cho card đầu tiên
+            const firstCardTitle = cards[0].querySelector('h3');
+            if (firstCardTitle) {
+                firstCardTitle.innerHTML = '<i class="fas fa-chart-bar"></i> Distribution by Type';
+            }
         }
     }
 }
@@ -334,7 +339,7 @@ async function loadAllData() {
         
         state.lastUpdateTime = new Date();
         updateUI();
-        updateAnalysisSectionLayout(); // Gọi hàm cập nhật layout
+        updateAnalysisSectionLayout();
         
     } catch (error) {
         console.error('❌ Data loading failed:', error);
@@ -370,7 +375,7 @@ function parseSignalsData(csvText) {
     }
     
     state.signals = [];
-    let peak = 0, dip = 0;
+    let peak = 0, dip = 0, transit = 0;
     
     for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(',').map(v => v.trim());
@@ -384,11 +389,16 @@ function parseSignalsData(csvText) {
         
         if (!timestamp || isNaN(price)) continue;
         
-        row.signal_type === 'PEAK' ? peak++ : dip++;
+        const signalType = row.signal_type?.toUpperCase() || '';
+        
+        // Đếm theo loại tín hiệu
+        if (signalType === 'PEAK') peak++;
+        else if (signalType === 'DIP') dip++;
+        else if (signalType === 'TRANSIT') transit++;
         
         state.signals.push({
             timestamp,
-            signal_type: row.signal_type?.toUpperCase() === 'PEAK' ? 'PEAK' : 'DIP',
+            signal_type: signalType,
             price,
             confidence: parseFloat(row.confidence) || 98,
             validation: 'PASS',
@@ -400,7 +410,7 @@ function parseSignalsData(csvText) {
     state.signals.sort((a, b) => b.timestamp - a.timestamp);
     state.filteredSignals = [...state.signals];
     
-    console.log(`✅ Loaded ${state.signals.length} signals (Peak: ${peak}, Dip: ${dip})`);
+    console.log(`✅ Loaded ${state.signals.length} signals (Peak: ${peak}, Dip: ${dip}, Transit: ${transit})`);
 }
 
 // ========== PARSE BITCOIN PRICE DATA ==========
@@ -480,9 +490,13 @@ function parseDate(input) {
     let d = new Date(input);
     if (!isNaN(d)) return d;
     
-    // M/D/YYYY
-    const mdy = input.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-    if (mdy) return new Date(mdy[3], mdy[1] - 1, mdy[2]);
+    // M/D/YYYY (và M/D/YY)
+    const mdy = input.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+    if (mdy) {
+        let year = parseInt(mdy[3]);
+        if (year < 100) year += 2000; // Xử lý năm 2 chữ số
+        return new Date(year, mdy[1] - 1, mdy[2]);
+    }
     
     // YYYY-MM-DD HH:MM:SS
     const ymd = input.match(/^(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/);
@@ -505,6 +519,7 @@ function updateStats() {
     
     const peak = state.signals.filter(s => s.signal_type === 'PEAK').length;
     const dip = state.signals.filter(s => s.signal_type === 'DIP').length;
+    const transit = state.signals.filter(s => s.signal_type === 'TRANSIT').length;
     const total = state.signals.length;
     
     elements.peakCount.textContent = peak;
@@ -529,6 +544,7 @@ function filterSignals() {
         // Filter by type
         if (state.currentFilter === 'peak' && signal.signal_type !== 'PEAK') return false;
         if (state.currentFilter === 'dip' && signal.signal_type !== 'DIP') return false;
+        if (state.currentFilter === 'transit' && signal.signal_type !== 'TRANSIT') return false;
         if (state.currentFilter === 'high-confidence' && signal.confidence < 80) return false;
         
         // Search
@@ -564,15 +580,19 @@ function renderTable() {
     const end = start + APP_CONFIG.itemsPerPage;
     const pageData = state.filteredSignals.slice(start, end);
     
-    elements.tableBody.innerHTML = pageData.map((signal, idx) => `
-        <tr class="signal-${signal.signal_type.toLowerCase()}" data-signal-id="${signal.id}" data-index="${start + idx}">
+    elements.tableBody.innerHTML = pageData.map((signal, idx) => {
+        const signalClass = signal.signal_type === 'PEAK' ? 'peak' : 
+                           signal.signal_type === 'DIP' ? 'dip' : 'transit';
+        
+        return `
+        <tr class="signal-${signalClass}" data-signal-id="${signal.id}" data-index="${start + idx}">
             <td><div class="timestamp"><div class="date">${formatDate(signal.timestamp)}</div><div class="time">${formatTime(signal.timestamp)}</div></div></td>
-            <td><span class="signal-type ${signal.signal_type.toLowerCase()}">${signal.signal_type}</span></td>
+            <td><span class="signal-type ${signalClass}">${signal.signal_type}</span></td>
             <td><div class="price-display"><span class="price">$${signal.price.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</span></div></td>
             <td><span class="confidence-indicator confidence-${getConfidenceClass(signal.confidence)}">${signal.confidence}%</span></td>
             <td><span class="validation-status validation-pass">PASS</span></td>
         </tr>
-    `).join('');
+    `}).join('');
     
     // Attach click handlers
     elements.tableBody.querySelectorAll('tr').forEach(row => {
@@ -616,12 +636,15 @@ function showSignalDetails(signal) {
     const confClass = getConfidenceClass(signal.confidence);
     const confColor = confClass === 'high' ? '#4CAF50' : confClass === 'medium' ? '#FFC107' : '#F44336';
     const daysAgo = Math.floor((new Date() - signal.timestamp) / 86400000);
+    const signalTypeClass = signal.signal_type.toLowerCase();
+    const signalTypeColor = signal.signal_type === 'PEAK' ? '#ff2e63' : 
+                           signal.signal_type === 'DIP' ? '#00d4ff' : '#9c27b0';
     
     elements.signalDetails.innerHTML = `
         <div class="signal-details">
             <div class="detail-card">
                 <h3><i class="fas fa-info-circle"></i> Signal Information</h3>
-                <div class="detail-item"><span class="detail-label">Signal Type:</span><span class="detail-value signal-type ${signal.signal_type.toLowerCase()}">${signal.signal_type}</span></div>
+                <div class="detail-item"><span class="detail-label">Signal Type:</span><span class="detail-value signal-type ${signalTypeClass}" style="color:${signalTypeColor}">${signal.signal_type}</span></div>
                 <div class="detail-item"><span class="detail-label">Timestamp:</span><span class="detail-value">${formatDateTime(signal.timestamp)}</span></div>
                 <div class="detail-item"><span class="detail-label">Bitcoin Price:</span><span class="detail-value">$${signal.price.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
             </div>
@@ -650,9 +673,45 @@ function setupCharts() {
         type: 'line',
         data: {
             datasets: [
-                { label: 'Bitcoin Price', data: [], borderColor: '#f7931a', backgroundColor: 'rgba(247,147,26,0.1)', borderWidth: 2, fill: true, tension: 0.1, pointRadius: 0 },
-                { label: 'Peak Signals', data: [], borderColor: '#ff2e63', backgroundColor: '#ff2e63', pointRadius: 6, pointStyle: 'triangle', pointRotation: 180, showLine: false },
-                { label: 'Dip Signals', data: [], borderColor: '#00d4ff', backgroundColor: '#00d4ff', pointRadius: 6, pointStyle: 'triangle', showLine: false }
+                { 
+                    label: 'Bitcoin Price', 
+                    data: [], 
+                    borderColor: '#f7931a', 
+                    backgroundColor: 'rgba(247,147,26,0.1)', 
+                    borderWidth: 2, 
+                    fill: true, 
+                    tension: 0.1, 
+                    pointRadius: 0 
+                },
+                { 
+                    label: 'Peak Signals', 
+                    data: [], 
+                    borderColor: '#ff2e63', 
+                    backgroundColor: '#ff2e63', 
+                    pointRadius: 8, 
+                    pointStyle: 'triangle', 
+                    pointRotation: 180, 
+                    showLine: false 
+                },
+                { 
+                    label: 'Dip Signals', 
+                    data: [], 
+                    borderColor: '#00d4ff', 
+                    backgroundColor: '#00d4ff', 
+                    pointRadius: 8, 
+                    pointStyle: 'triangle', 
+                    showLine: false 
+                },
+                { 
+                    label: 'Transit Signals', 
+                    data: [], 
+                    borderColor: '#9c27b0', 
+                    backgroundColor: '#9c27b0', 
+                    pointRadius: 8, 
+                    pointStyle: 'rect', // Hình vuông để phân biệt
+                    showLine: false,
+                    borderWidth: 2
+                }
             ]
         },
         options: getChartOptions()
@@ -668,21 +727,45 @@ function getChartOptions() {
         maintainAspectRatio: false,
         interaction: { intersect: false, mode: 'index' },
         plugins: {
-            legend: { display: true, position: 'top', labels: { color: 'rgba(255,255,255,0.7)' } },
+            legend: { 
+                display: true, 
+                position: 'top', 
+                labels: { 
+                    color: 'rgba(255,255,255,0.7)',
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                } 
+            },
             tooltip: {
                 backgroundColor: 'rgba(0,0,0,0.9)',
                 titleColor: '#f7931a',
                 bodyColor: '#fff',
                 callbacks: {
-                    label: ctx => ctx.dataset.label.includes('Price') 
-                        ? `Price: $${ctx.parsed.y.toLocaleString()}`
-                        : `${ctx.raw.signal?.signal_type || ''}: $${ctx.raw.y?.toLocaleString()}`
+                    label: ctx => {
+                        if (ctx.dataset.label.includes('Price')) {
+                            return `Price: $${ctx.parsed.y.toLocaleString()}`;
+                        } else {
+                            const signalType = ctx.raw.signal?.signal_type || '';
+                            return `${signalType}: $${ctx.parsed.y?.toLocaleString()}`;
+                        }
+                    }
                 }
             }
         },
         scales: {
-            x: { type: 'time', time: { unit: 'month' }, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'rgba(255,255,255,0.7)' } },
-            y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'rgba(255,255,255,0.7)', callback: v => '$' + v.toLocaleString() } }
+            x: { 
+                type: 'time', 
+                time: { unit: 'month' }, 
+                grid: { color: 'rgba(255,255,255,0.1)' }, 
+                ticks: { color: 'rgba(255,255,255,0.7)' } 
+            },
+            y: { 
+                grid: { color: 'rgba(255,255,255,0.1)' }, 
+                ticks: { 
+                    color: 'rgba(255,255,255,0.7)', 
+                    callback: v => '$' + v.toLocaleString() 
+                } 
+            }
         }
     };
 }
@@ -693,16 +776,40 @@ function setupAnalysisCharts() {
     if (elements.typeChart) {
         state.charts.analysis.push(new Chart(elements.typeChart, {
             type: 'doughnut',
-            data: { labels: ['Peak', 'Dip'], datasets: [{ data: [0,0], backgroundColor: ['#ff2e63','#00d4ff'] }] },
-            options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
+            data: { 
+                labels: ['Peak', 'Dip', 'Transit'], 
+                datasets: [{ 
+                    data: [0,0,0], 
+                    backgroundColor: ['#ff2e63', '#00d4ff', '#9c27b0'] 
+                }] 
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                cutout: '70%', 
+                plugins: { 
+                    legend: { display: false } 
+                } 
+            }
         }));
     }
     
     if (elements.confidenceChart) {
         state.charts.analysis.push(new Chart(elements.confidenceChart, {
             type: 'bar',
-            data: { labels: ['High','Medium','Low'], datasets: [{ data: [0,0,0], backgroundColor: ['#4CAF50','#FFC107','#F44336'] }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+            data: { 
+                labels: ['High','Medium','Low'], 
+                datasets: [{ 
+                    data: [0,0,0], 
+                    backgroundColor: ['#4CAF50','#FFC107','#F44336'] 
+                }] 
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: { display: false } }, 
+                scales: { x: { display: false }, y: { display: false } } 
+            }
         }));
     }
 }
@@ -712,15 +819,17 @@ function updateCharts() {
     
     const peak = state.signals.filter(s => s.signal_type === 'PEAK');
     const dip = state.signals.filter(s => s.signal_type === 'DIP');
+    const transit = state.signals.filter(s => s.signal_type === 'TRANSIT');
     
     state.charts.bitcoin.data.datasets[0].data = state.historicalPriceData;
     state.charts.bitcoin.data.datasets[1].data = peak.map(s => ({ x: s.timestamp, y: s.price, signal: s }));
     state.charts.bitcoin.data.datasets[2].data = dip.map(s => ({ x: s.timestamp, y: s.price, signal: s }));
+    state.charts.bitcoin.data.datasets[3].data = transit.map(s => ({ x: s.timestamp, y: s.price, signal: s }));
     state.charts.bitcoin.update();
     
     // Analysis charts
     if (state.charts.analysis[0]) {
-        state.charts.analysis[0].data.datasets[0].data = [peak.length, dip.length];
+        state.charts.analysis[0].data.datasets[0].data = [peak.length, dip.length, transit.length];
         state.charts.analysis[0].update();
     }
     
@@ -1611,8 +1720,10 @@ function getPriceZone(p) { return p > 80000 ? 'Extreme High' : p > 60000 ? 'High
 function getRecommendation(s) {
     if (s.signal_type === 'PEAK') {
         return s.confidence >= 80 ? 'Consider taking profits' : s.confidence >= 60 ? 'Monitor for reversal' : 'Wait for confirmation';
-    } else {
+    } else if (s.signal_type === 'DIP') {
         return s.confidence >= 80 ? 'Consider accumulation' : s.confidence >= 60 ? 'Monitor for entry' : 'Wait for stronger signal';
+    } else { // TRANSIT
+        return s.confidence >= 80 ? 'Trend transition confirmed' : s.confidence >= 60 ? 'Monitor trend change' : 'Wait for confirmation';
     }
 }
 
@@ -1819,6 +1930,10 @@ function addDynamicStyles() {
             color: #00d4ff;
         }
         
+        .floating-value.signal-type.transit {
+            color: #9c27b0;
+        }
+        
         .floating-value.validation-pass {
             color: #4CAF50;
             background: rgba(76, 175, 80, 0.15);
@@ -1886,4 +2001,4 @@ function addDynamicStyles() {
 if (window.realCsvData) parseSignalsData(window.realCsvData);
 if (window.bitcoinPriceData) parseBitcoinData(window.bitcoinPriceData);
 
-console.log('✅ signals.js v1.5.2 - UPDATED: Floating details, layout fixed');
+console.log('✅ signals.js v1.5.3 - ADDED TRANSIT SIGNALS');

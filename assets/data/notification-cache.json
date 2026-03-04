@@ -1,6 +1,6 @@
 {
-  "version": "1.12.30",
-  "last_checked": "2026-03-03T16:10:45.052Z",
+  "version": "1.12.31",
+  "last_checked": "2026-03-04T03:07:31.515Z",
   "articles": [
     {
       "id": "Market-Analysis-bitcoin-2026",
@@ -107,15 +107,7 @@
       "date": "2026-02-27",
       "reading_time": 15,
       "level": "Intermediate"
-    },
-    {
-      "id": "strategy-guide",
-      "title": "8 Trading Strategies Explained",
-      "url": "/learn/2026/02/25/strategy-guide.html",
-      "date": "2026-02-25",
-      "reading_time": 15,
-      "level": "Intermediate"
     }
   ],
-  "new_count": 7
+  "new_count": 6
 }

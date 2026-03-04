@@ -162,6 +162,10 @@
     color: var(--wave-trough);
 }
 
+.legend-item.transit i {
+    color: #9c27b0;
+}
+
 /* ========== CHART STATS ROW ========== */
 .chart-stats-row {
     display: flex;
@@ -669,6 +673,7 @@ body.panning { user-select: none; -webkit-user-select: none; }
 .signals-table tbody tr:hover { background: rgba(0, 212, 255, 0.05); }
 .signals-table tbody tr.signal-peak:hover { background: rgba(255, 46, 99, 0.05); }
 .signals-table tbody tr.signal-dip:hover { background: rgba(0, 212, 255, 0.05); }
+.signals-table tbody tr.signal-transit:hover { background: rgba(156, 39, 176, 0.05); }
 .signals-table tbody tr.selected { background: rgba(247, 147, 26, 0.1); border-left: 3px solid var(--wave-mid); }
 .signals-table td { padding: 16px 15px; color: var(--text-glow); font-size: 0.95em; vertical-align: middle; }
 
@@ -684,6 +689,7 @@ body.panning { user-select: none; -webkit-user-select: none; }
 }
 .signal-type.peak { background: rgba(255, 46, 99, 0.1); color: var(--wave-peak); border: 1px solid rgba(255, 46, 99, 0.3); }
 .signal-type.dip { background: rgba(0, 212, 255, 0.1); color: var(--wave-trough); border: 1px solid rgba(0, 212, 255, 0.3); }
+.signal-type.transit { background: rgba(156, 39, 176, 0.1); color: #9c27b0; border: 1px solid rgba(156, 39, 176, 0.3); }
 
 /* Confidence Indicator */
 .confidence-indicator {
@@ -1162,8 +1168,6 @@ body.slider-active { overflow: hidden; position: fixed; width: 100%; height: 100
     .click-marker span { width: 22px; height: 22px; font-size: 0.8em; left: -10px; }
 }
 @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-/* Thêm vào cuối file signals.css */
 
 /* Validation PASS style */
 .validation-pass {
