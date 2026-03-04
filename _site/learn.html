@@ -12,8 +12,8 @@
     gtag('config', 'G-HR78BDQYJJ');
     </script>
     
-    <meta name="app-version" content="1.12.31">
-    <script>window.APP_VERSION = '1.12.31';</script>
+    <meta name="app-version" content="1.12.34">
+    <script>window.APP_VERSION = '1.12.34';</script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,17 +26,17 @@
     <meta name="description" content="Master Bitcoin trading with Early Warning System strategies and tutorials">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json?v=1.12.31">
+    <link rel="manifest" href="/manifest.json?v=1.12.34">
     
     <!-- Main CSS -->
-    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.31">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.34">
     
     <!-- Page Specific CSS -->
-    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.31">
-    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.31">
-    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.31">
-    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.31">
-    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.31">
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.34">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.34">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.34">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.34">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.34">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#00d4ff">
@@ -84,7 +84,7 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('beforeinstallprompt', (e) => {
             const pwaVersion = localStorage.getItem('pwa_version');
-            const currentVersion = '1.12.31';
+            const currentVersion = '1.12.34';
             
             if (pwaVersion && pwaVersion !== currentVersion) {
                 console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
@@ -1392,7 +1392,7 @@ window.learnFunctions = {
 <div class="footer-build-info">
     <div class="build-version">
         <i class="fas fa-code-branch"></i>
-        <span>v1.12.31</span>
+        <span>v1.12.34</span>
     </div>
     <div class="build-date">
         <i class="fas fa-calendar-alt"></i>
@@ -1401,7 +1401,7 @@ window.learnFunctions = {
     
     <div class="build-time">
         <i class="fas fa-clock"></i>
-        <span>36451.0</span>
+        <span>41306.0</span>
     </div>
     
 </div>    
@@ -1440,17 +1440,17 @@ window.learnFunctions = {
     <!-- ========== SCRIPTS LOADING - TỐI ƯU ========== -->
     
     <!-- 1. SHARED UTILITIES (không block, load sớm) -->
-    <script src="/assets/js/shared.js?v=1.12.31" defer></script>
-    <script src="/assets/js/reading-list.js?v=1.12.31" defer></script>
+    <script src="/assets/js/shared.js?v=1.12.34" defer></script>
+    <script src="/assets/js/reading-list.js?v=1.12.34" defer></script>
 
     <!-- 2. NOTIFICATION SYSTEM (ưu tiên cao) -->
-    <script src="/assets/js/notifications.js?v=1.12.31" defer></script>
+    <script src="/assets/js/notifications.js?v=1.12.34" defer></script>
 
     <!-- 3. MAIN APP LOGIC -->
-    <script src="/assets/js/main.js?v=1.12.31" defer></script>
+    <script src="/assets/js/main.js?v=1.12.34" defer></script>
 
     <!-- 4. UPDATE NOTIFIER (chạy sau) -->
-    <script src="/assets/js/update-notifier.js?v=1.12.31" defer></script>
+    <script src="/assets/js/update-notifier.js?v=1.12.34" defer></script>
 
     <!-- 5. PAGE SPECIFIC SCRIPTS (chạy cuối) -->
     
@@ -1460,7 +1460,7 @@ window.learnFunctions = {
     
 
     
-    <script src="/assets/js/learn.js?v=1.12.31" defer></script>
+    <script src="/assets/js/learn.js?v=1.12.34" defer></script>
     
 
     <!-- 6. SERVICE WORKER REGISTRATION (chạy cuối cùng) -->
@@ -1485,11 +1485,20 @@ if ('serviceWorker' in navigator) {
                 console.error('❌ Service Worker registration failed:', error);
             });
         
+        // Chỉ kiểm tra cập nhật thực sự mỗi 6 giờ (21600000 ms)
         setInterval(() => {
             navigator.serviceWorker.ready.then(registration => {
-                registration.update();
+                // Chỉ update nếu đã qua 6 giờ
+                const lastUpdate = localStorage.getItem('sw_last_update');
+                const now = Date.now();
+                
+                if (!lastUpdate || (now - parseInt(lastUpdate)) > 6 * 60 * 60 * 1000) {
+                    console.log('🔄 Checking for Service Worker update...');
+                    registration.update();
+                    localStorage.setItem('sw_last_update', now.toString());
+                }
             });
-        }, 60 * 60 * 1000);
+        }, 60 * 60 * 1000); // Vẫn check mỗi giờ nhưng chỉ update sau 6 giờ        
     });
 }
 

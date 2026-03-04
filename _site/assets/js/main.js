@@ -615,3 +615,33 @@ document.head.appendChild(mainStyle);
     }
 })();
 
+// ===== VERSION CHECK OPTIMIZATION - TRÁNH THÔNG BÁO LIÊN TỤC =====
+(function setupVersionCheck() {
+    const VERSION_CHECK_KEY = 'last_version_check';
+    const VERSION_CHECK_INTERVAL = 24 * 60 * 60 * 1000; // 24 giờ
+    
+    const lastCheck = localStorage.getItem(VERSION_CHECK_KEY);
+    const now = Date.now();
+    
+    console.log('🔍 Version check: last=' + lastCheck + ', now=' + now);
+    
+    if (!lastCheck || (now - parseInt(lastCheck)) > VERSION_CHECK_INTERVAL) {
+        console.log('🔄 Thực hiện kiểm tra version...');
+        
+        // Kiểm tra version sau 10 giây để không ảnh hưởng load trang
+        setTimeout(() => {
+            if (window.updateNotifier) {
+                window.updateNotifier.checkForUpdate(true);
+                console.log('✅ Đã kiểm tra version');
+            } else {
+                console.log('⚠️ updateNotifier chưa sẵn sàng');
+            }
+        }, 10000);
+        
+        localStorage.setItem(VERSION_CHECK_KEY, now.toString());
+    } else {
+        const hoursLeft = Math.round((VERSION_CHECK_INTERVAL - (now - parseInt(lastCheck))) / (60 * 60 * 1000));
+        console.log(`⏳ Bỏ qua kiểm tra version - lần cuối cách đây ${hoursLeft} giờ`);
+    }
+})();
+

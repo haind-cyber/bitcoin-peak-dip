@@ -19,11 +19,20 @@ if ('serviceWorker' in navigator) {
                 console.error('❌ Service Worker registration failed:', error);
             });
         
+        // Chỉ kiểm tra cập nhật thực sự mỗi 6 giờ (21600000 ms)
         setInterval(() => {
             navigator.serviceWorker.ready.then(registration => {
-                registration.update();
+                // Chỉ update nếu đã qua 6 giờ
+                const lastUpdate = localStorage.getItem('sw_last_update');
+                const now = Date.now();
+                
+                if (!lastUpdate || (now - parseInt(lastUpdate)) > 6 * 60 * 60 * 1000) {
+                    console.log('🔄 Checking for Service Worker update...');
+                    registration.update();
+                    localStorage.setItem('sw_last_update', now.toString());
+                }
             });
-        }, 60 * 60 * 1000);
+        }, 60 * 60 * 1000); // Vẫn check mỗi giờ nhưng chỉ update sau 6 giờ        
     });
 }
 

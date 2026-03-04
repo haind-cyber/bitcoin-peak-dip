@@ -144,15 +144,26 @@ class UpdateNotifier {
 
             const data = await response.json();
             this.latestVersion = data.version;
-            this.retryCount = 0; // Reset retry count on success
+            this.retryCount = 0;
 
             console.log(`📊 Version check: current=${this.currentVersion}, latest=${this.latestVersion}`);
 
-            // Kiểm tra version mới hơn
+            // CHỈ HIỂN THỊ THÔNG BÁO KHI THỰC SỰ CÓ VERSION MỚI
             if (this.latestVersion !== this.currentVersion && 
                 this.isNewerVersion(this.latestVersion, this.currentVersion)) {
                 
-                this.handleNewVersion(this.latestVersion, data.changelog || []);
+                // Kiểm tra xem đã dismiss chưa
+                const dismissed = localStorage.getItem(UPDATE_CONFIG.dismissedKey + this.latestVersion);
+                const dismissedTime = dismissed ? parseInt(dismissed) : 0;
+                const now = Date.now();
+                
+                // Chỉ hiện nếu chưa dismiss hoặc đã hết hạn 24h
+                if (!dismissed || (now - dismissedTime) > UPDATE_CONFIG.dismissExpiry) {
+                    this.handleNewVersion(this.latestVersion, data.changelog || []);
+                } else {
+                    const expiryDate = new Date(dismissedTime + UPDATE_CONFIG.dismissExpiry);
+                    console.log(`⏰ Update ${this.latestVersion} dismissed until ${expiryDate.toLocaleString()}`);
+                }
             } else {
                 console.log('📊 No new version available');
             }
@@ -179,7 +190,6 @@ class UpdateNotifier {
             }
         }
     }
-
     // ===== XỬ LÝ PHIÊN BẢN MỚI =====
     handleNewVersion(version, changelog) {
         const now = Date.now();
@@ -223,6 +233,7 @@ class UpdateNotifier {
 
     // ===== HIỂN THỊ BANNER CẬP NHẬT =====
     showUpdateBanner(version, changelog = []) {
+        this.showUpdateState(version); // THÊM DÒNG NÀY
         // Xóa banner cũ nếu có
         this.removeUpdateBanner();
 
@@ -403,6 +414,22 @@ class UpdateNotifier {
             }, duration);
         }, 0);
     }
+
+    showUpdateState(version) {
+        if (window.updateAllStates && window.appStates) {
+            window.updateAllStates({
+                type: 'signal',
+                message: `UPDATE v${version} AVAILABLE`,
+                badgeMessage: 'UPDATE READY',
+                color: '#9c27b0'
+            }, 1);
+            
+            // Tự động trở về analysing sau 5 giây
+            setTimeout(() => {
+                window.updateAllStates?.(window.appStates.analysing, 1);
+            }, 5000);
+        }
+    }    
 }
 
 // ===== CSS CHO UPDATE NOTIFIER =====

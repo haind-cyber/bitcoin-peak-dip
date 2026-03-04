@@ -44,6 +44,38 @@ const state = {
     currentHoverRow: null
 };
 
+// Đồng bộ trạng thái với hệ thống chung
+(function syncSignalStates() {
+    const statusText = document.getElementById('statusText');
+    const statusLight = document.getElementById('statusLight');
+    
+    if (statusText && window.appStates) {
+        // Cập nhật trạng thái dựa trên dữ liệu signals
+        const updateSignalState = () => {
+            if (state.signals.length > 0) {
+                const latestSignal = state.signals[0];
+                
+                if (latestSignal.signal_type === 'PEAK') {
+                    window.updateAllStates?.(window.appStates.peak, 1);
+                } else if (latestSignal.signal_type === 'DIP') {
+                    window.updateAllStates?.(window.appStates.dip, 1);
+                } else if (latestSignal.signal_type === 'TRANSIT') {
+                    window.updateAllStates?.(window.appStates.signal, 1);
+                }
+            }
+        };
+        
+        // Cập nhật khi có dữ liệu mới
+        document.addEventListener('csvDataReady', updateSignalState);
+        
+        // Cập nhật khi có signal mới
+        const originalRender = renderTable;
+        window.renderTable = function() {
+            originalRender();
+            updateSignalState();
+        };
+    }
+})();
 // ========== CACHE CONTROL ==========
 (function handleVersionCache() {
     const storedVersion = localStorage.getItem(APP_CONFIG.versionKey);

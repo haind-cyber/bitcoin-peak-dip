@@ -1,9 +1,9 @@
 // Bitcoin PeakDip Service Worker
-// Version: 1.12.31 - BADGE HANDLING & PUSH NOTIFICATION
+// Version: 1.12.34 - BADGE HANDLING & PUSH NOTIFICATION
 // Đồng bộ với build system
 
-const CACHE_NAME = 'bitcoin-peakdip-v1.12.31';
-const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.31';
+const CACHE_NAME = 'bitcoin-peakdip-v1.12.34';
+const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.34';
 const ARTICLE_CACHE = 'article-cache-v1';
 
 // Local assets - có thể cache
@@ -180,17 +180,18 @@ self.addEventListener('message', event => {
   
   switch (event.data.type) {
     case 'CHECK_VERSION':
-      event.waitUntil(
-        clients.matchAll().then(clients => {
-          clients.forEach(client => {
-            client.postMessage({
-              type: 'VERSION_RESPONSE',
-              version: getVersionFromCacheName(CACHE_NAME)
-            });
-          });
-        })
-      );
-      break;
+        // Chỉ trả về version, không gửi thông báo cập nhật
+        event.waitUntil(
+            clients.matchAll().then(clients => {
+                clients.forEach(client => {
+                    client.postMessage({
+                        type: 'VERSION_RESPONSE',
+                        version: getVersionFromCacheName(CACHE_NAME)
+                    });
+                });
+            })
+        );
+        break;
     
     case 'FORCE_UPDATE':
       console.log('🔄 Force update requested');
