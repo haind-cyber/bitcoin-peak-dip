@@ -1,16 +1,12 @@
 // Bitcoin PeakDip Service Worker
-// Version: 1.12.37 - OPTIMIZED - Only essential features
-// Các chức năng được giữ lại:
-// - Cache static assets
-// - Push notifications (FCM)
-// - Version checking
-// - Badge updates
+// Version: 1.12.38 - PRODUCTION READY
+// Features: Cache, Push Notifications, Badge Sync, Version Check
 
-const CACHE_NAME = 'bitcoin-peakdip-v1.12.37';
-const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.37';
+const CACHE_NAME = 'bitcoin-peakdip-v1.12.38';
+const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.38';
 const ARTICLE_CACHE = 'article-cache-v1';
 
-// Local assets - có thể cache
+// Local assets - cache đầu tiên
 const LOCAL_ASSETS = [
   '/',
   '/index.html',
@@ -46,7 +42,7 @@ const LOCAL_ASSETS = [
   '/assets/icons/icon-512x512.png'
 ];
 
-// CDN assets - network only, không cache
+// CDN assets - network only
 const CDN_ASSETS = [
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2',
@@ -56,54 +52,32 @@ const CDN_ASSETS = [
 ];
 
 // ========== HELPER FUNCTIONS ==========
+
 function getVersionFromCacheName(cacheName) {
   const match = cacheName.match(/v([\d\.]+)/);
   return match ? match[1] : '1.12.37';
 }
 
 // ========== BADGE MANAGEMENT ==========
+
 async function updateAppBadge(count) {
   try {
-    // Badge API (PWA)
     if (self.navigator && self.navigator.setAppBadge) {
       if (count > 0) {
         await self.navigator.setAppBadge(count);
-        console.log(`📱 App badge updated: ${count}`);
       } else {
         await self.navigator.clearAppBadge();
-        console.log('📱 App badge cleared');
       }
     }
-    
-    // Thông báo cho tất cả clients để update favicon
-    const clients = await self.clients.matchAll();
-    clients.forEach(client => {
-      client.postMessage({
-        type: 'UPDATE_BADGE',
-        count: count
-      });
-    });
   } catch (error) {
     console.log('App badge update failed:', error);
   }
 }
 
-async function clearAppBadge() {
-  try {
-    if (self.navigator && self.navigator.clearAppBadge) {
-      await self.navigator.clearAppBadge();
-      console.log('📱 App badge cleared');
-    }
-  } catch (error) {
-    console.log('Clear app badge failed:', error);
-  }
-}
-
 // ========== INSTALL EVENT ==========
+
 self.addEventListener('install', event => {
-  console.log(`📦 Service Worker installing version 1.12.37...`);
-  
-  // Force activation
+  console.log('📦 Service Worker installing...');
   self.skipWaiting();
   
   event.waitUntil(
@@ -122,13 +96,13 @@ self.addEventListener('install', event => {
 });
 
 // ========== ACTIVATE EVENT ==========
+
 self.addEventListener('activate', event => {
-  console.log(`🚀 Service Worker activating version 1.12.37...`);
+  console.log('🚀 Service Worker activating...');
   
   event.waitUntil(
     caches.keys()
       .then(cacheNames => {
-        // Xóa cache cũ
         return Promise.all(
           cacheNames
             .filter(name => name !== CACHE_NAME && name !== DYNAMIC_CACHE && name !== ARTICLE_CACHE)
@@ -139,7 +113,6 @@ self.addEventListener('activate', event => {
         );
       })
       .then(() => {
-        // Thông báo cho tất cả clients về version mới
         return clients.matchAll().then(clients => {
           clients.forEach(client => {
             client.postMessage({
@@ -156,9 +129,8 @@ self.addEventListener('activate', event => {
 });
 
 // ========== MESSAGE HANDLER ==========
+
 self.addEventListener('message', event => {
-  console.log('📨 Service Worker received message:', event.data);
-  
   if (!event.data) return;
   
   switch (event.data.type) {
@@ -178,15 +150,25 @@ self.addEventListener('message', event => {
     case 'UPDATE_BADGE':
       if (event.data.count !== undefined) {
         event.waitUntil(updateAppBadge(event.data.count));
+        
+        // Forward to other clients (tránh loop)
+        event.waitUntil(
+          clients.matchAll().then(clients => {
+            clients.forEach(client => {
+              if (client.id !== event.source?.id) {
+                client.postMessage({
+                  type: 'UPDATE_BADGE',
+                  count: event.data.count,
+                  source: 'sw'
+                });
+              }
+            });
+          })
+        );
       }
       break;
     
-    case 'CLEAR_BADGE':
-      event.waitUntil(clearAppBadge());
-      break;
-    
     case 'FORCE_UPDATE':
-      console.log('🔄 Force update requested');
       event.waitUntil(
         caches.keys().then(cacheNames => {
           return Promise.all(
@@ -207,9 +189,10 @@ self.addEventListener('message', event => {
   }
 });
 
-// ========== PUSH EVENT HANDLER (FCM) ==========
-self.addEventListener('push', function(event) {
-  console.log('📨 Push received:', event);
+// ========== PUSH EVENT (FCM) ==========
+
+self.addEventListener('push', event => {
+  console.log('📨 Push received');
   
   let data = {
     title: 'Bitcoin PeakDip',
@@ -231,6 +214,19 @@ self.addEventListener('push', function(event) {
     }
   }
   
+  // Thông báo cho clients
+  event.waitUntil(
+    clients.matchAll().then(clients => {
+      clients.forEach(client => {
+        client.postMessage({
+          type: 'PUSH_RECEIVED',
+          payload: data
+        });
+      });
+    })
+  );
+  
+  // Hiển thị notification
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
@@ -249,25 +245,18 @@ self.addEventListener('push', function(event) {
   );
 });
 
-// ========== NOTIFICATION CLICK HANDLER ==========
-self.addEventListener('notificationclick', function(event) {
+// ========== NOTIFICATION CLICK ==========
+
+self.addEventListener('notificationclick', event => {
   console.log('🔔 Notification clicked:', event.action);
   event.notification.close();
   
-  const action = event.action;
   const data = event.notification.data;
-  
-  if (action === 'later' && data?.articleId) {
-    event.waitUntil(handleSaveForLater(data));
-    return;
-  }
-  
   const urlToOpen = data?.url || '/';
   
   event.waitUntil(
-    clients.matchAll({ type: 'window' }).then(function(clientList) {
-      for (let i = 0; i < clientList.length; i++) {
-        let client = clientList[i];
+    clients.matchAll({ type: 'window' }).then(clientList => {
+      for (const client of clientList) {
         if (client.url === urlToOpen && 'focus' in client) {
           return client.focus();
         }
@@ -277,41 +266,9 @@ self.addEventListener('notificationclick', function(event) {
   );
 });
 
-// ========== HANDLE SAVE FOR LATER ==========
-async function handleSaveForLater(data) {
-  console.log('💾 Saving for later:', data);
-  
-  try {
-    const cache = await caches.open('reading-list-queue');
-    await cache.put(
-      'pending-save',
-      new Response(JSON.stringify(data), {
-        headers: { 'Content-Type': 'application/json' }
-      })
-    );
-    
-    const clients = await self.clients.matchAll();
-    clients.forEach(client => {
-      client.postMessage({
-        type: 'SAVE_FOR_LATER',
-        article: {
-          id: data.articleId || data.id,
-          title: data.title,
-          slug: data.slug,
-          date: data.date,
-          url: data.url
-        }
-      });
-    });
-  } catch (error) {
-    console.error('❌ Error saving for later:', error);
-  }
-}
+// ========== PERIODIC SYNC (ONLY VERSION CHECK) ==========
 
-// ========== PERIODIC SYNC (CHỈ GIỮ LẠI UPDATE CHECK) ==========
 self.addEventListener('periodicsync', event => {
-  console.log('🔄 Periodic sync triggered:', event.tag);
-  
   if (event.tag === 'update-check') {
     event.waitUntil(checkForUpdates());
   }
@@ -338,38 +295,27 @@ async function checkForUpdates() {
 }
 
 // ========== FETCH HANDLER ==========
+
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   
-  // Skip non-GET requests
+  // Skip non-GET
   if (event.request.method !== 'GET') return;
-  
-  // Skip chrome-extension requests
   if (url.protocol === 'chrome-extension:') return;
-  
-  // Skip chrome:// and about://
   if (url.protocol === 'chrome:' || url.protocol === 'about:') return;
   
-  // CDN assets - network only, không cache
+  // CDN assets - network only
   if (CDN_ASSETS.includes(event.request.url)) {
     event.respondWith(
-      fetch(event.request)
-        .catch(error => {
-          console.warn(`⚠️ CDN fetch failed: ${url.pathname}`, error.message);
-          if (url.pathname.includes('font-awesome')) {
-            return new Response('', { 
-              status: 200,
-              headers: { 'Content-Type': 'text/css' }
-            });
-          }
-          if (url.pathname.includes('chart.js')) {
-            return new Response('', { 
-              status: 200,
-              headers: { 'Content-Type': 'application/javascript' }
-            });
-          }
-          return new Response('', { status: 408 });
-        })
+      fetch(event.request).catch(() => {
+        if (url.pathname.includes('font-awesome')) {
+          return new Response('', { 
+            status: 200,
+            headers: { 'Content-Type': 'text/css' }
+          });
+        }
+        return new Response('', { status: 408 });
+      })
     );
     return;
   }
@@ -380,13 +326,13 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // articles.json
+  // articles.json - network first
   if (url.pathname.includes('/assets/data/articles.json')) {
     event.respondWith(networkFirst(event.request));
     return;
   }  
   
-  // API/CSV requests - network first
+  // CSV files - network first
   if (url.pathname.includes('/data/') || url.pathname.includes('.csv')) {
     event.respondWith(networkFirst(event.request));
     return;
@@ -398,103 +344,71 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // CSS/JS/Images/Fonts - cache first
+  // Static assets - cache first
   if (url.pathname.match(/\.(css|js|png|jpg|jpeg|svg|ico|woff2?|ttf)$/)) {
     event.respondWith(cacheFirst(event.request));
     return;
   }
 
-  // Default - network first with cache fallback
+  // Default - network first
   event.respondWith(
-    fetch(event.request)
-      .catch(() => caches.match(event.request))
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
 
 // ========== CACHING STRATEGIES ==========
+
 function networkFirst(request) {
   return fetch(request)
     .then(response => {
       if (response && response.ok) {
         const responseClone = response.clone();
         caches.open(DYNAMIC_CACHE)
-          .then(cache => {
-            cache.put(request, responseClone);
-          });
+          .then(cache => cache.put(request, responseClone));
       }
       return response;
     })
     .catch(() => {
-      return caches.match(request)
-        .then(cachedResponse => {
-          if (cachedResponse) {
-            return cachedResponse;
-          }
-          if (request.headers.get('Accept')?.includes('text/html')) {
-            return caches.match('/offline.html');
-          }
-          if (request.url.includes('.csv')) {
-            return new Response(
-              'timestamp,signal_type,price,confidence,validation\n' +
-              new Date().toISOString() + ',OFFLINE,50000,0,PENDING',
-              {
-                headers: { 'Content-Type': 'text/csv' }
-              }
-            );
-          }
-          return new Response('Offline', { status: 408 });
-        });
+      return caches.match(request).then(cachedResponse => {
+        if (cachedResponse) return cachedResponse;
+        if (request.headers.get('Accept')?.includes('text/html')) {
+          return caches.match('/offline.html');
+        }
+        return new Response('Offline', { status: 408 });
+      });
     });
 }
 
 function cacheFirst(request) {
-  if (request.url.startsWith('chrome-extension://')) {
-    return fetch(request);
-  }
-  
   return caches.match(request)
     .then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(request)
-        .then(response => {
-          if (response && response.ok && !request.url.startsWith('chrome-extension://')) {
-            const responseClone = response.clone();
-            caches.open(DYNAMIC_CACHE)
-              .then(cache => {
-                cache.put(request, responseClone);
-              });
-          }
-          return response;
-        });
+      if (cachedResponse) return cachedResponse;
+      return fetch(request).then(response => {
+        if (response && response.ok) {
+          const responseClone = response.clone();
+          caches.open(DYNAMIC_CACHE)
+            .then(cache => cache.put(request, responseClone));
+        }
+        return response;
+      });
     });
 }
 
 function staleWhileRevalidate(request) {
-  if (request.url.startsWith('chrome-extension://')) {
-    return fetch(request);
-  }
-  
   return caches.match(request).then(cachedResponse => {
     const fetchPromise = fetch(request)
       .then(networkResponse => {
         if (networkResponse && networkResponse.ok) {
           const responseToCache = networkResponse.clone();
           caches.open(DYNAMIC_CACHE)
-            .then(cache => {
-              cache.put(request, responseToCache);
-            });
+            .then(cache => cache.put(request, responseToCache));
         }
         return networkResponse;
       })
-      .catch(error => {
-        console.log('Network request failed:', error);
-        return cachedResponse || new Response('Offline', { status: 408 });
-      });
+      .catch(() => cachedResponse || new Response('Offline', { status: 408 }));
     
     return cachedResponse || fetchPromise;
   });
 }
 
-console.log('✅ Service Worker v1.12.37 loaded successfully - Optimized version');
+console.log('✅ Service Worker v1.12.37 loaded');
