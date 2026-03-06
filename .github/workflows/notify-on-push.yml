@@ -1,0 +1,76 @@
+# .github/workflows/notify-on-push.yml (trên btcpeakdip)
+name: 📢 Send Article Notifications
+
+on:
+  push:
+    branches: [btcpeakdip]
+
+jobs:
+  detect-and-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: btcpeakdip
+          fetch-depth: 2
+      
+      - name: 🔍 Find new HTML files
+        id: detect
+        run: |
+          NEW_HTML=$(git diff --name-only --diff-filter=A HEAD^ HEAD | grep '_site/.*\.html' || true)
+          
+          if [ -n "$NEW_HTML" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            echo "files=$NEW_HTML" >> $GITHUB_OUTPUT
+            
+            # Tạo danh sách bài viết và trích xuất thông tin
+            ARTICLES_JSON="[]"
+            for file in $NEW_HTML; do
+              # Lấy tên file không đuôi .html
+              filename=$(basename "$file" .html)
+              
+              # Trích xuất title từ HTML (nếu có)
+              if [ -f "$file" ]; then
+                title=$(grep -o '<title>[^<]*</title>' "$file" | sed 's/<title>\(.*\)<\/title>/\1/' | head -1)
+                title=${title:-$filename}
+                
+                # Lấy đường dẫn tương đối
+                url_path=${file#_site/}
+                url="https://bitcoin-peak-dip.com/$url_path"
+                
+                # Thêm vào JSON
+                ARTICLES_JSON=$(echo "$ARTICLES_JSON" | jq --arg file "$file" --arg title "$title" --arg url "$url" '. + [{"file": $file, "title": $title, "url": $url}]')
+              fi
+            done
+            
+            echo "articles=$ARTICLES_JSON" >> $GITHUB_OUTPUT
+            echo "count=$(echo $NEW_HTML | wc -w)" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: ⏹️ Skip if no new HTML
+        if: steps.detect.outputs.found != 'true'
+        run: echo "No new HTML files, skipping"
+      
+      - name: ⚙️ Setup Node.js
+        if: steps.detect.outputs.found == 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: 📦 Install dependencies
+        if: steps.detect.outputs.found == 'true'
+        run: |
+          npm init -y
+          npm install firebase-admin@11 axios@1.5
+      
+      - name: 📨 Send notifications
+        if: steps.detect.outputs.found == 'true'
+        env:
+          ARTICLES: ${{ steps.detect.outputs.articles }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          DISCORD_PUBLIC_WEBHOOK: ${{ secrets.DISCORD_PUBLIC_WEBHOOK }}
+          DISCORD_PRIVATE_WEBHOOK: ${{ secrets.DISCORD_PRIVATE_WEBHOOK }}
+        run: node scripts/send-notification-from-html.js
