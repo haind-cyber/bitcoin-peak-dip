@@ -26,25 +26,25 @@ jobs:
           echo "=== Git show last commit ==="
           git show --name-only --pretty=format: HEAD | head -20
       
-      # ===== TÌM FILE HTML MỚI =====
+      # ===== TÌM FILE HTML MỚI - ĐƠN GIẢN NHẤT =====
       - name: 🔍 Find new HTML files
         id: detect
         run: |
-          echo "=== Checking files modified in last 24h ==="
+          echo "=== Checking for new HTML files ==="
           
-          # Tìm file HTML trong learn/ (24h qua)
-          FILES=$(find learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
+          # Tìm tất cả file HTML trong learn/ (không quan tâm thời gian)
+          FILES=$(find learn -name "*.html" -type f 2>/dev/null | head -10 || true)
           
           # Nếu không có, tìm trong _site/learn/
           if [ -z "$FILES" ]; then
             echo "=== No files in learn/, checking _site/learn/ ==="
-            FILES=$(find _site/learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
+            FILES=$(find _site/learn -name "*.html" -type f 2>/dev/null | head -10 || true)
           fi
           
           # Nếu vẫn không có, dùng git show
           if [ -z "$FILES" ]; then
             echo "=== Using git show ==="
-            FILES=$(git show --name-only --pretty=format: HEAD | grep 'learn/.*\.html' || true)
+            FILES=$(git show --name-only --pretty=format: HEAD | grep 'learn/.*\.html' | head -10 || true)
           fi
           
           echo "FOUND_FILES=$FILES"
@@ -56,49 +56,34 @@ jobs:
             COUNT=$(echo "$FILES" | wc -l)
             echo "count=$COUNT" >> $GITHUB_OUTPUT
             
-            # Tạo JSON array cho files (dùng jq)
-            JSON_FILES="[]"
-            while IFS= read -r file; do
-              if [ -n "$file" ]; then
-                # Loại bỏ _site/ nếu có
-                clean_file=${file#_site/}
-                JSON_FILES=$(echo "$JSON_FILES" | jq --arg f "$clean_file" '. + [$f]')
-              fi
-            done <<< "$FILES"
-            echo "files=$JSON_FILES" >> $GITHUB_OUTPUT
+            # Ghi trực tiếp danh sách file (không quan tâm format)
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
             
-            # Tạo articles JSON với title và url
-            ARTICLES_JSON="[]"
+            # Tạo danh sách articles đơn giản
+            ARTICLES_LIST=""
             while IFS= read -r file; do
               if [ -n "$file" ] && [ -f "$file" ]; then
-                # Lấy filename không có đuôi .html
                 filename=$(basename "$file" .html)
-                
-                # Lấy title từ file HTML
                 title=$(grep -o '<title>[^<]*</title>' "$file" 2>/dev/null | sed 's/<title>\(.*\)<\/title>/\1/' | head -1)
                 title=${title:-$filename}
-                
-                # Tạo URL (bỏ _site/ nếu có)
                 clean_file=${file#_site/}
                 url="https://bitcoin-peak-dip.com/$clean_file"
                 
+                ARTICLES_LIST="${ARTICLES_LIST}${file}|${title}|${url}\n"
                 echo "Processing: $file -> $title"
-                
-                # Thêm vào JSON array
-                ARTICLES_JSON=$(echo "$ARTICLES_JSON" | jq \
-                  --arg title "$title" \
-                  --arg url "$url" \
-                  --arg id "$filename" \
-                  '. + [{"title": $title, "url": $url, "id": $id}]')
               fi
             done <<< "$FILES"
             
-            echo "articles=$ARTICLES_JSON" >> $GITHUB_OUTPUT
+            # Ghi danh sách articles
+            echo "articles<<EOF" >> $GITHUB_OUTPUT
+            printf "%b" "$ARTICLES_LIST" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            
             echo "✅ Found $COUNT new article(s)"
           else
             echo "found=false" >> $GITHUB_OUTPUT
-            echo "files=[]" >> $GITHUB_OUTPUT
-            echo "articles=[]" >> $GITHUB_OUTPUT
             echo "❌ No new HTML files found"
           fi
       
@@ -131,21 +116,9 @@ jobs:
       - name: 📨 Send notifications
         if: steps.detect.outputs.found == 'true'
         env:
+          FILES: ${{ steps.detect.outputs.files }}
           ARTICLES: ${{ steps.detect.outputs.articles }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           DISCORD_PUBLIC_WEBHOOK: ${{ secrets.DISCORD_PUBLIC_WEBHOOK }}
           DISCORD_PRIVATE_WEBHOOK: ${{ secrets.DISCORD_PRIVATE_WEBHOOK }}
         run: node scripts/send-notification-from-html.js
-      
-      # ===== DEPLOY (NẾU CẦN) =====
-      - name: 🚀 Deploy to production
-        if: steps.detect.outputs.found == 'true'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          publish_branch: gh-pages
-          keep_files: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'Deploy: ${{ steps.detect.outputs.count }} new article(s)'
