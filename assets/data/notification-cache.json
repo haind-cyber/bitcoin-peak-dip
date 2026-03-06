@@ -1,7 +1,15 @@
 {
-  "version": "1.12.38",
-  "last_checked": "2026-03-05T01:21:49.677Z",
+  "version": "1.12.40",
+  "last_checked": "2026-03-06T15:19:50.380Z",
   "articles": [
+    {
+      "id": "dynamic-reversal-boundary",
+      "title": "🧠 Đột Phá: Thiết Lập Lớp Vùng Biên Entry Tối Ưu Từ Tín Hiệu EWS",
+      "url": "/learn/2026/03/03/dynamic-reversal-boundary.html",
+      "date": "2026-03-03",
+      "reading_time": 15,
+      "level": "Advanced"
+    },
     {
       "id": "Market-Analysis-bitcoin-2026",
       "title": "Phân Tích Chu Kỳ & Trạng Thái Thị Trường Bitcoin (2025-2026)",
@@ -61,6 +69,14 @@
   ],
   "new_articles": [
     {
+      "id": "dynamic-reversal-boundary",
+      "title": "🧠 Đột Phá: Thiết Lập Lớp Vùng Biên Entry Tối Ưu Từ Tín Hiệu EWS",
+      "url": "/learn/2026/03/03/dynamic-reversal-boundary.html",
+      "date": "2026-03-03",
+      "reading_time": 15,
+      "level": "Advanced"
+    },
+    {
       "id": "Market-Analysis-bitcoin-2026",
       "title": "Phân Tích Chu Kỳ & Trạng Thái Thị Trường Bitcoin (2025-2026)",
       "url": "/learn/2026/03/03/Market-Analysis-bitcoin-2026.html",
@@ -98,14 +114,6 @@
       "url": "/learn/2026/02/28/BTC_Market_Cycles.html",
       "date": "2026-02-28",
       "reading_time": 8,
-      "level": "Intermediate"
-    },
-    {
-      "id": "strategy-guide-check",
-      "title": "8 Trading Strategies Explained",
-      "url": "/learn/2026/02/27/strategy-guide-check.html",
-      "date": "2026-02-27",
-      "reading_time": 15,
       "level": "Intermediate"
     }
   ],

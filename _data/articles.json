@@ -15,6 +15,20 @@
       "featured": false
     },
     {
+      "id": "dynamic-reversal-boundary",
+      "title": "🧠 Đột phá: Thiết lập lớp Vùng biên Entry tối ưu từ tín hiệu EWS",
+      "description": "Kết hợp Neural Network với Dynamic Reversal Boundary để tối ưu điểm vào lệnh, tránh nhiễu và bắt đúng sóng chính - Phân tích chuyên sâu từ đội ngũ R&D Bitcoin PeakDip",
+      "excerpt": "*Bài viết này trình bày một cải tiến quan trọng cho Early Warning System: lớp Vùng biên Entry tối ưu (Optimal Entry Boundary - OEB), giúp chuyển từ \"Cảnh báo sớm\" thành \"Điểm thực thi chính xác\". Đây...",
+      "url": "/learn/2026/03/03/dynamic-reversal-boundary.html",
+      "date": "2026-03-03",
+      "author": "Bitcoin PeakDip Team",
+      "category": "General",
+      "reading_time": 15,
+      "level": "Advanced",
+      "icon": "book",
+      "featured": false
+    },
+    {
       "id": "EWS-Signal-Snapshot",
       "title": "EWS Signal Snapshot - February 28, 2026",
       "description": "Local Top Signal detection with whale advance analysis",
@@ -100,20 +114,28 @@
     }
   ],
   "metadata": {
-    "last_updated": "2026-03-05T08:21:50+07:00",
-    "total": 7,
-    "version": "1.12.38",
-    "build_timestamp": 1772673710354,
-    "build_date": "2026-03-05",
-    "build_time": "08:21:50"
+    "last_updated": "2026-03-06T22:19:50+07:00",
+    "total": 8,
+    "version": "1.12.40",
+    "build_timestamp": 1772810390849,
+    "build_date": "2026-03-06",
+    "build_time": "22:19:50"
   },
   "stats": {
-    "new_articles_count": 5,
+    "new_articles_count": 6,
     "new_articles": [
       {
         "id": "Market-Analysis-bitcoin-2026",
         "title": "Phân Tích Chu Kỳ & Trạng Thái Thị Trường Bitcoin (2025-2026)",
         "url": "/learn/2026/03/03/Market-Analysis-bitcoin-2026.html",
+        "date": "2026-03-03",
+        "reading_time": 15,
+        "level": "Advanced"
+      },
+      {
+        "id": "dynamic-reversal-boundary",
+        "title": "🧠 Đột phá: Thiết lập lớp Vùng biên Entry tối ưu từ tín hiệu EWS",
+        "url": "/learn/2026/03/03/dynamic-reversal-boundary.html",
         "date": "2026-03-03",
         "reading_time": 15,
         "level": "Advanced"
@@ -152,7 +174,7 @@
       }
     ],
     "categories": {
-      "General": 2,
+      "General": 3,
       "signals": 1,
       "Market Analysis": 2,
       "strategies": 2
@@ -160,7 +182,7 @@
     "levels": {
       "Beginner": 0,
       "Intermediate": 6,
-      "Advanced": 1
+      "Advanced": 2
     },
     "featured_count": 1
   }
