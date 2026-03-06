@@ -1,4 +1,3 @@
-# .github/workflows/notify-on-push.yml (trên btcpeakdip)
 name: 📢 Send Article Notifications
 
 on:
@@ -15,40 +14,61 @@ jobs:
           ref: btcpeakdip
           fetch-depth: 2
       
+      # ===== THÊM STEP DEBUG =====
+      - name: 🔍 Debug - List all files
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Files in _site/learn/ ==="
+          find _site/learn -type f -name "*.html" 2>/dev/null || echo "No files found"
+          echo "=== Git show last commit ==="
+          git show --name-only --pretty=format: HEAD
+      
+      # ===== SỬA CÁCH DETECT =====
       - name: 🔍 Find new HTML files
         id: detect
         run: |
-          NEW_HTML=$(git diff --name-only --diff-filter=A HEAD^ HEAD | grep '_site/.*\.html' || true)
+          # Cách 1: Tìm tất cả HTML files trong _site/learn/ được tạo trong 1 ngày qua
+          echo "=== Checking files modified in last 24h ==="
+          NEW_HTML=$(find _site/learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
+          
+          # Cách 2: Nếu không có, dùng git show
+          if [ -z "$NEW_HTML" ]; then
+            echo "=== No files found with find, trying git show ==="
+            NEW_HTML=$(git show --name-only --pretty=format: HEAD | grep '_site/learn/.*\.html' || true)
+          fi
+          
+          echo "NEW_HTML=$NEW_HTML"
           
           if [ -n "$NEW_HTML" ]; then
             echo "found=true" >> $GITHUB_OUTPUT
             echo "files=$NEW_HTML" >> $GITHUB_OUTPUT
+            echo "count=$(echo $NEW_HTML | wc -w)" >> $GITHUB_OUTPUT
             
-            # Tạo danh sách bài viết và trích xuất thông tin
+            # Tạo JSON
             ARTICLES_JSON="[]"
             for file in $NEW_HTML; do
-              # Lấy tên file không đuôi .html
-              filename=$(basename "$file" .html)
-              
-              # Trích xuất title từ HTML (nếu có)
               if [ -f "$file" ]; then
+                filename=$(basename "$file" .html)
                 title=$(grep -o '<title>[^<]*</title>' "$file" | sed 's/<title>\(.*\)<\/title>/\1/' | head -1)
                 title=${title:-$filename}
-                
-                # Lấy đường dẫn tương đối
                 url_path=${file#_site/}
                 url="https://bitcoin-peak-dip.com/$url_path"
                 
-                # Thêm vào JSON
-                ARTICLES_JSON=$(echo "$ARTICLES_JSON" | jq --arg file "$file" --arg title "$title" --arg url "$url" '. + [{"file": $file, "title": $title, "url": $url}]')
+                echo "Processing: $file -> $title"
+                ARTICLES_JSON=$(echo "$ARTICLES_JSON" | jq --arg title "$title" --arg url "$url" '. + [{"title": $title, "url": $url}]')
               fi
             done
-            
             echo "articles=$ARTICLES_JSON" >> $GITHUB_OUTPUT
-            echo "count=$(echo $NEW_HTML | wc -w)" >> $GITHUB_OUTPUT
           else
             echo "found=false" >> $GITHUB_OUTPUT
           fi
+      
+      - name: 📝 Show results
+        run: |
+          echo "Found: ${{ steps.detect.outputs.found }}"
+          echo "Files: ${{ steps.detect.outputs.files }}"
+          echo "Articles: ${{ steps.detect.outputs.articles }}"
       
       - name: ⏹️ Skip if no new HTML
         if: steps.detect.outputs.found != 'true'
