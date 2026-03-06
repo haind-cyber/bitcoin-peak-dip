@@ -12,8 +12,8 @@
     gtag('config', 'G-HR78BDQYJJ');
     </script>
     
-    <meta name="app-version" content="1.12.38">
-    <script>window.APP_VERSION = '1.12.38';</script>
+    <meta name="app-version" content="1.12.40">
+    <script>window.APP_VERSION = '1.12.40';</script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,18 +26,20 @@
     <meta name="description" content="Terms of Service for Bitcoin PeakDip Early Warning System - Agreement between you and Bitcoin PeakDip">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json?v=1.12.38">
+    <link rel="manifest" href="/manifest.json?v=1.12.40">
     
     <!-- Main CSS -->
-    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.38">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.40">
     
     <!-- Page Specific CSS -->
-    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.38">
-    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.38">
-    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.38">
-    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.38">
-    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.38">
-    
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.40">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.40">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.40">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.40">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.40">
+
+    <!-- Notifications CSS -->
+    <link rel="stylesheet" href="/assets/css/notifications.css?v=1.12.40">    
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#00d4ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -84,7 +86,7 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('beforeinstallprompt', (e) => {
             const pwaVersion = localStorage.getItem('pwa_version');
-            const currentVersion = '1.12.38';
+            const currentVersion = '1.12.40';
             
             if (pwaVersion && pwaVersion !== currentVersion) {
                 console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
@@ -386,7 +388,7 @@
 
     <!-- Last Updated -->
     <div class="last-updated">
-        <i class="fas fa-clock"></i> Last Updated: March 05, 2026
+        <i class="fas fa-clock"></i> Last Updated: March 06, 2026
     </div>
 
     <!-- Back to Home -->
@@ -434,16 +436,16 @@
 <div class="footer-build-info">
     <div class="build-version">
         <i class="fas fa-code-branch"></i>
-        <span>v1.12.38</span>
+        <span>v1.12.40</span>
     </div>
     <div class="build-date">
         <i class="fas fa-calendar-alt"></i>
-        <span>2026-03-05</span>
+        <span>2026-03-06</span>
     </div>
     
     <div class="build-time">
         <i class="fas fa-clock"></i>
-        <span>30109.0</span>
+        <span>80390.0</span>
     </div>
     
 </div>    
@@ -482,17 +484,17 @@
     <!-- ========== SCRIPTS LOADING - TỐI ƯU ========== -->
     
     <!-- 1. SHARED UTILITIES (không block, load sớm) -->
-    <script src="/assets/js/shared.js?v=1.12.38" defer></script>
-    <script src="/assets/js/reading-list.js?v=1.12.38" defer></script>
+    <script src="/assets/js/shared.js?v=1.12.40" defer></script>
+    <script src="/assets/js/reading-list.js?v=1.12.40" defer></script>
 
     <!-- 2. NOTIFICATION SYSTEM (ưu tiên cao) -->
-    <script src="/assets/js/notifications.js?v=1.12.38" defer></script>
+    <script src="/assets/js/notifications.js?v=1.12.40" defer></script>
 
     <!-- 3. MAIN APP LOGIC -->
-    <script src="/assets/js/main.js?v=1.12.38" defer></script>
+    <script src="/assets/js/main.js?v=1.12.40" defer></script>
 
     <!-- 4. UPDATE NOTIFIER (chạy sau) -->
-    <script src="/assets/js/update-notifier.js?v=1.12.38" defer></script>
+    <script src="/assets/js/update-notifier.js?v=1.12.40" defer></script>
 
     <!-- 5. PAGE SPECIFIC SCRIPTS (chạy cuối) -->
     

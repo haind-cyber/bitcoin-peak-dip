@@ -1,9 +1,9 @@
+// scripts/send-notification-from-html.js
 #!/usr/bin/env node
 
 /**
- * Bitcoin PeakDip - Notification Script
- * Version: 3.1.0 - PRODUCTION READY
- * Gửi notifications khi có bài viết mới (Public → FCM + Discord, Private → Discord)
+ * Bitcoin PeakDip - Notification Script từ HTML
+ * Version: 4.0.0 - Phát hiện bài viết mới từ file HTML trong _site/
  */
 
 const admin = require('firebase-admin');
@@ -46,42 +46,63 @@ try {
   console.error('❌ Firebase init failed:', error.message);
 }
 
-// ==================== UTILITY FUNCTIONS ====================
-
-function parseFrontMatter(filePath) {
+// ==================== PARSE HTML FILES ====================
+function parseArticleFromHTML(filePath) {
   try {
     if (!fs.existsSync(filePath)) {
       return null;
     }
     
     const content = fs.readFileSync(filePath, 'utf8');
-    const match = content.match(/^---\n([\s\S]*?)\n---/);
-    if (!match) return null;
     
-    const frontMatter = match[1];
+    // Trích xuất title từ <title>
+    const titleMatch = content.match(/<title>([^<]*)<\/title>/);
+    let title = titleMatch ? titleMatch[1].trim() : '';
     
-    const getField = (regex) => {
-      const match = frontMatter.match(regex);
-      return match ? match[1].replace(/^["']|["']$/g, '').trim() : null;
-    };
-    
-    let tags = [];
-    const tagsMatch = frontMatter.match(/tags:\s*\[(.*?)\]/);
-    if (tagsMatch) {
-      tags = tagsMatch[1].split(',').map(t => 
-        t.trim().replace(/^["']|["']$/g, '')
-      );
+    // Nếu không có title, lấy từ filename
+    if (!title) {
+      const fileName = path.basename(filePath, '.html');
+      title = fileName.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     }
     
+    // Trích xuất meta description
+    const descMatch = content.match(/<meta name="description" content="([^"]*)"/);
+    const description = descMatch ? descMatch[1] : '';
+    
+    // Trích xuất ngày từ đường dẫn (nếu có)
+    // Ví dụ: _site/learn/2026/03/06/bitcoin-analysis.html
+    const dateMatch = filePath.match(/\/(\d{4})\/(\d{2})\/(\d{2})\//);
+    let date = new Date().toISOString().split('T')[0];
+    if (dateMatch) {
+      date = `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`;
+    }
+    
+    // Tạo URL từ file path
+    // Bỏ _site/ ở đầu
+    let urlPath = filePath.replace(/^_site\//, '');
+    const articleUrl = `${CONFIG.siteUrl}/${urlPath}`;
+    
+    // Xác định level từ class trong HTML (nếu có)
+    const levelMatch = content.match(/class="[^"]*difficulty-([a-z]+)[^"]*"/);
+    const level = levelMatch ? levelMatch[1] : 'Beginner';
+    
+    // Đọc thời gian đọc từ meta (nếu có)
+    const readingMatch = content.match(/<meta name="reading-time" content="(\d+)"/);
+    const readingTime = readingMatch ? parseInt(readingMatch[1]) : 5;
+    
+    // Lấy tên file làm ID
+    const fileName = path.basename(filePath, '.html');
+    
     return {
-      title: getField(/title:\s*(.+)/) || 'Untitled',
-      description: getField(/description:\s*(.+)/) || '',
-      tags: tags,
-      date: getField(/date:\s*(.+)/) || new Date().toISOString().split('T')[0],
-      readingTime: parseInt(getField(/reading_time:\s*(\d+)/) || '5'),
-      level: getField(/level:\s*(.+)/) || 'Beginner',
-      author: getField(/author:\s*(.+)/) || 'Bitcoin PeakDip Team',
-      image: getField(/image:\s*(.+)/) || '/assets/images/og-default.jpg'
+      id: fileName,
+      title: title,
+      description: description,
+      url: articleUrl,
+      date: date,
+      readingTime: readingTime,
+      level: level,
+      author: 'Bitcoin PeakDip Team',
+      tags: ['public']  // Mặc định là public
     };
   } catch (error) {
     console.error(`❌ Error parsing ${filePath}:`, error.message);
@@ -89,13 +110,12 @@ function parseFrontMatter(filePath) {
   }
 }
 
-async function sendFCMNotification(article, fileName) {
+// ==================== SEND NOTIFICATIONS ====================
+async function sendFCMNotification(article) {
   if (!messaging) return false;
   
-  const articleUrl = `${CONFIG.siteUrl}/learn/${fileName}.html`;
-  
   try {
-    console.log('   📱 Sending FCM...');
+    console.log(`   📱 Sending FCM for: ${article.title}`);
     
     // Gửi notification chính
     await messaging.send({
@@ -106,9 +126,9 @@ async function sendFCMNotification(article, fileName) {
       },
       data: {
         type: 'NEW_ARTICLE',
-        articleId: fileName,
+        articleId: article.id,
         title: article.title,
-        url: articleUrl,
+        url: article.url,
         level: article.level,
         readingTime: article.readingTime.toString(),
         author: article.author
@@ -127,12 +147,12 @@ async function sendFCMNotification(article, fileName) {
             { action: 'later', title: '⏰ Đọc sau' }
           ]
         },
-        fcmOptions: { link: articleUrl }
+        fcmOptions: { link: article.url }
       }
     });
     console.log('   ✅ FCM notification sent');
     
-    // Gửi badge update sau 500ms để tránh rate limit
+    // Gửi badge update sau 500ms
     setTimeout(async () => {
       try {
         await messaging.send({
@@ -149,21 +169,19 @@ async function sendFCMNotification(article, fileName) {
     }, 500);
     
     return true;
-    
   } catch (error) {
     console.error('   ❌ FCM error:', error.message);
     return false;
   }
 }
 
-async function sendDiscordNotification(article, fileName, type = 'public') {
+async function sendDiscordNotification(article, type = 'public') {
   const webhookUrl = type === 'private' 
     ? process.env.DISCORD_PRIVATE_WEBHOOK 
     : process.env.DISCORD_PUBLIC_WEBHOOK;
   
   if (!webhookUrl) return false;
   
-  const articleUrl = `${CONFIG.siteUrl}/learn/${fileName}.html`;
   const isPrivate = type === 'private';
   const color = isPrivate ? CONFIG.colors.private : CONFIG.colors.public;
   
@@ -173,11 +191,11 @@ async function sendDiscordNotification(article, fileName, type = 'public') {
     await axios.post(webhookUrl, {
       username: CONFIG.discord.username,
       avatar_url: CONFIG.discord.avatarUrl,
-      content: isPrivate ? '@everyone 🔒 **PRIVATE SIGNAL** 🔒' : '@here 📢 **NEW PUBLIC ARTICLE** 📢',
+      content: isPrivate ? '@everyone 🔒 **PRIVATE SIGNAL** 🔒' : '@here 📢 **NEW ARTICLE** 📢',
       embeds: [{
         title: article.title,
         description: article.description || 'Click the link below to read',
-        url: articleUrl,
+        url: article.url,
         color: color,
         fields: [
           {
@@ -204,7 +222,7 @@ async function sendDiscordNotification(article, fileName, type = 'public') {
           },
           {
             name: '🔗 Direct Link',
-            value: `[Click here to read](${articleUrl})`,
+            value: `[Click here to read](${article.url})`,
             inline: false
           }
         ],
@@ -219,77 +237,85 @@ async function sendDiscordNotification(article, fileName, type = 'public') {
     
     console.log(`   ✅ Discord ${type} sent`);
     return true;
-    
   } catch (error) {
     console.error(`   ❌ Discord error:`, error.message);
     return false;
   }
 }
 
+// ==================== MAIN FUNCTION ====================
 async function main() {
-  console.log('\n🚀 ===== BITCOIN PEAKDIP NOTIFICATION SYSTEM =====\n');
+  console.log('\n🚀 ===== BITCOIN PEAKDIP NOTIFICATION SYSTEM (HTML) =====\n');
   
-  const addedFiles = (process.env.ADDED_FILES || '').split(' ').filter(Boolean);
+  // Lấy danh sách file HTML từ environment variable
+  const articlesJson = process.env.ARTICLES || '[]';
+  let articles = [];
   
-  if (addedFiles.length === 0) {
-    console.log('📭 No new files to process');
+  try {
+    articles = JSON.parse(articlesJson);
+  } catch (e) {
+    console.error('❌ Failed to parse ARTICLES JSON:', e.message);
+    
+    // Fallback: nếu có NEW_HTML_FILES
+    const htmlFiles = (process.env.NEW_HTML_FILES || '').split(' ').filter(Boolean);
+    if (htmlFiles.length > 0) {
+      console.log(`📂 Found ${htmlFiles.length} HTML files from environment`);
+      
+      for (const file of htmlFiles) {
+        const article = parseArticleFromHTML(file);
+        if (article) {
+          articles.push(article);
+        }
+      }
+    }
+  }
+  
+  if (articles.length === 0) {
+    console.log('📭 No articles to process');
     return;
   }
   
-  console.log(`📂 Found ${addedFiles.length} new file(s)`);
+  console.log(`📂 Found ${articles.length} new article(s)\n`);
   
   const results = {
-    total: addedFiles.length,
+    total: articles.length,
     public: 0,
     private: 0,
     errors: []
   };
   
-  for (let i = 0; i < addedFiles.length; i++) {
-    const file = addedFiles[i];
+  for (let i = 0; i < articles.length; i++) {
+    const article = articles[i];
     
-    console.log(`\n📄 [${i+1}/${addedFiles.length}] Processing: ${file}`);
+    console.log(`\n📄 [${i+1}/${articles.length}] Processing: ${article.title}`);
+    console.log(`   📌 URL: ${article.url}`);
     
-    const article = parseFrontMatter(file);
-    if (!article) {
-      console.log('   ❌ Invalid frontmatter, skipping');
-      results.errors.push({ file, error: 'Invalid frontmatter' });
-      continue;
-    }
-    
-    const fileName = path.basename(file, '.md');
-    console.log(`   📌 Title: ${article.title}`);
-    console.log(`   🏷️ Tags: ${article.tags.join(', ')}`);
-    
-    // PUBLIC article
-    if (article.tags.includes('public')) {
+    // PUBLIC article (mặc định)
+    if (article.tags.includes('public') || !article.tags.includes('private')) {
       console.log('   📢 TYPE: PUBLIC');
-      await sendFCMNotification(article, fileName);
-      await sendDiscordNotification(article, fileName, 'public');
+      if (messaging) {
+        await sendFCMNotification(article);
+      }
+      await sendDiscordNotification(article, 'public');
       results.public++;
     }
     
-    // PRIVATE article
+    // PRIVATE article (nếu có tag private)
     if (article.tags.includes('private')) {
       console.log('   🔒 TYPE: PRIVATE');
-      await sendDiscordNotification(article, fileName, 'private');
+      await sendDiscordNotification(article, 'private');
       results.private++;
     }
     
-    // No matching tags
-    if (!article.tags.includes('public') && !article.tags.includes('private')) {
-      console.log('   ⏭️ No matching tags, skipped');
-    }
-    
-    // Delay between files
-    if (i < addedFiles.length - 1) {
-      console.log('   ⏳ Waiting 2s...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
+    // Delay giữa các file
+    if (i < articles.length - 1) {
+      console.log('   ⏳ Waiting 1s...');
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
   
   console.log('\n📊 ===== RESULTS =====');
-  console.log(`📂 Total: ${results.total}`);
+  console.log(`📂 Total articles: ${results.total}`);
   console.log(`📱 Public (FCM+Discord): ${results.public}`);
   console.log(`🔒 Private (Discord only): ${results.private}`);
   
@@ -301,4 +327,5 @@ async function main() {
   console.log('\n✅ ===== ALL NOTIFICATIONS SENT =====');
 }
 
+// ==================== RUN ====================
 main().catch(console.error);
