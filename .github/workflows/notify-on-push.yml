@@ -19,8 +19,8 @@ jobs:
         run: |
           echo "=== Current directory ==="
           pwd
-          echo "=== Files in _site/learn/ ==="
-          find _site/learn -type f -name "*.html" 2>/dev/null || echo "No files found"
+          echo "=== Files in learn/ ==="
+          find learn -type f -name "*.html" 2>/dev/null || echo "No files found"
           echo "=== Git show last commit ==="
           git show --name-only --pretty=format: HEAD
       
@@ -28,14 +28,14 @@ jobs:
       - name: 🔍 Find new HTML files
         id: detect
         run: |
-          # Cách 1: Tìm tất cả HTML files trong _site/learn/ được tạo trong 1 ngày qua
+          # Cách 1: Tìm tất cả HTML files trong learn/ được tạo trong 1 ngày qua
           echo "=== Checking files modified in last 24h ==="
-          NEW_HTML=$(find _site/learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
+          NEW_HTML=$(find learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
           
           # Cách 2: Nếu không có, dùng git show
           if [ -z "$NEW_HTML" ]; then
             echo "=== No files found with find, trying git show ==="
-            NEW_HTML=$(git show --name-only --pretty=format: HEAD | grep '_site/learn/.*\.html' || true)
+            NEW_HTML=$(git show --name-only --pretty=format: HEAD | grep 'learn/.*\.html' || true)
           fi
           
           echo "NEW_HTML=$NEW_HTML"
