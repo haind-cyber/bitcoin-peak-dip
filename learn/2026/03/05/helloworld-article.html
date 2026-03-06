@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="canonical" href="https://bitcoin-peak-dip.com/learn/2026/03/05/helloworld-article.html">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HR78BDQYJJ"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HR78BDQYJJ');
+    </script>
+    
+    <meta name="app-version" content="1.12.40">
+    <script>window.APP_VERSION = '1.12.40';</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Font Awesome - CHỈ 1 LẦN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    
+    <!-- SEO -->
+    <title>Hello World: Chào mừng đến với Bitcoin PeakDip Early Warning System - Bitcoin PeakDip</title>
+    <meta name="description" content="Bài viết đầu tiên giới thiệu về hệ thống Early Warning System và cách bắt đầu với Bitcoin PeakDip">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json?v=1.12.40">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.40">
+    
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.40">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.40">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.40">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.40">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.40">
+
+    <!-- Notifications CSS -->
+    <link rel="stylesheet" href="/assets/css/notifications.css?v=1.12.40">    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00d4ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bitcoin PeakDip">
+    <meta name="application-name" content="Bitcoin PeakDip">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/icon-192x192.png">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Hello World: Chào mừng đến với Bitcoin PeakDip Early Warning System">
+    <meta property="og:description" content="Bài viết đầu tiên giới thiệu về hệ thống Early Warning System và cách bắt đầu với Bitcoin PeakDip">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bitcoin-peak-dip.com/learn/2026/03/05/helloworld-article.html">
+    <meta property="og:image" content="https://bitcoin-peak-dip.com/assets/icons/icon-512x512.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@bitcoinpeakdip">
+    <meta name="twitter:creator" content="@bitcoinpeakdip">
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Bitcoin PeakDip",
+        "url": "https://bitcoin-peak-dip.com",
+        "description": "Bitcoin PeakDip: Early Warning System (EWS) for Bitcoin Peaks and Dips | AI-Powered",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://bitcoin-peak-dip.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <!-- PWA Version Check -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            const pwaVersion = localStorage.getItem('pwa_version');
+            const currentVersion = '1.12.40';
+            
+            if (pwaVersion && pwaVersion !== currentVersion) {
+                console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
+                localStorage.removeItem('pwa_version');
+            }
+        });
+    }
+    </script>
+</head>
+
+<body>
+    <script>
+(function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    if (isMobile) {
+        window.IS_MOBILE = true;
+        document.body.classList.add('mobile-device');
+        
+        // Disable heavy animations
+        const style = document.createElement('style');
+        style.textContent = `
+            .sensor-ring, .bitcoin-wave, .energy-particles .particle {
+                animation: none !important;
+                opacity: 0.1 !important;
+            }
+            .logo-wave-effect {
+                animation: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    } else {
+        window.IS_MOBILE = false;
+    }
+})();
+</script>
+    
+    <!-- Sensor Alert Container -->
+    <div class="sensor-alert" id="sensorAlert"></div>
+    
+    <!-- Navigation -->
+    <nav class="navigation" id="navigation">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <i class="fas fa-wave-square"></i>
+            Bitcoin PeakDip
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-house"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/about" class="nav-link">
+                    <i class="fas fa-circle-info"></i> About
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/product" class="nav-link">
+                    <i class="fas fa-cube"></i> Product
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/signals" class="nav-link">
+                    <i class="fas fa-chart-line"></i> EWS Signals
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/learn" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i> Learn
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/reading-list" class="nav-link" id="readingListLink">
+                    <i class="fas fa-bookmark"></i>
+                    Reading List
+                    <span class="reading-list-badge" id="readingListBadge">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+    
+    <!-- Sensor Network Background -->
+    <div class="sensor-network">
+    <div class="sensor-ring ring-1"></div>
+    <div class="sensor-ring ring-2"></div>
+    <div class="sensor-ring ring-3"></div>
+    <div class="sensor-ring ring-4"></div>
+    
+    <div class="bitcoin-waves">
+        <div class="bitcoin-wave wave-1"></div>
+        <div class="bitcoin-wave wave-2"></div>
+        <div class="bitcoin-wave wave-3"></div>
+    </div>
+    
+    <div class="energy-particles" id="energyParticles"></div>
+    
+    <div class="bitcoin-visualization">
+        <div class="bitcoin-wave"></div>
+    </div>
+</div>
+    
+    <!-- Status Indicator -->
+    <div class="status-indicator" id="statusIndicator">
+        <div class="status-light status-peak" id="statusLight"></div>
+        <div class="status-text" id="statusText">ANALYSING BITCOIN WAVES</div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content-container">
+        <div class="learn-article">
+    <div class="article-header">
+        <h1 class="article-title">Hello World: Chào mừng đến với Bitcoin PeakDip Early Warning System</h1>
+        <div class="article-meta">
+            <span class="article-author"><i class="fas fa-user"></i> Bitcoin PeakDip Team</span>
+            <span class="article-date"><i class="fas fa-calendar-alt"></i> March 05, 2026</span>
+            <span class="reading-time"><i class="fas fa-clock"></i> 3 min read</span>
+            <span class="difficulty beginner">Beginner</span>
+        </div>
+    </div>
+    
+    <!-- Article Layout with Outline Sidebar -->
+    <div class="article-with-outline">
+        <!-- Outline Sidebar (desktop) -->
+        <aside class="article-outline" id="articleOutline">
+            <div class="outline-header">
+                <i class="fas fa-list-ul"></i>
+                <h3>Contents</h3>
+            </div>
+            <ul class="outline-list" id="outlineList">
+                <!-- JS sẽ tự động điền -->
+                <li class="loading-outline">Loading outline...</li>
+            </ul>
+        </aside>
+        
+        <!-- Nội dung chính -->
+        <div class="article-content" id="articleContent">
+            <!-- Header với hiệu ứng đặc biệt -->
+<div class="post-header" style="text-align: center; margin-bottom: 40px; padding: 30px; background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,46,99,0.1)); border-radius: 20px; border: 1px solid rgba(0,212,255,0.3);">
+    <h1 style="font-size: 3em; margin-bottom: 10px; background: linear-gradient(to right, #00d4ff, #ff2e63); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        <i class="fas fa-wave-square"></i> Hello World!
+    </h1>
+    <p style="font-size: 1.3em; color: var(--text-glow);">Chào mừng bạn đến với hệ thống Early Warning System đầu tiên cho Bitcoin</p>
+    <div style="margin-top: 20px;">
+        <span style="background: rgba(0,212,255,0.2); padding: 8px 20px; border-radius: 30px; color: #00d4ff; font-weight: bold;">
+            <i class="fas fa-calendar"></i> 05/03/2026
+        </span>
+        <span style="background: rgba(255,46,99,0.2); padding: 8px 20px; border-radius: 30px; color: #ff2e63; font-weight: bold; margin-left: 10px;">
+            <i class="fas fa-clock"></i> 3 phút đọc
+        </span>
+    </div>
+</div>
+
+<h2 id="-lời-đầu-tiên">🌟 Lời đầu tiên</h2>
+
+<p>Xin chào và chào mừng bạn đến với <strong>Bitcoin PeakDip</strong> - Hệ thống Early Warning (Cảnh báo sớm) đầu tiên dành riêng cho Bitcoin!</p>
+
+<p>Đây là bài viết đầu tiên trong hành trình khám phá và làm chủ thị trường Bitcoin cùng với hệ thống cảnh báo sớm của chúng tôi.</p>
+
+<div class="info-box" style="background: rgba(0,212,255,0.1); border-left: 4px solid #00d4ff; padding: 20px; margin: 30px 0; border-radius: 0 10px 10px 0;">
+    <i class="fas fa-info-circle" style="color: #00d4ff; font-size: 1.5em; margin-right: 15px;"></i>
+    <div>
+        <strong>Bạn đang đọc bài viết:</strong> "Hello World: Chào mừng đến với Bitcoin PeakDip Early Warning System"<br />
+        <small>Đây là bài viết được phát hành để kiểm tra hệ thống notification và badge mới của chúng tôi!</small>
+    </div>
+</div>
+
+<h2 id="-mục-đích-bài-viết">🎯 Mục đích bài viết</h2>
+
+<p>Bài viết này được tạo ra với 3 mục đích chính:</p>
+
+<ol>
+  <li><strong>Chào mừng</strong> các thành viên mới đến với cộng đồng Bitcoin PeakDip</li>
+  <li><strong>Kiểm tra</strong> hệ thống notification và badge mới</li>
+  <li><strong>Hướng dẫn</strong> cách nhận thông báo khi có bài viết mới</li>
+</ol>
+
+<h2 id="-cách-nhận-thông-báo">📱 Cách nhận thông báo</h2>
+
+<p>Để không bỏ lỡ bất kỳ bài viết mới nào, bạn hãy:</p>
+
+<div class="steps-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
+
+<div class="step" style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+    <div style="width: 50px; height: 50px; background: #00d4ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 1.5em; font-weight: bold; color: black;">1</div>
+    <h3 style="color: #00d4ff;">Bật thông báo</h3>
+    <p style="color: var(--text-glow);">Click vào nút <i class="fas fa-bell"></i> ở góc phải màn hình và cho phép nhận thông báo</p>
+</div>
+
+<div class="step" style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+    <div style="width: 50px; height: 50px; background: #ff2e63; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 1.5em; font-weight: bold; color: black;">2</div>
+    <h3 style="color: #ff2e63;">Theo dõi badge</h3>
+    <p style="color: var(--text-glow);">Số trên icon <i class="fas fa-bookmark"></i> cho biết số bài viết chưa đọc</p>
+</div>
+
+<div class="step" style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+    <div style="width: 50px; height: 50px; background: #f7931a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 1.5em; font-weight: bold; color: black;">3</div>
+    <h3 style="color: #f7931a;">Đọc và đánh dấu</h3>
+    <p style="color: var(--text-glow);">Sau khi đọc, badge sẽ tự động giảm</p>
+</div>
+
+</div>
+
+<h2 id="-kiểm-tra-notification-ngay-bây-giờ">🔔 Kiểm tra notification ngay bây giờ!</h2>
+
+<p>```javascript
+// Mở console (F12) và chạy đoạn code này để test
+if (window.articleNotifications) {
+    // Kiểm tra trạng thái
+    console.log(‘📊 Trạng thái:’, window.articleNotifications.getStatus());</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Test toast thông báo
+window.articleNotifications.showToast('🎉 Chào mừng bạn đến với Bitcoin PeakDip!', 'success');
+
+// Test article toast
+window.articleNotifications.showArticleToast({
+    title: 'Hello World: Bài viết đầu tiên',
+    url: '/learn/2026/03/06/helloworld-article.html',
+    reading_time: 3,
+    level: 'Beginner'
+});
+
+// Test badge
+window.fcm.incrementBadge();
+console.log('📱 Badge hiện tại:', window.fcm.getBadgeCount()); } else {
+console.log('❌ Hệ thống notification chưa sẵn sàng'); }
+</code></pre></div></div>
+
+        </div>
+    </div>
+    
+    <!-- Outline cho mobile (dropdown) -->
+    <div class="mobile-outline">
+        <button class="mobile-outline-toggle" id="mobileOutlineToggle">
+            <i class="fas fa-list-ul"></i>
+            <span>Table of Contents</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="mobile-outline-menu" id="mobileOutlineMenu">
+            <ul class="outline-list" id="mobileOutlineList">
+                <li class="loading-outline">Loading outline...</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Article Footer -->
+    <div class="article-footer-nav">
+        <a href="/learn" class="back-to-learn">
+            <i class="fas fa-arrow-left"></i> Back to Knowledge Base
+        </a>
+        <button class="share-article" onclick="shareArticle()">
+            <i class="fas fa-share-alt"></i> Share
+        </button>
+    </div>
+</div>
+
+<!-- JavaScript cho Outline -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    generateOutline();
+    setupMobileOutline();
+});
+
+function generateOutline() {
+    const content = document.getElementById('articleContent');
+    if (!content) return;
+    
+    // Tìm tất cả headings h2 và h3
+    const headings = content.querySelectorAll('h2, h3');
+    if (headings.length === 0) return;
+    
+    const outlineList = document.getElementById('outlineList');
+    const mobileOutlineList = document.getElementById('mobileOutlineList');
+    
+    if (!outlineList && !mobileOutlineList) return;
+    
+    let outlineHTML = '';
+    let mobileOutlineHTML = '';
+    
+    headings.forEach((heading, index) => {
+        // Thêm id cho heading nếu chưa có
+        if (!heading.id) {
+            heading.id = `section-${index}`;
+        }
+        
+        const level = heading.tagName === 'H2' ? 'h2' : 'h3';
+        const text = heading.textContent;
+        const indent = level === 'h3' ? 'style="margin-left: 20px;"' : '';
+        
+        outlineHTML += `
+            <li class="outline-item outline-${level}" ${indent}>
+                <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}')">
+                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle"></i>'} 
+                    ${text}
+                </a>
+            </li>
+        `;
+        
+        mobileOutlineHTML += `
+            <li class="outline-item outline-${level}" ${indent}>
+                <a href="#${heading.id}" onclick="smoothScroll(event, '${heading.id}'); closeMobileOutline();">
+                    ${level === 'h2' ? '<i class="fas fa-circle"></i>' : '<i class="fas fa-circle"></i>'} 
+                    ${text}
+                </a>
+            </li>
+        `;
+    });
+    
+    if (outlineList) outlineList.innerHTML = outlineHTML;
+    if (mobileOutlineList) mobileOutlineList.innerHTML = mobileOutlineHTML;
+    
+    // Highlight active section khi scroll
+    setupActiveSectionHighlight(headings);
+}
+
+function smoothScroll(event, id) {
+    event.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function setupMobileOutline() {
+    const toggle = document.getElementById('mobileOutlineToggle');
+    const menu = document.getElementById('mobileOutlineMenu');
+    
+    if (!toggle || !menu) return;
+    
+    toggle.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        const icon = this.querySelector('.fa-chevron-down');
+        if (icon) {
+            icon.style.transform = menu.classList.contains('active') ? 'rotate(180deg)' : '';
+        }
+    });
+    
+    // Đóng menu khi click ra ngoài
+    document.addEventListener('click', function(event) {
+        if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+            menu.classList.remove('active');
+            const icon = toggle.querySelector('.fa-chevron-down');
+            if (icon) {
+                icon.style.transform = '';
+            }
+        }
+    });
+}
+
+function closeMobileOutline() {
+    const menu = document.getElementById('mobileOutlineMenu');
+    const toggle = document.getElementById('mobileOutlineToggle');
+    if (menu) menu.classList.remove('active');
+    if (toggle) {
+        const icon = toggle.querySelector('.fa-chevron-down');
+        if (icon) icon.style.transform = '';
+    }
+}
+
+function setupActiveSectionHighlight(headings) {
+    if (!headings || headings.length === 0) return;
+    
+    window.addEventListener('scroll', function() {
+        let current = '';
+        const scrollPosition = window.scrollY + 100;
+        
+        for (let i = headings.length - 1; i >= 0; i--) {
+            const heading = headings[i];
+            const headingTop = heading.offsetTop;
+            
+            if (scrollPosition >= headingTop) {
+                current = heading.id;
+                break;
+            }
+        }
+        
+        // Update active class in outline
+        document.querySelectorAll('.outline-item a').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+
+function shareArticle() {
+    const title = document.querySelector('.article-title')?.textContent || 'Bitcoin PeakDip Article';
+    const url = window.location.href;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: 'Check out this article from Bitcoin PeakDip',
+            url: url
+        });
+    } else {
+        navigator.clipboard.writeText(url);
+        alert('Link copied to clipboard!');
+    }
+}
+</script>
+
+<!-- CSS cho Outline và Article -->
+<style>
+.article-with-outline {
+    display: flex;
+    gap: 30px;
+    position: relative;
+}
+
+/* Article Header */
+.article-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.article-title {
+    font-size: 2.5em;
+    background: linear-gradient(to right, var(--wave-trough), var(--wave-peak));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 15px;
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: var(--text-glow);
+    font-size: 0.95em;
+}
+
+.article-meta i {
+    color: var(--wave-trough);
+    margin-right: 5px;
+}
+
+/* Outline Sidebar */
+.article-outline {
+    flex: 0 0 280px;
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.outline-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.outline-header i {
+    color: var(--wave-trough);
+    font-size: 1.2em;
+}
+
+.outline-header h3 {
+    color: white;
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.outline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.outline-item {
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+.outline-item a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    line-height: 1.4;
+}
+
+.outline-item a i {
+    color: var(--wave-trough);
+    font-size: 0.6em;
+}
+
+.outline-item a:hover {
+    background: rgba(0,212,255,0.1);
+    color: white;
+    padding-left: 15px;
+}
+
+.outline-item a.active {
+    background: rgba(0,212,255,0.2);
+    color: white;
+    border-left: 3px solid var(--wave-trough);
+}
+
+.outline-h3 a {
+    font-size: 0.9em;
+    opacity: 0.9;
+    padding-left: 25px;
+}
+
+/* Article Content */
+.article-content {
+    flex: 1;
+    min-width: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.article-content h2 {
+    color: white;
+    font-size: 2em;
+    margin: 40px 0 20px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+.article-content h3 {
+    color: var(--wave-trough);
+    font-size: 1.5em;
+    margin: 30px 0 15px;
+}
+
+.article-content p {
+    color: var(--text-glow);
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.article-content ul, .article-content ol {
+    color: var(--text-glow);
+    line-height: 1.8;
+    margin: 20px 0;
+    padding-left: 30px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+}
+
+.article-content strong {
+    color: var(--wave-trough);
+}
+
+.article-content blockquote {
+    background: rgba(0, 212, 255, 0.1);
+    border-left: 4px solid var(--wave-trough);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+}
+
+/* Mobile Outline */
+.mobile-outline {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.mobile-outline-toggle {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--wave-trough);
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.mobile-outline-toggle i:last-child {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.mobile-outline-menu {
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 5px;
+}
+
+.mobile-outline-menu.active {
+    display: block;
+}
+
+/* Article Footer */
+.article-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.back-to-learn {
+    color: var(--wave-trough);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-to-learn:hover {
+    gap: 12px;
+    color: white;
+}
+
+.share-article {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.share-article:hover {
+    background: rgba(0,212,255,0.2);
+    border-color: var(--wave-trough);
+}
+
+.loading-outline {
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 10px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .article-outline {
+        flex-basis: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .article-with-outline {
+        flex-direction: column;
+    }
+    
+    .article-outline {
+        display: none;
+    }
+    
+    .mobile-outline {
+        display: block;
+    }
+    
+    .article-title {
+        font-size: 2em;
+    }
+    
+    .article-content {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .article-content {
+        padding: 20px;
+    }
+    
+    .article-content h2 {
+        font-size: 1.6em;
+    }
+    
+    .article-content h3 {
+        font-size: 1.3em;
+    }
+    
+    .article-footer-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+</style>
+        
+        <!-- Footer -->
+        <footer id="pageFooter">
+    <div class="footer-brand">
+        <div class="brand-name">Bitcoin PeakDip</div>
+        <div class="brand-tagline">A Specialized Bitcoin Quantitative Research & Early Warning System Provider</div>
+    </div>            
+    <p>© 2021 - 2026 Nguyen Duc Hai Technologies. All rights reserved</p>
+    <!-- THÊM: Build Info -->
+    <!-- Footer Build Info -->
+<div class="footer-build-info">
+    <div class="build-version">
+        <i class="fas fa-code-branch"></i>
+        <span>v1.12.40</span>
+    </div>
+    <div class="build-date">
+        <i class="fas fa-calendar-alt"></i>
+        <span>2026-03-06</span>
+    </div>
+    
+    <div class="build-time">
+        <i class="fas fa-clock"></i>
+        <span>80390.0</span>
+    </div>
+    
+</div>    
+    <div class="footer-contact">
+        <div class="footer-contact-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:contact@bitcoinpeakdip.com">contact@bitcoinpeakdip.com</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-linkedin"></i>
+            <a href="https://www.linkedin.com/in/hai-nguyen-duc-1a6b5563" target="_blank">LinkedIn</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-telegram"></i>
+            <a href="https://t.me/bitcoinpeakdip" target="_blank">Telegram</a>
+        </div>
+        <div class="footer-contact-item">
+            <i class="fab fa-x-twitter"></i>
+            <a href="https://x.com/bitcoinpeakdip" target="_blank">X.com</a>
+        </div>
+    </div>
+    
+    <div class="footer-links">
+        <a href="/" class="footer-link">Home</a>
+        <a href="/about" class="footer-link">About</a>
+        <a href="/product" class="footer-link">Product</a>
+        <a href="/signals" class="footer-link">EWS Signals</a>
+        <a href="/learn" class="footer-link">Learn</a>
+        <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+        <a href="/terms-of-service" class="footer-link">Terms of Service</a>
+        <a href="/risk-disclosure" class="footer-link">Risk Disclosure</a>
+    </div>
+</footer>
+    </div>
+    
+    <!-- ========== SCRIPTS LOADING - TỐI ƯU ========== -->
+    
+    <!-- 1. SHARED UTILITIES (không block, load sớm) -->
+    <script src="/assets/js/shared.js?v=1.12.40" defer></script>
+    <script src="/assets/js/reading-list.js?v=1.12.40" defer></script>
+
+    <!-- 2. NOTIFICATION SYSTEM (ưu tiên cao) -->
+    <script src="/assets/js/notifications.js?v=1.12.40" defer></script>
+
+    <!-- 3. MAIN APP LOGIC -->
+    <script src="/assets/js/main.js?v=1.12.40" defer></script>
+
+    <!-- 4. UPDATE NOTIFIER (chạy sau) -->
+    <script src="/assets/js/update-notifier.js?v=1.12.40" defer></script>
+
+    <!-- 5. PAGE SPECIFIC SCRIPTS (chạy cuối) -->
+    
+
+    
+
+    
+
+    
+
+    <!-- 6. SERVICE WORKER REGISTRATION (chạy cuối cùng) -->
+    <script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('✅ Service Worker registered with scope:', registration.scope);
+                
+                registration.addEventListener('updatefound', function() {
+                    const newWorker = registration.installing;
+                    
+                    newWorker.addEventListener('statechange', function() {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            window.showUpdateNotification?.();
+                        }
+                    });
+                });
+            })
+            .catch(function(error) {
+                console.error('❌ Service Worker registration failed:', error);
+            });
+        
+        // Chỉ kiểm tra cập nhật thực sự mỗi 6 giờ (21600000 ms)
+        setInterval(() => {
+            navigator.serviceWorker.ready.then(registration => {
+                // Chỉ update nếu đã qua 6 giờ
+                const lastUpdate = localStorage.getItem('sw_last_update');
+                const now = Date.now();
+                
+                if (!lastUpdate || (now - parseInt(lastUpdate)) > 6 * 60 * 60 * 1000) {
+                    console.log('🔄 Checking for Service Worker update...');
+                    registration.update();
+                    localStorage.setItem('sw_last_update', now.toString());
+                }
+            });
+        }, 60 * 60 * 1000); // Vẫn check mỗi giờ nhưng chỉ update sau 6 giờ        
+    });
+}
+
+window.showUpdateNotification = function() {
+    const banner = document.createElement('div');
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+        <div class="update-content">
+            <i class="fas fa-sync-alt"></i>
+            <span>New version available!</span>
+            <button onclick="window.updateApp()" class="update-btn">Update</button>
+            <button onclick="this.closest('.update-banner').remove()" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+};
+
+window.updateApp = function() {
+    if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+            });
+        });
+    }
+    
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => {
+            registration.unregister();
+        });
+    }).then(() => {
+        window.location.reload(true);
+    });
+};
+</script>
+
+    <!-- 7. ACTIVE MENU FIX (chạy sau cùng) -->
+    <script defer>
+    (function() {
+        // Đợi DOM load xong
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                
+                if (href === currentPage) link.classList.add('active');
+                if (currentPage === 'index.html' && href === 'index.html') link.classList.add('active');
+                if (currentPage.includes('learn') && href.includes('learn')) link.classList.add('active');
+                if (currentPage.includes('about') && href.includes('about')) link.classList.add('active');
+                if (currentPage.includes('product') && href.includes('product')) link.classList.add('active');
+                if (currentPage.includes('signals') && href.includes('signals')) link.classList.add('active');
+                if (currentPage.includes('reading-list') && href.includes('reading-list')) link.classList.add('active');
+            });
+            
+            console.log('✅ Menu active state updated for:', currentPage);
+        });
+    })();
+    </script>
+</body>
+</html>
