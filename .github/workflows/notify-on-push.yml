@@ -14,66 +14,108 @@ jobs:
           ref: btcpeakdip
           fetch-depth: 2
       
-      # ===== THÊM STEP DEBUG =====
+      # ===== DEBUG - KIỂM TRA FILE =====
       - name: 🔍 Debug - List all files
         run: |
           echo "=== Current directory ==="
           pwd
-          echo "=== Files in learn/ ==="
-          find learn -type f -name "*.html" 2>/dev/null || echo "No files found"
+          echo "=== Files in learn/ directory ==="
+          find learn -name "*.html" -type f 2>/dev/null | head -20 || echo "No files found"
+          echo "=== Files in _site/learn/ directory ==="
+          find _site/learn -name "*.html" -type f 2>/dev/null | head -20 || echo "No files found"
           echo "=== Git show last commit ==="
-          git show --name-only --pretty=format: HEAD
+          git show --name-only --pretty=format: HEAD | head -20
       
-      # ===== SỬA CÁCH DETECT =====
+      # ===== TÌM FILE HTML MỚI =====
       - name: 🔍 Find new HTML files
         id: detect
         run: |
-          # Cách 1: Tìm tất cả HTML files trong learn/ được tạo trong 1 ngày qua
           echo "=== Checking files modified in last 24h ==="
-          NEW_HTML=$(find learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
           
-          # Cách 2: Nếu không có, dùng git show
-          if [ -z "$NEW_HTML" ]; then
-            echo "=== No files found with find, trying git show ==="
-            NEW_HTML=$(git show --name-only --pretty=format: HEAD | grep 'learn/.*\.html' || true)
+          # Tìm file HTML trong learn/ (24h qua)
+          FILES=$(find learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
+          
+          # Nếu không có, tìm trong _site/learn/
+          if [ -z "$FILES" ]; then
+            echo "=== No files in learn/, checking _site/learn/ ==="
+            FILES=$(find _site/learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
           fi
           
-          echo "NEW_HTML=$NEW_HTML"
+          # Nếu vẫn không có, dùng git show
+          if [ -z "$FILES" ]; then
+            echo "=== Using git show ==="
+            FILES=$(git show --name-only --pretty=format: HEAD | grep 'learn/.*\.html' || true)
+          fi
           
-          if [ -n "$NEW_HTML" ]; then
+          echo "FOUND_FILES=$FILES"
+          
+          if [ -n "$FILES" ]; then
             echo "found=true" >> $GITHUB_OUTPUT
-            echo "files=$NEW_HTML" >> $GITHUB_OUTPUT
-            echo "count=$(echo $NEW_HTML | wc -w)" >> $GITHUB_OUTPUT
             
-            # Tạo JSON
+            # Đếm số lượng
+            COUNT=$(echo "$FILES" | wc -l)
+            echo "count=$COUNT" >> $GITHUB_OUTPUT
+            
+            # Tạo JSON array cho files (dùng jq)
+            JSON_FILES="[]"
+            while IFS= read -r file; do
+              if [ -n "$file" ]; then
+                # Loại bỏ _site/ nếu có
+                clean_file=${file#_site/}
+                JSON_FILES=$(echo "$JSON_FILES" | jq --arg f "$clean_file" '. + [$f]')
+              fi
+            done <<< "$FILES"
+            echo "files=$JSON_FILES" >> $GITHUB_OUTPUT
+            
+            # Tạo articles JSON với title và url
             ARTICLES_JSON="[]"
-            for file in $NEW_HTML; do
-              if [ -f "$file" ]; then
+            while IFS= read -r file; do
+              if [ -n "$file" ] && [ -f "$file" ]; then
+                # Lấy filename không có đuôi .html
                 filename=$(basename "$file" .html)
-                title=$(grep -o '<title>[^<]*</title>' "$file" | sed 's/<title>\(.*\)<\/title>/\1/' | head -1)
+                
+                # Lấy title từ file HTML
+                title=$(grep -o '<title>[^<]*</title>' "$file" 2>/dev/null | sed 's/<title>\(.*\)<\/title>/\1/' | head -1)
                 title=${title:-$filename}
-                url_path=${file#_site/}
-                url="https://bitcoin-peak-dip.com/$url_path"
+                
+                # Tạo URL (bỏ _site/ nếu có)
+                clean_file=${file#_site/}
+                url="https://bitcoin-peak-dip.com/$clean_file"
                 
                 echo "Processing: $file -> $title"
-                ARTICLES_JSON=$(echo "$ARTICLES_JSON" | jq --arg title "$title" --arg url "$url" '. + [{"title": $title, "url": $url}]')
+                
+                # Thêm vào JSON array
+                ARTICLES_JSON=$(echo "$ARTICLES_JSON" | jq \
+                  --arg title "$title" \
+                  --arg url "$url" \
+                  --arg id "$filename" \
+                  '. + [{"title": $title, "url": $url, "id": $id}]')
               fi
-            done
+            done <<< "$FILES"
+            
             echo "articles=$ARTICLES_JSON" >> $GITHUB_OUTPUT
+            echo "✅ Found $COUNT new article(s)"
           else
             echo "found=false" >> $GITHUB_OUTPUT
+            echo "files=[]" >> $GITHUB_OUTPUT
+            echo "articles=[]" >> $GITHUB_OUTPUT
+            echo "❌ No new HTML files found"
           fi
       
+      # ===== HIỂN THỊ KẾT QUẢ =====
       - name: 📝 Show results
         run: |
           echo "Found: ${{ steps.detect.outputs.found }}"
+          echo "Count: ${{ steps.detect.outputs.count }}"
           echo "Files: ${{ steps.detect.outputs.files }}"
           echo "Articles: ${{ steps.detect.outputs.articles }}"
       
+      # ===== SKIP NẾU KHÔNG CÓ FILE MỚI =====
       - name: ⏹️ Skip if no new HTML
         if: steps.detect.outputs.found != 'true'
-        run: echo "No new HTML files, skipping"
+        run: echo "No new HTML files, skipping notification"
       
+      # ===== GỬI NOTIFICATION =====
       - name: ⚙️ Setup Node.js
         if: steps.detect.outputs.found == 'true'
         uses: actions/setup-node@v3
@@ -94,3 +136,16 @@ jobs:
           DISCORD_PUBLIC_WEBHOOK: ${{ secrets.DISCORD_PUBLIC_WEBHOOK }}
           DISCORD_PRIVATE_WEBHOOK: ${{ secrets.DISCORD_PRIVATE_WEBHOOK }}
         run: node scripts/send-notification-from-html.js
+      
+      # ===== DEPLOY (NẾU CẦN) =====
+      - name: 🚀 Deploy to production
+        if: steps.detect.outputs.found == 'true'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          keep_files: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy: ${{ steps.detect.outputs.count }} new article(s)'
