@@ -1,3 +1,4 @@
+// scripts/send-notification-from-html.js
 #!/usr/bin/env node
 
 /**
