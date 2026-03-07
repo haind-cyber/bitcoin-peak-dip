@@ -1,7 +1,7 @@
 {
   "name": "bitcoin-peakdip",
-  "version": "1.12.2",
-  "description": "Bitcoin PeakDip - Early Warning System",
+  "version": "1.12.41",
+  "description": "Bitcoin PeakDip - Early Warning System with FCM Notifications",
   "main": "index.js",
   "scripts": {
     "build": "node build.js && bundle exec jekyll build",
@@ -9,12 +9,33 @@
     "dev": "node build.js && bundle exec jekyll serve --livereload",
     "prebuild": "bundle install",
     "postbuild": "echo '✅ Build successful!'",
-    "generate-articles": "ruby generate_local.rb"
+    "generate-articles": "ruby generate_local.rb",
+    "notify": "node scripts/send-notification-from-html.js",
+    "test-fcm": "node scripts/test-fcm.js",
+    "postinstall": "node scripts/check-env.js"
   },
-  "keywords": ["bitcoin", "trading", "ews", "cryptocurrency"],
+  "keywords": [
+    "bitcoin",
+    "trading",
+    "ews",
+    "cryptocurrency",
+    "fcm",
+    "notifications",
+    "pwa"
+  ],
   "author": "Nguyen Duc Hai",
   "license": "MIT",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^7.1.0",
+    "axios": "^1.6.2",
+    "firebase-admin": "11.11.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.1"
   }
 }

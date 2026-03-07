@@ -188,4 +188,31 @@
       "url": "url"
     }
   }
+  "gcm_sender_id": "103953800507",
+  "gcm_user_visible_only": true,
+  
+  "badge": {
+    "src": "/assets/icons/badge-icon.png",
+    "purpose": "monochrome"
+  },
+  
+  "permissions": {
+    "push": {
+      "description": "Receive notifications about new articles and trading signals"
+    },
+    "notifications": {
+      "description": "Show alerts when new content is available"
+    }
+  },
+  
+  "related_applications": [],
+  "prefer_related_applications": false,
+  
+  "categories": [
+    "finance",
+    "cryptocurrency",
+    "trading",
+    "productivity",
+    "news"
+  ]  
 }
