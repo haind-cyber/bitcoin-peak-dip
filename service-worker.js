@@ -1,6 +1,7 @@
 // Bitcoin PeakDip Service Worker
-// Version: 1.12.41 - PRODUCTION READY
-// Features: Cache, Push Notifications, Badge Sync, Version Check
+// Version: 2.0.0 - Full FCM Integration with Badge Sync
+// Features: Cache, Push Notifications, Badge Sync, Version Check, FCM Handler
+
 
 const CACHE_NAME = 'bitcoin-peakdip-v1.12.41';
 const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.41';
@@ -55,7 +56,7 @@ const CDN_ASSETS = [
 
 function getVersionFromCacheName(cacheName) {
   const match = cacheName.match(/v([\d\.]+)/);
-  return match ? match[1] : '1.12.37';
+  return match ? match[1] : '1.12.41';
 }
 
 // ========== BADGE MANAGEMENT ==========
@@ -74,10 +75,26 @@ async function updateAppBadge(count) {
   }
 }
 
+async function broadcastBadgeUpdate(count, source = 'sw') {
+  try {
+    const clients = await self.clients.matchAll();
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'UPDATE_BADGE',
+        count: count,
+        source: source
+      });
+    });
+  } catch (error) {
+    console.log('Broadcast failed:', error);
+  }
+}
+
+
 // ========== INSTALL EVENT ==========
 
 self.addEventListener('install', event => {
-  console.log('📦 Service Worker installing...');
+  console.log('📦 Service Worker v2.0.0 installing...');
   self.skipWaiting();
   
   event.waitUntil(
@@ -98,7 +115,7 @@ self.addEventListener('install', event => {
 // ========== ACTIVATE EVENT ==========
 
 self.addEventListener('activate', event => {
-  console.log('🚀 Service Worker activating...');
+  console.log('🚀 Service Worker v2.0.0 activating...');s
   
   event.waitUntil(
     caches.keys()
@@ -117,7 +134,7 @@ self.addEventListener('activate', event => {
           clients.forEach(client => {
             client.postMessage({
               type: 'PWA_UPDATED',
-              version: '1.12.37'
+              version: '2.0.0'
             });
           });
         });
@@ -149,11 +166,15 @@ self.addEventListener('message', event => {
     
     case 'UPDATE_BADGE':
       if (event.data.count !== undefined) {
-        event.waitUntil(updateAppBadge(event.data.count));
-        
-        // Forward to other clients (tránh loop)
+														  
+		
+												 
         event.waitUntil(
-          clients.matchAll().then(clients => {
+          (async () => {
+            await updateAppBadge(event.data.count);
+            
+            // Forward to other clients
+            const clients = await self.clients.matchAll();
             clients.forEach(client => {
               if (client.id !== event.source?.id) {
                 client.postMessage({
@@ -163,11 +184,28 @@ self.addEventListener('message', event => {
                 });
               }
             });
-          })
+          })()
         );
       }
       break;
     
+    case 'ARTICLE_READ':
+      if (event.data.articleId) {
+        event.waitUntil(
+          (async () => {
+            // Broadcast to all clients
+            const clients = await self.clients.matchAll();
+            clients.forEach(client => {
+              if (client.id !== event.source?.id) {
+                client.postMessage({
+                  type: 'ARTICLE_READ',
+                  articleId: event.data.articleId
+                });
+              }
+            });
+          })()
+        );
+      } 
     case 'FORCE_UPDATE':
       event.waitUntil(
         caches.keys().then(cacheNames => {
@@ -189,31 +227,85 @@ self.addEventListener('message', event => {
   }
 });
 
-// ========== PUSH EVENT (FCM) ==========
+/// ========== PUSH EVENT (FCM) - CẢI TIẾN ==========
 
 self.addEventListener('push', event => {
-  console.log('📨 Push received');
+  console.log('📨 Push received:', event.data ? event.data.text() : 'empty');
   
-  let data = {
-    title: 'Bitcoin PeakDip',
-    body: 'New update available',
-    icon: '/assets/icons/icon-192x192.png',
-    badge: '/assets/icons/icon-72x72.png',
-    data: {
-      url: '/learn/',
-      type: 'push'
-    }
-  };
-  
-  if (event.data) {
-    try {
-      const parsed = event.data.json();
-      data = { ...data, ...parsed };
-    } catch (e) {
-      data.body = event.data.text();
-    }
+  let data;
+  try {
+    data = event.data.json();
+  } catch (e) {
+    data = { 
+      notification: { 
+        body: event.data ? event.data.text() : 'New update' 
+      } 
+				  
+	 
+    };
   }
   
+  // ===== THÊM: Xử lý badge update message =====
+  if (data.data && data.data.type === 'BADGE_UPDATE') {
+		 
+    const badgeCount = parseInt(data.data.count);
+    
+    event.waitUntil(
+      (async () => {
+        // Update app badge
+        await updateAppBadge(badgeCount);
+        
+        // Broadcast to all clients
+        await broadcastBadgeUpdate(badgeCount, 'fcm');
+        
+        console.log(`✅ Badge updated to ${badgeCount}`);
+      })()
+    );
+    return;
+  }
+  
+  // ===== THÊM: Xử lý new article message với badge =====
+  if (data.data && data.data.type === 'NEW_ARTICLE') {
+    const badgeCount = parseInt(data.data.badgeCount) || 0;
+    
+    event.waitUntil(
+      (async () => {
+        // Update badge first
+        await updateAppBadge(badgeCount);
+        await broadcastBadgeUpdate(badgeCount, 'fcm');
+        
+        // Show notification
+        const options = {
+          body: data.notification?.body || data.data?.title || 'New article available',
+          icon: '/assets/icons/icon-192x192.png',
+          badge: '/assets/icons/icon-72x72.png',
+          vibrate: [200, 100, 200],
+          data: {
+            url: data.data?.url || '/learn/',
+            articleId: data.data?.articleId,
+            type: 'NEW_ARTICLE',
+            badgeCount: badgeCount,
+            title: data.data?.title
+          },
+          tag: `article-${data.data?.articleId || Date.now()}`,
+          renotify: true,
+          requireInteraction: true,
+          actions: [
+            { action: 'read', title: '📖 Read Now' },
+            { action: 'later', title: '⏰ Read Later' }
+          ]
+        };
+        
+        await self.registration.showNotification(
+          data.notification?.title || '📚 Bitcoin PeakDip',
+          options
+        );
+      })()
+    );
+    return;
+  }
+  
+  // ===== GIỮ NGUYÊN: Xử lý push thông thường =====
   // Thông báo cho clients
   event.waitUntil(
     clients.matchAll().then(clients => {
@@ -228,12 +320,12 @@ self.addEventListener('push', event => {
   
   // Hiển thị notification
   event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: data.icon,
-      badge: data.badge,
+    self.registration.showNotification(data.title || 'Bitcoin PeakDip', {
+      body: data.body || data.notification?.body || 'New update available',
+      icon: data.icon || '/assets/icons/icon-192x192.png',
+      badge: data.badge || '/assets/icons/icon-72x72.png',
       vibrate: [200, 100, 200],
-      data: data.data,
+      data: data.data || { url: '/' },
       actions: data.actions || [
         { action: 'read', title: '📖 Read Now' },
         { action: 'later', title: '⏰ Read Later' }
@@ -244,34 +336,76 @@ self.addEventListener('push', event => {
     })
   );
 });
-
-// ========== NOTIFICATION CLICK ==========
+// ========== NOTIFICATION CLICK - CẢI TIẾN ==========
 
 self.addEventListener('notificationclick', event => {
   console.log('🔔 Notification clicked:', event.action);
   event.notification.close();
   
-  const data = event.notification.data;
-  const urlToOpen = data?.url || '/';
+  const data = event.notification.data || {};
+  const action = event.action;
+  const urlToOpen = data.url || '/';
+  const articleId = data.articleId;
+  const badgeCount = data.badgeCount || 0;
   
   event.waitUntil(
-    clients.matchAll({ type: 'window' }).then(clientList => {
+    (async () => {
+      // ===== THÊM: Xử lý action 'later' =====
+      if (action === 'later') {
+        // Just close, keep badge
+        console.log('⏰ Read later, keeping badge');
+        return;
+      }
+      
+      // ===== THÊM: Xử lý action 'read' hoặc click mặc định =====
+      if (badgeCount > 0) {
+        // Decrease badge
+        const newCount = Math.max(0, badgeCount - 1);
+        await updateAppBadge(newCount);
+        await broadcastBadgeUpdate(newCount, 'notification');
+        
+        // Notify clients to mark as read
+        const clients = await self.clients.matchAll();
+        clients.forEach(client => {
+          client.postMessage({
+            type: 'ARTICLE_READ',
+            articleId: articleId
+          });
+        });
+        
+        console.log(`✅ Badge decreased to ${newCount}`);
+      }
+      
+      // Open or focus window
+      const clientList = await self.clients.matchAll({ type: 'window' });
+      
       for (const client of clientList) {
-        if (client.url === urlToOpen && 'focus' in client) {
+        if (client.url.includes(urlToOpen) && 'focus' in client) {
           return client.focus();
         }
       }
+      
       return clients.openWindow(urlToOpen);
-    })
+    })()
   );
 });
 
+// ===== THÊM: NOTIFICATION CLOSE EVENT =====
+self.addEventListener('notificationclose', event => {
+  console.log('🔕 Notification closed:', event.notification.tag);
+  // Có thể track analytics ở đây
+});
 // ========== PERIODIC SYNC (ONLY VERSION CHECK) ==========
 
 self.addEventListener('periodicsync', event => {
   if (event.tag === 'update-check') {
     event.waitUntil(checkForUpdates());
   }
+  
+  // ===== THÊM: Badge sync =====
+  if (event.tag === 'badge-sync') {
+    event.waitUntil(syncBadgeWithServer());
+  }  
 });
 
 async function checkForUpdates() {
@@ -291,6 +425,23 @@ async function checkForUpdates() {
     }
   } catch (error) {
     console.log('Periodic sync check failed:', error);
+  }
+}
+
+// ===== THÊM: Hàm sync badge với server =====
+async function syncBadgeWithServer() {
+  try {
+    // Try to get current badge count from server
+    const response = await fetch('/api/unread-count');
+    const data = await response.json();
+    
+    if (data.count !== undefined) {
+      await updateAppBadge(data.count);
+      await broadcastBadgeUpdate(data.count, 'periodic');
+      console.log(`✅ Badge synced to ${data.count}`);
+    }
+  } catch (error) {
+    console.log('Badge sync failed:', error);
   }
 }
 
@@ -319,6 +470,13 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
+
+  // API calls - network first
+  if (url.pathname.includes('/api/')) {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
+    
   
   // version.json - network first
   if (url.pathname.includes('version.json')) {
@@ -411,4 +569,5 @@ function staleWhileRevalidate(request) {
   });
 }
 
-console.log('✅ Service Worker v1.12.37 loaded');
+
+console.log('✅ Service Worker v2.0.0 loaded');

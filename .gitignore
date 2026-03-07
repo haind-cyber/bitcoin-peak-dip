@@ -18,3 +18,21 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db_site/
+
+# Dependencies
+node_modules/
+package-lock.json
+.npmrc
+
+# Windows specific
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.env
+.env.*
