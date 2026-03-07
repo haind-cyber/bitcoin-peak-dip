@@ -105,18 +105,19 @@ jobs:
         if: steps.detect.outputs.found == 'true'
         env:
           FILES: ${{ steps.detect.outputs.files }}
-          ARTICLES: ${{ steps.detect.outputs.files }}  # THÊM DÒNG NÀY
+          FILES_COUNT: ${{ steps.detect.outputs.count }}
+          ARTICLES: ${{ steps.detect.outputs.files }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           DISCORD_PUBLIC_WEBHOOK: ${{ secrets.DISCORD_PUBLIC_WEBHOOK }}
           DISCORD_PRIVATE_WEBHOOK: ${{ secrets.DISCORD_PRIVATE_WEBHOOK }}
         run: |
-          echo "🚀 Sending notifications..."
+          echo "🚀 Sending notifications for ${{ steps.detect.outputs.count }} files..."
           node scripts/send-notification-from-html.js
-          echo "✅ Notifications sent"      
+          echo "✅ Notifications sent"
+      
       # ===== BƯỚC 5: CLEANUP =====
       - name: 🧹 Cleanup
         if: always()
         run: |
           echo "🧹 Cleaning up temporary files..."
-          # Không cần cleanup đặc biệt
           echo "✅ Workflow completed"
