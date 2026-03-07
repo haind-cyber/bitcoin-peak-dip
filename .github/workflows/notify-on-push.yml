@@ -2,52 +2,123 @@ name: 📢 Send Article Notifications
 
 on:
   push:
-    paths:
-      - '_posts/**/*.md'
-    branches: [main]
+    branches: [btcpeakdip]
 
 jobs:
-  notify:
+  detect-and-notify:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
-    
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          ref: btcpeakdip
+          fetch-depth: 2
       
-      - name: 🔍 Get changed files
-        id: files
-        uses: tj-actions/changed-files@v35
-        with:
-          files: |
-            _posts/**/*.md
-          separator: " "
+      # ===== DEBUG - KIỂM TRA FILE =====
+      - name: 🔍 Debug - List all files
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Files in learn/ directory ==="
+          find learn -name "*.html" -type f 2>/dev/null | head -20 || echo "No files found"
+          echo "=== Files in _site/learn/ directory ==="
+          find _site/learn -name "*.html" -type f 2>/dev/null | head -20 || echo "No files found"
+          echo "=== Git show last commit ==="
+          git show --name-only --pretty=format: HEAD | head -20
       
-      - name: ⏹️ Skip if no new files
-        if: steps.files.outputs.added_files == ''
-        run: echo "No new files, skipping"
+      # ===== TÌM FILE HTML MỚI - ĐƠN GIẢN NHẤT =====
+      - name: 🔍 Find new HTML files
+        id: detect
+        run: |
+          echo "=== Checking for new HTML files ==="
+          
+          # Tìm tất cả file HTML trong learn/ (không quan tâm thời gian)
+          FILES=$(find learn -name "*.html" -type f 2>/dev/null | head -10 || true)
+          
+          # Nếu không có, tìm trong _site/learn/
+          if [ -z "$FILES" ]; then
+            echo "=== No files in learn/, checking _site/learn/ ==="
+            FILES=$(find _site/learn -name "*.html" -type f 2>/dev/null | head -10 || true)
+          fi
+          
+          # Nếu vẫn không có, dùng git show
+          if [ -z "$FILES" ]; then
+            echo "=== Using git show ==="
+            FILES=$(git show --name-only --pretty=format: HEAD | grep 'learn/.*\.html' | head -10 || true)
+          fi
+          
+          echo "FOUND_FILES=$FILES"
+          
+          if [ -n "$FILES" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            
+            # Đếm số lượng
+            COUNT=$(echo "$FILES" | wc -l)
+            echo "count=$COUNT" >> $GITHUB_OUTPUT
+            
+            # Ghi trực tiếp danh sách file (không quan tâm format)
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            
+            # Tạo danh sách articles đơn giản
+            ARTICLES_LIST=""
+            while IFS= read -r file; do
+              if [ -n "$file" ] && [ -f "$file" ]; then
+                filename=$(basename "$file" .html)
+                title=$(grep -o '<title>[^<]*</title>' "$file" 2>/dev/null | sed 's/<title>\(.*\)<\/title>/\1/' | head -1)
+                title=${title:-$filename}
+                clean_file=${file#_site/}
+                url="https://bitcoin-peak-dip.com/$clean_file"
+                
+                ARTICLES_LIST="${ARTICLES_LIST}${file}|${title}|${url}\n"
+                echo "Processing: $file -> $title"
+              fi
+            done <<< "$FILES"
+            
+            # Ghi danh sách articles
+            echo "articles<<EOF" >> $GITHUB_OUTPUT
+            printf "%b" "$ARTICLES_LIST" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            
+            echo "✅ Found $COUNT new article(s)"
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+            echo "❌ No new HTML files found"
+          fi
       
+      # ===== HIỂN THỊ KẾT QUẢ =====
+      - name: 📝 Show results
+        run: |
+          echo "Found: ${{ steps.detect.outputs.found }}"
+          echo "Count: ${{ steps.detect.outputs.count }}"
+          echo "Files: ${{ steps.detect.outputs.files }}"
+          echo "Articles: ${{ steps.detect.outputs.articles }}"
+      
+      # ===== SKIP NẾU KHÔNG CÓ FILE MỚI =====
+      - name: ⏹️ Skip if no new HTML
+        if: steps.detect.outputs.found != 'true'
+        run: echo "No new HTML files, skipping notification"
+      
+      # ===== GỬI NOTIFICATION =====
       - name: ⚙️ Setup Node.js
-        if: steps.files.outputs.added_files != ''
+        if: steps.detect.outputs.found == 'true'
         uses: actions/setup-node@v3
         with:
           node-version: '18'
       
       - name: 📦 Install dependencies
-        if: steps.files.outputs.added_files != ''
+        if: steps.detect.outputs.found == 'true'
         run: |
           npm init -y
           npm install firebase-admin@11 axios@1.5
       
       - name: 📨 Send notifications
-        if: steps.files.outputs.added_files != ''
+        if: steps.detect.outputs.found == 'true'
         env:
-          ADDED_FILES: ${{ steps.files.outputs.added_files }}
+          FILES: ${{ steps.detect.outputs.files }}
+          ARTICLES: ${{ steps.detect.outputs.articles }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           DISCORD_PUBLIC_WEBHOOK: ${{ secrets.DISCORD_PUBLIC_WEBHOOK }}
           DISCORD_PRIVATE_WEBHOOK: ${{ secrets.DISCORD_PRIVATE_WEBHOOK }}
-        run: node scripts/send-notification.js
+        run: node scripts/send-notification-from-html.js
