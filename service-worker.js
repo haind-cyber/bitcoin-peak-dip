@@ -1,10 +1,10 @@
 // Bitcoin PeakDip Service Worker
-// Version: 2.0.0 - Full FCM Integration with Badge Sync
+// Version: 1.12.43 - Full FCM Integration with Badge Sync
 // Features: Cache, Push Notifications, Badge Sync, Version Check, FCM Handler
 
 
-const CACHE_NAME = 'bitcoin-peakdip-v1.12.41';
-const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.41';
+const CACHE_NAME = 'bitcoin-peakdip-v1.12.43';
+const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.43';
 const ARTICLE_CACHE = 'article-cache-v1';
 
 // Local assets - cache đầu tiên
