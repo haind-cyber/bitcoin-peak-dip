@@ -1,9 +1,9 @@
 // Bitcoin PeakDip Service Worker
-// Version: 1.12.40 - PRODUCTION READY
+// Version: 1.12.41 - PRODUCTION READY
 // Features: Cache, Push Notifications, Badge Sync, Version Check
 
-const CACHE_NAME = 'bitcoin-peakdip-v1.12.40';
-const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.40';
+const CACHE_NAME = 'bitcoin-peakdip-v1.12.41';
+const DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v1.12.41';
 const ARTICLE_CACHE = 'article-cache-v1';
 
 // Local assets - cache đầu tiên
