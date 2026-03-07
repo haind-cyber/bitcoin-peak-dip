@@ -477,36 +477,39 @@ function saveToCache(articles) {
 async function main() {
     log.section('PROCESSING ARTICLES');
     
-    // Parse articles từ environment
-    const articlesEnv = process.env.ARTICLES || '';
-    const articles = [];
-    
-    if (articlesEnv) {
-        const lines = articlesEnv.split('\n').filter(l => l.trim());
-        for (const line of lines) {
-            const parts = line.split('|');
-            if (parts.length >= 3) {
-                const file = parts[0];
-                const metadata = extractMetadata(file);
-                
-                articles.push({
-                    file: file,
-                    title: metadata.title || parts[1],
-                    url: parts[2],
-                    description: metadata.description || parts[3] || '',
-                    readingTime: metadata.readingTime,
-                    image: metadata.image
-                });
-            }
-        }
-    }
-    
-    if (articles.length === 0) {
-        log.warn('No articles to process');
+    // Parse files từ environment - ĐỌC TỪ FILES
+    const filesEnv = process.env.FILES || '';
+    const files = filesEnv.split('\n').filter(f => f.trim());
+
+    log.info(`Found ${files.length} file(s) from FILES environment`);
+
+    if (files.length === 0) {
+        log.warn('No files to process');
         process.exit(0);
     }
-    
-    log.info(`Found ${articles.length} article(s) to process`);
+
+    // Chuyển đổi files thành articles
+    const articles = [];
+    for (const file of files) {
+        if (!file.trim()) continue;
+        
+        const metadata = extractMetadata(file.trim());
+        const cleanFile = file.trim().replace('_site/', '');
+        const url = `https://bitcoin-peak-dip.com/${cleanFile}`;
+        
+        articles.push({
+            file: file.trim(),
+            title: metadata.title,
+            description: metadata.description,
+            url: url,
+            readingTime: metadata.readingTime,
+            image: metadata.image
+        });
+        
+        log.info(`Added: ${metadata.title}`);
+    }
+
+    log.info(`Converted ${articles.length} files to articles`);
     
     // Khởi tạo Firebase
     initializeFirebase();
