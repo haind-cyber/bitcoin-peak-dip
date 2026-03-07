@@ -1,153 +1,122 @@
-# .github/workflows/notify-on-push.yml
-name: 📢 Bitcoin PeakDip Notification System
+name: 📢 Send Article Notifications
 
 on:
   push:
-    branches: [btcpeakdip, main, master]
-    paths:
-      - '_site/learn/**'
-      - '_posts/**'
-      - 'assets/data/articles.json'
-  workflow_dispatch: # Cho phép chạy manual
-    inputs:
-      force_notify:
-        description: 'Force send notifications'
-        required: false
-        default: 'false'
+    branches: [btcpeakdip]
 
 jobs:
   detect-and-notify:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      actions: write
-    
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 2
           ref: btcpeakdip
+          fetch-depth: 2
       
+      # ===== BƯỚC 1: TÌM FILE HTML MỚI =====
       - name: 🔍 Find new HTML files
         id: detect
         run: |
           echo "=== 🔍 Searching for new HTML files ==="
           
-          # Xác định files mới
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.event.inputs.force_notify }}" == "true" ]; then
-            # Force mode: lấy tất cả HTML files trong 7 ngày gần nhất
-            echo "📋 Force mode: Finding recent HTML files..."
-            FILES=$(find _site/learn -name "*.html" -type f -mtime -7 2>/dev/null | head -20 || true)
-          else
-            # Normal mode: chỉ lấy files mới trong commit
-            echo "📋 Normal mode: Finding new files in commit..."
-            FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD | grep '\.html$' | grep -v 'index\.html' | head -20 || true)
+          # Cách 1: Tìm file HTML trong learn/ được tạo/sửa trong 24h qua
+          echo "Checking files modified in last 24h..."
+          HTML_FILES=$(find learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
+          
+          # Cách 2: Nếu không có, tìm trong _site/learn/
+          if [ -z "$HTML_FILES" ]; then
+            echo "No files in learn/, checking _site/learn/..."
+            HTML_FILES=$(find _site/learn -name "*.html" -type f -mtime -1 2>/dev/null || true)
           fi
           
-          # Đếm số lượng
-          COUNT=$(echo "$FILES" | grep -v '^$' | wc -l)
+          # Cách 3: Nếu vẫn không có, dùng git show để tìm file trong commit hiện tại
+          if [ -z "$HTML_FILES" ]; then
+            echo "Using git show to find files in current commit..."
+            HTML_FILES=$(git show --name-only --pretty=format: HEAD | grep 'learn/.*\.html' || true)
+          fi
           
-          if [ $COUNT -gt 0 ]; then
-            echo "✅ Found $COUNT new file(s)"
+          # Cách 4: Cuối cùng, tìm tất cả file HTML (fallback)
+          if [ -z "$HTML_FILES" ]; then
+            echo "Fallback: finding all HTML files..."
+            HTML_FILES=$(find learn -name "*.html" -type f 2>/dev/null | head -10 || true)
+          fi
+          
+          if [ -n "$HTML_FILES" ]; then
+            COUNT=$(echo "$HTML_FILES" | wc -l)
             echo "found=true" >> $GITHUB_OUTPUT
             echo "count=$COUNT" >> $GITHUB_OUTPUT
             
-            # Ghi danh sách files
-            {
-              echo "files<<EOF"
-              echo "$FILES"
-              echo "EOF"
-            } >> $GITHUB_OUTPUT
+            # Ghi danh sách files (dùng delimiter để tránh lỗi format)
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$HTML_FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
             
-            # Tạo danh sách articles với metadata
-            ARTICLES=""
-            while IFS= read -r file; do
-              if [ -n "$file" ] && [ -f "$file" ]; then
-                filename=$(basename "$file" .html)
-                
-                # Trích xuất title với nhiều phương pháp
-                title=$(grep -o '<title>[^<]*</title>' "$file" 2>/dev/null | sed 's/<title>\(.*\)<\/title>/\1/' | head -1)
-                if [ -z "$title" ]; then
-                  title=$(grep -o '<h1[^>]*>[^<]*</h1>' "$file" 2>/dev/null | sed 's/<h1[^>]*>\(.*\)<\/h1>/\1/' | head -1)
-                fi
-                if [ -z "$title" ]; then
-                  title=$(echo "$filename" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)} 1')
-                fi
-                
-                # Trích xuất description
-                description=$(grep -o '<meta name="description" content="[^"]*"' "$file" 2>/dev/null | sed 's/<meta name="description" content="\([^"]*\)".*/\1/' | head -1)
-                
-                # Tạo URL
-                clean_file=$(echo "$file" | sed 's/^_site\///')
-                url="https://bitcoin-peak-dip.com/$clean_file"
-                
-                # Thêm vào danh sách
-                ARTICLES="${ARTICLES}${file}|${title}|${url}|${description}\n"
-                echo "  📄 $title"
-              fi
-            done <<< "$FILES"
-            
-            {
-              echo "articles<<EOF"
-              printf "%b" "$ARTICLES"
-              echo "EOF"
-            } >> $GITHUB_OUTPUT
-            
+            echo "✅ Found $COUNT HTML file(s):"
+            echo "$HTML_FILES"
           else
-            echo "❌ No new HTML files found"
             echo "found=false" >> $GITHUB_OUTPUT
+            echo "❌ No new HTML files found"
           fi
       
-      - name: ⏹️ Skip if no new files
-        if: steps.detect.outputs.found != 'true'
-        run: echo "No new files, skipping notification"
+      # ===== BƯỚC 2: HIỂN THỊ KẾT QUẢ =====
+      - name: 📝 Show detection results
+        run: |
+          echo "Found: ${{ steps.detect.outputs.found }}"
+          echo "Count: ${{ steps.detect.outputs.count }}"
+          echo "Files:"
+          echo "${{ steps.detect.outputs.files }}"
       
+      # ===== BƯỚC 3: SKIP NẾU KHÔNG CÓ FILE MỚI =====
+      - name: ⏭️ Skip if no new HTML files
+        if: steps.detect.outputs.found != 'true'
+        run: |
+          echo "⏭️ No new HTML files found, skipping notification"
+          echo "✅ Workflow completed successfully (no action needed)"
+      
+      # ===== BƯỚC 4: GỬI NOTIFICATION (CHỈ KHI CÓ FILE MỚI) =====
       - name: ⚙️ Setup Node.js
         if: steps.detect.outputs.found == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+          node-version: '18'
       
       - name: 📦 Install dependencies
         if: steps.detect.outputs.found == 'true'
         run: |
-          npm ci --only=production --no-audit --no-fund
-          npm list --depth=0
+          echo "Installing dependencies..."
+          npm init -y
+          npm install firebase-admin@11 axios@1.5
+          echo "✅ Dependencies installed"
       
-      - name: 🔥 Decode Firebase credentials
+      - name: 🔐 Decode Firebase credentials
         if: steps.detect.outputs.found == 'true'
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > firebase-credentials.json
-          echo "GOOGLE_APPLICATION_CREDENTIALS=firebase-credentials.json" >> $GITHUB_ENV
+          echo "Decoding Firebase credentials..."
+          if [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "✅ Firebase credentials available"
+          else
+            echo "⚠️ Firebase credentials not found"
+          fi
       
       - name: 📨 Send notifications
         if: steps.detect.outputs.found == 'true'
         env:
           FILES: ${{ steps.detect.outputs.files }}
-          ARTICLES: ${{ steps.detect.outputs.articles }}
-          FILE_COUNT: ${{ steps.detect.outputs.count }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           DISCORD_PUBLIC_WEBHOOK: ${{ secrets.DISCORD_PUBLIC_WEBHOOK }}
           DISCORD_PRIVATE_WEBHOOK: ${{ secrets.DISCORD_PRIVATE_WEBHOOK }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
-          NODE_ENV: production
-        run: node scripts/send-notification-from-html.js
+        run: |
+          echo "🚀 Sending notifications..."
+          node scripts/send-notification-from-html.js
+          echo "✅ Notifications sent"
       
+      # ===== BƯỚC 5: CLEANUP =====
       - name: 🧹 Cleanup
         if: always()
-        run: rm -f firebase-credentials.json
-      
-      - name: 📊 Summary
-        if: always()
         run: |
-          echo "## 📊 Notification Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
-          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| 📄 Files found | ${{ steps.detect.outputs.count || 0 }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🔔 Discord | ✅ Sent |" >> $GITHUB_STEP_SUMMARY
-          echo "| 📱 FCM | ✅ Sent |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🏷️ Badge | ✅ Updated |" >> $GITHUB_STEP_SUMMARY
+          echo "🧹 Cleaning up temporary files..."
+          # Không cần cleanup đặc biệt
+          echo "✅ Workflow completed"
