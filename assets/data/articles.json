@@ -15,6 +15,20 @@
       "featured": false
     },
     {
+      "id": "helloworld-article",
+      "title": "Hello World: Chào mừng đến với Bitcoin PeakDip Early Warning System",
+      "description": "Bài viết đầu tiên giới thiệu về hệ thống Early Warning System và cách bắt đầu với Bitcoin PeakDip",
+      "excerpt": "",
+      "url": "/learn/2026/03/03/helloworld-article.html",
+      "date": "2026-03-03",
+      "author": "Bitcoin PeakDip Team",
+      "category": "General",
+      "reading_time": 3,
+      "level": "Beginner",
+      "icon": "rocket",
+      "featured": true
+    },
+    {
       "id": "dynamic-reversal-boundary",
       "title": "🧠 Đột phá: Thiết lập lớp Vùng biên Entry tối ưu từ tín hiệu EWS",
       "description": "Kết hợp Neural Network với Dynamic Reversal Boundary để tối ưu điểm vào lệnh, tránh nhiễu và bắt đúng sóng chính - Phân tích chuyên sâu từ đội ngũ R&D Bitcoin PeakDip",
@@ -114,12 +128,12 @@
     }
   ],
   "metadata": {
-    "last_updated": "2026-03-06T22:19:50+07:00",
-    "total": 8,
-    "version": "1.12.40",
-    "build_timestamp": 1772810390849,
-    "build_date": "2026-03-06",
-    "build_time": "22:19:50"
+    "last_updated": "2026-03-07T17:29:02+07:00",
+    "total": 9,
+    "version": "1.12.41",
+    "build_timestamp": 1772879342837,
+    "build_date": "2026-03-07",
+    "build_time": "17:29:02"
   },
   "stats": {
     "new_articles_count": 6,
@@ -131,6 +145,14 @@
         "date": "2026-03-03",
         "reading_time": 15,
         "level": "Advanced"
+      },
+      {
+        "id": "helloworld-article",
+        "title": "Hello World: Chào mừng đến với Bitcoin PeakDip Early Warning System",
+        "url": "/learn/2026/03/03/helloworld-article.html",
+        "date": "2026-03-03",
+        "reading_time": 3,
+        "level": "Beginner"
       },
       {
         "id": "dynamic-reversal-boundary",
@@ -163,27 +185,19 @@
         "date": "2026-02-28",
         "reading_time": 8,
         "level": "Intermediate"
-      },
-      {
-        "id": "strategy-guide-check",
-        "title": "8 Trading Strategies Explained",
-        "url": "/learn/2026/02/27/strategy-guide-check.html",
-        "date": "2026-02-27",
-        "reading_time": 15,
-        "level": "Intermediate"
       }
     ],
     "categories": {
-      "General": 3,
+      "General": 4,
       "signals": 1,
       "Market Analysis": 2,
       "strategies": 2
     },
     "levels": {
-      "Beginner": 0,
+      "Beginner": 1,
       "Intermediate": 6,
       "Advanced": 2
     },
-    "featured_count": 1
+    "featured_count": 2
   }
 }
