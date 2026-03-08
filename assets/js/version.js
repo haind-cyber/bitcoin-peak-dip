@@ -1,18 +1,18 @@
-// version.js - Auto-generated build 1.12.44
+// version.js - Auto-generated build 1.12.45
 const VERSION = {
     major: 1,
     minor: 12,
-    patch: 44
+    patch: 45
 };
 
 window.APP_VERSION = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 // Build info
 window.BUILD_INFO = {
-    version: '1.12.44',
+    version: '1.12.45',
     date: '2026-03-08',
-    time: '12:08:49',
-    timestamp: 1772946529201
+    time: '13:54:45',
+    timestamp: 1772952885486
 };
 
 console.log('🏗️  Build:', window.BUILD_INFO);

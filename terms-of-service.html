@@ -12,8 +12,8 @@
     gtag('config', 'G-HR78BDQYJJ');
     </script>
     
-    <meta name="app-version" content="1.12.44">
-    <script>window.APP_VERSION = '1.12.44';</script>
+    <meta name="app-version" content="1.12.45">
+    <script>window.APP_VERSION = '1.12.45';</script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,20 +26,20 @@
     <meta name="description" content="Terms of Service for Bitcoin PeakDip Early Warning System - Agreement between you and Bitcoin PeakDip">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json?v=1.12.44">
+    <link rel="manifest" href="/manifest.json?v=1.12.45">
     
     <!-- Main CSS -->
-    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.44">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.12.45">
     
     <!-- Page Specific CSS -->
-    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.44">
-    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.44">
-    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.44">
-    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.44">
-    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.44">
+    <link rel="stylesheet" href="/assets/css/about.css?v=1.12.45">
+    <link rel="stylesheet" href="/assets/css/product.css?v=1.12.45">
+    <link rel="stylesheet" href="/assets/css/signals.css?v=1.12.45">
+    <link rel="stylesheet" href="/assets/css/zoom.css?v=1.12.45">
+    <link rel="stylesheet" href="/assets/css/learn.css?v=1.12.45">
 
     <!-- Notifications CSS -->
-    <link rel="stylesheet" href="/assets/css/notifications.css?v=1.12.44">    
+    <link rel="stylesheet" href="/assets/css/notifications.css?v=1.12.45">    
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#00d4ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -86,7 +86,7 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('beforeinstallprompt', (e) => {
             const pwaVersion = localStorage.getItem('pwa_version');
-            const currentVersion = '1.12.44';
+            const currentVersion = '1.12.45';
             
             if (pwaVersion && pwaVersion !== currentVersion) {
                 console.log(`🔄 Updating PWA from v${pwaVersion} to v${currentVersion}`);
@@ -98,6 +98,8 @@
 </head>
 
 <body>
+
+    
     <script>
 (function() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -436,7 +438,7 @@
 <div class="footer-build-info">
     <div class="build-version">
         <i class="fas fa-code-branch"></i>
-        <span>v1.12.44</span>
+        <span>v1.12.45</span>
     </div>
     <div class="build-date">
         <i class="fas fa-calendar-alt"></i>
@@ -445,7 +447,7 @@
     
     <div class="build-time">
         <i class="fas fa-clock"></i>
-        <span>43729.0</span>
+        <span>50085.0</span>
     </div>
     
 </div>    
@@ -480,21 +482,45 @@
     </div>
 </footer>
     </div>
-    
+    <!-- ===== FIREBASE SDK - COMPAT VERSION (ĐẶT Ở ĐÂY) ===== -->
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-messaging-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyACWzl4DtQOaROFSfz9Duy21pwJFlcBBFU",
+            authDomain: "bitcoinpeakdip.firebaseapp.com",
+            projectId: "bitcoinpeakdip",
+            storageBucket: "bitcoinpeakdip.firebasestorage.app",
+            messagingSenderId: "900606660354",
+            appId: "1:900606660354:web:9fb71434f2d0fdc3543c1b",
+            measurementId: "G-9EGW7YWXV8"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        
+        console.log('✅ Firebase initialized');
+        window.firebase = firebase;
+    </script>    
     <!-- ========== SCRIPTS LOADING - TỐI ƯU ========== -->
     
     <!-- 1. SHARED UTILITIES (không block, load sớm) -->
-    <script src="/assets/js/shared.js?v=1.12.44" defer></script>
-    <script src="/assets/js/reading-list.js?v=1.12.44" defer></script>
+    <script src="/assets/js/shared.js?v=1.12.45" defer></script>
+    <script src="/assets/js/reading-list.js?v=1.12.45" defer></script>
 
     <!-- 2. NOTIFICATION SYSTEM (ưu tiên cao) -->
-    <script src="/assets/js/notifications.js?v=1.12.44" defer></script>
+    <script src="/assets/js/notifications.js?v=1.12.45" defer></script>
 
     <!-- 3. MAIN APP LOGIC -->
-    <script src="/assets/js/main.js?v=1.12.44" defer></script>
+    <script src="/assets/js/main.js?v=1.12.45" defer></script>
 
     <!-- 4. UPDATE NOTIFIER (chạy sau) -->
-    <script src="/assets/js/update-notifier.js?v=1.12.44" defer></script>
+    <script src="/assets/js/update-notifier.js?v=1.12.45" defer></script>
 
     <!-- 5. PAGE SPECIFIC SCRIPTS (chạy cuối) -->
     

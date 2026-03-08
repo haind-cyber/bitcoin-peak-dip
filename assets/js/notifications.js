@@ -1,9 +1,10 @@
 // notifications.js - Bitcoin PeakDip FCM System
-// Version: 7.0.0 - Tích hợp HTML detection, Badge sync, Reading List
-// QUAN TRỌNG: GIỮ NGUYÊN tất cả tính năng cũ, THÊM tính năng mới
+// Version: 7.1.0 - FIXED: Added Firestore token saving
+// GIỮ NGUYÊN tất cả tính năng cũ, CHỈ THÊM phần Firestore
+// ============================================
 
 const NOTIFICATION_CONFIG = {
-    version: '7.0.0',
+    version: '7.1.0', // Tăng version nhẹ để đánh dấu
     
     // FCM Configuration
     fcm: {
@@ -42,6 +43,9 @@ class ArticleNotificationSystem {
         this.fcmInitialized = false;
         this.userId = this._generateUserId();
         
+        // ===== THÊM: Firestore instance =====
+        this.db = null;
+        
         // Badge Management (GIỮ NGUYÊN)
         this.badgeCount = this._getStoredBadgeCount();
         this.notifiedIds = this._getNotifiedIds();
@@ -61,7 +65,7 @@ class ArticleNotificationSystem {
         this.checkTimer = null;
         this.articleCache = new Map(); // Cache bài viết đã xử lý
         
-        console.log('🔔 FCM System v7.0.0 initialized (HTML Detection ready)');
+        console.log('🔔 FCM System v7.1.0 initialized (with Firestore support)');
     }
 
     // ===== PRIVATE METHODS (GIỮ NGUYÊN) =====
@@ -146,7 +150,87 @@ class ArticleNotificationSystem {
         } catch (e) {}
     }
 
-    // ===== FAVICON BADGE (CẢI TIẾN) =====
+    // ===== THÊM: Khởi tạo Firestore =====
+    async _initFirestore() {
+        if (this.db) return this.db;
+        
+        console.log('🔥 Initializing Firestore...');
+        
+        // Kiểm tra Firebase có sẵn không
+        if (typeof firebase === 'undefined') {
+            console.error('❌ Firebase SDK not loaded!');
+            return null;
+        }
+        
+        try {
+            // Đảm bảo Firebase đã được khởi tạo
+            if (!firebase.apps.length) {
+                firebase.initializeApp({
+                    apiKey: "AIzaSyACWzl4DtQOaROFSfz9Duy21pwJFlcBBFU",
+                    authDomain: "bitcoinpeakdip.firebaseapp.com",
+                    projectId: "bitcoinpeakdip",
+                    storageBucket: "bitcoinpeakdip.firebasestorage.app",
+                    messagingSenderId: "900606660354",
+                    appId: "1:900606660354:web:9fb71434f2d0fdc3543c1b"
+                });
+                console.log('✅ Firebase initialized');
+            }
+            
+            this.db = firebase.firestore();
+            
+            // Test connection
+            const testRef = this.db.collection('_test').doc('connection_test');
+            await testRef.set({
+                timestamp: new Date().toISOString(),
+                userId: this.userId
+            });
+            console.log('✅ Firestore connection successful');
+            
+            return this.db;
+        } catch (error) {
+            console.error('❌ Firestore init failed:', error);
+            return null;
+        }
+    }
+
+    // ===== THÊM: Lưu token vào Firestore =====
+    async _saveTokenToFirestore(token) {
+        if (!token || !this.db) {
+            console.log('❌ Cannot save token: missing token or Firestore');
+            return false;
+        }
+        
+        try {
+            console.log('💾 Saving FCM token to Firestore...');
+            
+            const tokenRef = this.db.collection('fcm_tokens').doc(token);
+            await tokenRef.set({
+                token: token,
+                userId: this.userId,
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+                active: true
+            }, { merge: true });
+            
+            console.log('✅ Token saved to Firestore successfully');
+            
+            // Verify
+            const saved = await tokenRef.get();
+            if (saved.exists) {
+                console.log('✅ Token verified in Firestore');
+                return true;
+            }
+            
+            return false;
+        } catch (error) {
+            console.error('❌ Failed to save token:', error);
+            return false;
+        }
+    }
+
+    // ===== FAVICON BADGE (GIỮ NGUYÊN) =====
     _updateFaviconBadge(count) {
         if (this.isMobile) return;
         
@@ -207,7 +291,7 @@ class ArticleNotificationSystem {
         document.head.appendChild(newFavicon);
     }
 
-    // ===== BADGE MANAGEMENT (CẢI TIẾN) =====
+    // ===== BADGE MANAGEMENT (GIỮ NGUYÊN) =====
     
     async updateBadge(count) {
         const newCount = Math.max(0, parseInt(count) || 0);
@@ -421,43 +505,55 @@ class ArticleNotificationSystem {
         return div.innerHTML;
     }
 
-    // ===== FCM TOKEN MANAGEMENT (GIỮ NGUYÊN + THÊM SUBSCRIBE) =====
+    // ===== FCM TOKEN MANAGEMENT (SỬA ĐỂ LƯU TOKEN) =====
     
     async requestFCMToken() {
+        console.log('🔑 Requesting FCM token...');
+        
         if (!('Notification' in window) || Notification.permission !== 'granted') {
+            console.log('❌ Permission not granted');
             return null;
         }
 
         if (!('serviceWorker' in navigator) || !this.swRegistration) {
+            console.log('❌ Service Worker not ready');
             return null;
         }
 
         try {
+            // Khởi tạo Firestore trước
+            await this._initFirestore();
+            
             let subscription = await this.swRegistration.pushManager.getSubscription();
             
-            if (subscription) {
-                this.fcmToken = subscription;
-                this.fcmInitialized = true;
-                
-                // TỰ ĐỘNG SUBSCRIBE TOPIC
-                await this.subscribeToTopic(NOTIFICATION_CONFIG.fcm.topic);
-                
-                return subscription;
+            if (!subscription) {
+                console.log('🔄 Creating new push subscription...');
+                subscription = await this.swRegistration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: this._urlBase64ToUint8Array(NOTIFICATION_CONFIG.fcm.vapidKey)
+                });
+                console.log('✅ New subscription created');
+            } else {
+                console.log('✅ Existing subscription found');
             }
             
-            subscription = await this.swRegistration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: this._urlBase64ToUint8Array(NOTIFICATION_CONFIG.fcm.vapidKey)
-            });
+            // Lấy token string từ endpoint
+            const token = subscription.endpoint.split('/').pop();
+            console.log('🎯 FCM Token obtained:', token);
             
+            // Lưu token object (giữ nguyên cho các hàm cũ)
             this.fcmToken = subscription;
+            
+            // ===== THÊM: Lưu token vào Firestore =====
+            await this._saveTokenToFirestore(token);
+            
             this.fcmInitialized = true;
             
-            // TỰ ĐỘNG SUBSCRIBE TOPIC
+            // TỰ ĐỘNG SUBSCRIBE TOPIC (giữ nguyên)
             await this.subscribeToTopic(NOTIFICATION_CONFIG.fcm.topic);
             await this.subscribeToTopic(NOTIFICATION_CONFIG.fcm.badgeTopic);
             
-            console.log('✅ FCM token obtained and subscribed');
+            console.log('✅ FCM token obtained, saved, and subscribed');
             return subscription;
             
         } catch (error) {
@@ -466,7 +562,7 @@ class ArticleNotificationSystem {
         }
     }
 
-    // ===== TÍNH NĂNG MỚI: Subscribe to topic =====
+    // ===== TÍNH NĂNG MỚI: Subscribe to topic (GIỮ NGUYÊN) =====
     async subscribeToTopic(topic) {
         if (!this.fcmToken) return false;
         
@@ -513,7 +609,7 @@ class ArticleNotificationSystem {
         return outputArray;
     }
 
-    // ===== SERVICE WORKER (GIỮ NGUYÊN + CẢI TIẾN) =====
+    // ===== SERVICE WORKER (GIỮ NGUYÊN) =====
     
     async registerServiceWorker() {
         try {
@@ -538,7 +634,7 @@ class ArticleNotificationSystem {
         }
     }
 
-    // ===== MESSAGE HANDLING (CẢI TIẾN) =====
+    // ===== MESSAGE HANDLING (GIỮ NGUYÊN) =====
     
     setupMessageListener() {
         if (!('serviceWorker' in navigator)) return;
@@ -688,7 +784,7 @@ class ArticleNotificationSystem {
         }
     }
 
-    // ===== TOAST NOTIFICATION (CẢI TIẾN) =====
+    // ===== TOAST NOTIFICATION (GIỮ NGUYÊN) =====
     
     showToast(message, type = 'info', duration = 3000) {
         const toast = document.createElement('div');
@@ -739,7 +835,7 @@ class ArticleNotificationSystem {
         }, duration);
     }
 
-    // ===== INITIALIZATION (CẢI TIẾN) =====
+    // ===== INITIALIZATION (SỬA ĐỂ BAO GỒM FIRESTORE) =====
     
     async init() {
         if (this.initialized) return this;
@@ -753,6 +849,9 @@ class ArticleNotificationSystem {
                 resolve(this);
                 return;
             }
+
+            // Khởi tạo Firestore ngay từ đầu
+            await this._initFirestore();
 
             // Đăng ký service worker
             if ('serviceWorker' in navigator) {
@@ -800,7 +899,7 @@ class ArticleNotificationSystem {
             });
 
             this.initialized = true;
-            console.log('✅ FCM System v7.0.0 ready - Badge:', this.badgeCount);
+            console.log('✅ FCM System v7.1.0 ready - Badge:', this.badgeCount);
             resolve(this);
         });
 
@@ -815,7 +914,7 @@ class ArticleNotificationSystem {
         }
     }
 
-    // ===== PUBLIC API (GIỮ NGUYÊN + THÊM) =====
+    // ===== PUBLIC API (GIỮ NGUYÊN) =====
     
     getStatus() {
         return {
@@ -827,7 +926,9 @@ class ArticleNotificationSystem {
             vapidKeyConfigured: !!NOTIFICATION_CONFIG.fcm.vapidKey,
             userId: this.userId,
             isEnabled: this.isEnabled,
-            lastCheck: new Date(this.lastCheck).toISOString()
+            lastCheck: new Date(this.lastCheck).toISOString(),
+            // ===== THÊM: Firestore status =====
+            firestoreReady: !!this.db
         };
     }
     
@@ -843,7 +944,7 @@ class ArticleNotificationSystem {
     }
 }
 
-// ===== CSS CHO NOTIFICATION TOAST (MỚI) =====
+// ===== CSS CHO NOTIFICATION TOAST (GIỮ NGUYÊN) =====
 (function addNotificationStyles() {
     if (document.getElementById('notification-toast-styles')) return;
     
@@ -1030,7 +1131,7 @@ class ArticleNotificationSystem {
     document.head.appendChild(style);
 })();
 
-// ===== INITIALIZATION =====
+// ===== INITIALIZATION (GIỮ NGUYÊN) =====
 (function initialize() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
@@ -1043,7 +1144,7 @@ class ArticleNotificationSystem {
     }
 })();
 
-// ===== EXPORT GLOBAL API (GIỮ NGUYÊN + THÊM) =====
+// ===== EXPORT GLOBAL API (GIỮ NGUYÊN) =====
 window.fcm = {
     getStatus: () => window.articleNotifications?.getStatus(),
     requestToken: () => window.articleNotifications?.requestFCMToken(),
