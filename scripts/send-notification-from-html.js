@@ -296,79 +296,137 @@ async function updateBadgeCount(increment = 1) {
 async function sendFCM(article, badgeCount) {
     if (!firebaseInitialized) return false;
     
-    const message = {
-        notification: {
-            title: '📚 Bitcoin PeakDip',
-            body: article.description || `New article: ${article.title}`,
-            image: article.image
-        },
-        data: {
-            type: 'NEW_ARTICLE',
-            articleId: `article_${Date.now()}`,
-            title: article.title,
-            url: article.url,
-            readingTime: article.readingTime?.toString() || '5',
-            badgeCount: badgeCount?.toString() || '1',
-            click_action: 'OPEN_ARTICLE',
-            timestamp: Date.now().toString()
-        },
-        android: {
-            priority: 'high',
+    try {
+        // ===== ĐỌC TOKEN TỪ FIRESTORE =====
+        log.info('📱 Fetching active tokens from Firestore...');
+        const tokensSnapshot = await db.collection('fcm_tokens')
+            .where('active', '==', true)
+            .get();
+        
+        if (tokensSnapshot.empty) {
+            log.warn('⚠️ No active tokens found in Firestore');
+            return false;
+        }
+        
+        const tokens = tokensSnapshot.docs.map(doc => doc.id);
+        log.success(`📱 Found ${tokens.length} active token(s)`);
+        
+        // Log token đầu tiên để kiểm tra
+        if (tokens.length > 0) {
+            log.info(`📱 First token: ${tokens[0].substring(0, 30)}...`);
+        }
+        
+        // ===== TẠO MESSAGE =====
+        const message = {
             notification: {
-                icon: '@drawable/ic_notification',
-                color: '#00d4ff',
-                sound: 'default',
+                title: '📚 Bitcoin PeakDip',
+                body: article.description || `New article: ${article.title}`,
+                image: article.image
+            },
+            data: {
+                type: 'NEW_ARTICLE',
+                articleId: `article_${Date.now()}`,
+                title: article.title,
+                url: article.url,
+                readingTime: article.readingTime?.toString() || '5',
+                badgeCount: badgeCount?.toString() || '1',
+                click_action: 'OPEN_ARTICLE',
+                timestamp: Date.now().toString()
+            },
+            android: {
                 priority: 'high',
-                channelId: 'new_articles'
-            }
-        },
-        apns: {
-            payload: {
-                aps: {
-                    alert: {
-                        title: '📚 Bitcoin PeakDip',
-                        body: article.description || `New article: ${article.title}`
-                    },
+                notification: {
+                    icon: '@drawable/ic_notification',
+                    color: '#00d4ff',
                     sound: 'default',
-                    badge: badgeCount || 1,
-                    'mutable-content': 1,
-                    category: 'NEW_ARTICLE'
+                    priority: 'high',
+                    channelId: 'new_articles'
                 }
             },
-            headers: {
-                'apns-priority': '10',
-                'apns-push-type': 'alert'
-            }
-        },
-        webpush: {
-            headers: {
-                Urgency: 'high'
+            apns: {
+                payload: {
+                    aps: {
+                        alert: {
+                            title: '📚 Bitcoin PeakDip',
+                            body: article.description || `New article: ${article.title}`
+                        },
+                        sound: 'default',
+                        badge: badgeCount || 1,
+                        'mutable-content': 1,
+                        category: 'NEW_ARTICLE'
+                    }
+                },
+                headers: {
+                    'apns-priority': '10',
+                    'apns-push-type': 'alert'
+                }
             },
-            notification: {
-                icon: '/assets/icons/icon-192x192.png',
-                badge: '/assets/icons/icon-72x72.png',
-                vibrate: [200, 100, 200],
-                requireInteraction: true,
-                actions: [
-                    { action: 'read', title: '📖 Read Now' },
-                    { action: 'later', title: '⏰ Read Later' }
-                ]
-            },
-            fcm_options: {
-                link: article.url
+            webpush: {
+                headers: {
+                    Urgency: 'high'
+                },
+                notification: {
+                    icon: '/assets/icons/icon-192x192.png',
+                    badge: '/assets/icons/icon-72x72.png',
+                    vibrate: [200, 100, 200],
+                    requireInteraction: true,
+                    actions: [
+                        { action: 'read', title: '📖 Read Now' },
+                        { action: 'later', title: '⏰ Read Later' }
+                    ]
+                },
+                fcm_options: {
+                    link: article.url
+                }
             }
-        },
-        topic: CONFIG.topics.articles
-    };
-    
-    // Thử gửi với retry
-    for (let attempt = 1; attempt <= CONFIG.retry.maxAttempts; attempt++) {
-        try {
-            const response = await admin.messaging().send(message);
-            log.success(`FCM article sent (attempt ${attempt}): ${response}`);
+        };
+        
+        // ===== GỬI MULTICAST =====
+        log.info(`📨 Sending multicast to ${tokens.length} devices...`);
+        
+        const batchResponse = await admin.messaging().sendEachForMulticast({
+            tokens: tokens,
+            notification: message.notification,
+            data: message.data,
+            android: message.android,
+            apns: message.apns,
+            webpush: message.webpush
+        });
+        
+        log.success(`✅ Success: ${batchResponse.successCount}/${tokens.length}`);
+        
+        // ===== XỬ LÝ TOKEN LỖI =====
+        if (batchResponse.failureCount > 0) {
+            log.warn(`⚠️ ${batchResponse.failureCount} tokens failed`);
             
-            // Gửi badge update riêng
-            if (badgeCount) {
+            const failedTokens = [];
+            batchResponse.responses.forEach((resp, idx) => {
+                if (!resp.success) {
+                    failedTokens.push(tokens[idx]);
+                    log.error(`   Token ${idx} failed: ${resp.error?.message}`);
+                }
+            });
+            
+            // Deactivate invalid tokens
+            if (failedTokens.length > 0) {
+                log.info('📝 Deactivating invalid tokens...');
+                const batch = db.batch();
+                failedTokens.forEach(token => {
+                    const tokenRef = db.collection('fcm_tokens').doc(token);
+                    batch.update(tokenRef, { 
+                        active: false, 
+                        lastError: resp.error?.message,
+                        deactivatedAt: admin.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                await batch.commit();
+                log.success(`✅ Deactivated ${failedTokens.length} invalid tokens`);
+            }
+        }
+        
+        // ===== GỬI BADGE UPDATE =====
+        if (badgeCount) {
+            try {
                 await admin.messaging().send({
                     data: {
                         type: 'BADGE_UPDATE',
@@ -377,27 +435,21 @@ async function sendFCM(article, badgeCount) {
                     },
                     topic: CONFIG.topics.badge
                 });
-                log.success('FCM badge update sent');
-            }
-            
-            return true;
-        } catch (error) {
-            if (attempt === CONFIG.retry.maxAttempts) {
-                log.error(`FCM failed after ${attempt} attempts: ${error.message}`);
-                
-                // Fallback: gửi đến từng token nếu topic fail
-                if (error.code === 'messaging/topic-message-rate-exceeded') {
-                    log.warn('Topic rate exceeded, trying individual tokens...');
-                    await sendToIndividualTokens(message);
-                }
-            } else {
-                log.warn(`FCM attempt ${attempt} failed, retrying...`);
-                await new Promise(r => setTimeout(r, CONFIG.retry.delay * attempt));
+                log.success('✅ Badge update sent');
+            } catch (badgeError) {
+                log.warn('⚠️ Badge update failed: ' + badgeError.message);
             }
         }
+        
+        return true;
+        
+    } catch (error) {
+        log.error('❌ FCM send failed: ' + error.message);
+        if (error.stack) {
+            log.error(error.stack);
+        }
+        return false;
     }
-    
-    return false;
 }
 
 async function sendToIndividualTokens(message) {
