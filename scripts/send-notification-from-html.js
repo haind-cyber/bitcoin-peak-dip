@@ -395,7 +395,7 @@ async function sendFCM(article, badgeCount) {
         
         log.success(`✅ Success: ${batchResponse.successCount}/${tokens.length}`);
         
-        // ===== XỬ LÝ TOKEN LỖI =====
+        // XỬ LÝ TOKEN LỖI
         if (batchResponse.failureCount > 0) {
             log.warn(`⚠️ ${batchResponse.failureCount} tokens failed`);
             
@@ -403,27 +403,31 @@ async function sendFCM(article, badgeCount) {
             batchResponse.responses.forEach((resp, idx) => {
                 if (!resp.success) {
                     failedTokens.push(tokens[idx]);
-                    log.error(`   Token ${idx} failed: ${resp.error?.message}`);
+                    log.error(`   Token ${idx} failed: ${resp.error?.message || 'Unknown error'}`);
+                    
+                    // Lưu error message để dùng sau
+                    const errorMessage = resp.error?.message || 'Unknown error';
+                    
+                    // Deactivate token ngay lập tức
+                    if (db) {
+                        try {
+                            const tokenRef = db.collection('fcm_tokens').doc(tokens[idx]);
+                            tokenRef.update({ 
+                                active: false, 
+                                lastError: errorMessage,
+                                deactivatedAt: admin.firestore.FieldValue.serverTimestamp()
+                            }).catch(err => {
+                                log.error(`   Failed to deactivate token: ${err.message}`);
+                            });
+                        } catch (dbError) {
+                            log.error(`   DB error: ${dbError.message}`);
+                        }
+                    }
                 }
             });
             
-            // Deactivate invalid tokens
-            if (failedTokens.length > 0) {
-                log.info('📝 Deactivating invalid tokens...');
-                const batch = db.batch();
-                failedTokens.forEach(token => {
-                    const tokenRef = db.collection('fcm_tokens').doc(token);
-                    batch.update(tokenRef, { 
-                        active: false, 
-                        lastError: resp.error?.message,
-                        deactivatedAt: admin.firestore.FieldValue.serverTimestamp()
-                    });
-                });
-                await batch.commit();
-                log.success(`✅ Deactivated ${failedTokens.length} invalid tokens`);
-            }
+            log.warn(`📝 Marked ${failedTokens.length} tokens as inactive`);
         }
-        
         // ===== GỬI BADGE UPDATE =====
         if (badgeCount) {
             try {
