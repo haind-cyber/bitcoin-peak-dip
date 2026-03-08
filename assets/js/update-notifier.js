@@ -335,7 +335,7 @@ class UpdateNotifier {
                     try {
                         const keys = await caches.keys();
                         const cacheDeletePromises = keys
-                            .filter(key => key.includes('bitcoin-peakdip'))
+                            .filter(key => key.includes('bitcoinpeakdip'))
                             .map(key => caches.delete(key));
                         
                         await Promise.allSettled(cacheDeletePromises);

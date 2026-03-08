@@ -1,5 +1,5 @@
 {
-  "name": "bitcoin-peakdip",
+  "name": "bitcoinpeakdip",
   "version": "1.12.41",
   "description": "Bitcoin PeakDip - Early Warning System with FCM Notifications",
   "main": "index.js",

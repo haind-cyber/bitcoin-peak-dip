@@ -332,12 +332,12 @@ function updateVersionInFiles() {
         let swContent = fs.readFileSync(swPath, 'utf8');
         
         swContent = swContent.replace(
-            /CACHE_NAME = ['"]bitcoin-peakdip-v[\d.]+['"]/,
-            `CACHE_NAME = 'bitcoin-peakdip-v${newVersion}'`
+            /CACHE_NAME = ['"]bitcoinpeakdip-v[\d.]+['"]/,
+            `CACHE_NAME = 'bitcoinpeakdip-v${newVersion}'`
         );
         swContent = swContent.replace(
-            /DYNAMIC_CACHE = ['"]bitcoin-peakdip-dynamic-v[\d.]+['"]/,
-            `DYNAMIC_CACHE = 'bitcoin-peakdip-dynamic-v${newVersion}'`
+            /DYNAMIC_CACHE = ['"]bitcoinpeakdip-dynamic-v[\d.]+['"]/,
+            `DYNAMIC_CACHE = 'bitcoinpeakdip-dynamic-v${newVersion}'`
         );
         swContent = swContent.replace(
             /\/\/ Version: [\d.]+/,

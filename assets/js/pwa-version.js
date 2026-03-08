@@ -16,7 +16,7 @@
         if ('caches' in window) {
             caches.keys().then(keys => {
                 keys.forEach(key => {
-                    if (key.includes('bitcoin-peakdip')) {
+                    if (key.includes('bitcoinpeakdip')) {
                         caches.delete(key);
                     }
                 });
