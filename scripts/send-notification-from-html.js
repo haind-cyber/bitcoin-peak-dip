@@ -19,8 +19,7 @@ const CONFIG = {
         privateWebhook: process.env.DISCORD_PRIVATE_WEBHOOK
     },
     firebase: {
-        projectId: process.env.FIREBASE_PROJECT_ID || 'bitcoin-peakdip',
-        databaseURL: process.env.FIREBASE_DATABASE_URL || 'https://bitcoin-peakdip.firebaseio.com'
+        projectId: process.env.FIREBASE_PROJECT_ID || 'bitcoinpeakdip'
     },
     topics: {
         articles: 'new_articles',
