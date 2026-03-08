@@ -48,7 +48,7 @@ async function testFCM() {
     try {
         admin.initializeApp({
             credential: admin.credential.cert(credentials),
-            projectId: 'bitcoin-peakdip'
+            projectId: 'bitcoinpeakdip'
         });
         console.log('   ✅ Firebase initialized');
     } catch (e) {
